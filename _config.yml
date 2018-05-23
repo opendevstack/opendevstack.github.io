@@ -1,8 +1,8 @@
 # Site settings
 short_title: Orcas
-title: Orcas - Automatic deployment for the database
+title: OpenDevStack
 description: >
- Orcas is an Open Source Deployment framework for transferring an existing database schema into a target state defined by Orcas. Orcas stands for Oracle adaptive schemas” and is only compatible with Oracle RDBMS.
+  OpenDevStack is a framework to help in setting up project infrastructure and CD processes on OpenShift and Atlassian toolstack with one click.
 
 # Twitter
 twitter:
@@ -10,9 +10,9 @@ twitter:
 
 # GitHub (required for local site builds)
 github:
-  owner_name: opitzconsulting
-  repository_name: orcas
-  repository_url: https://github.com/opitzconsulting/orcas
+  owner_name: opendevstack
+  repository_name: opendevstack.github.io
+  repository_url: https://github.com/opendevstack/opendevstack.github.io
 
 # Build settings
 baseurl:
