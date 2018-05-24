@@ -1,12 +1,12 @@
 # Site settings
-short_title: Orcas
+short_title: OpenDevStack
 title: OpenDevStack
 description: >
   OpenDevStack is a framework to help in setting up project infrastructure and CD processes on OpenShift and Atlassian toolstack with one click.
 
 # Twitter
 twitter:
-  username: OC_WIRE
+  username: opendevstack
 
 # GitHub (required for local site builds)
 github:
