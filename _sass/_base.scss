@@ -119,7 +119,7 @@ h1, h2, h3, h4, h5, h6 {
   font-weight: 700;
   font-family: 'Roboto', sans-serif;
   color: $heading-color;
-  font-size: 1.5em;
+  font-size: 3em;
 }
 h1 {
     text-align: center;
@@ -197,7 +197,7 @@ pre {
     margin-left: auto;
     padding-right: $spacing-unit*2;
     padding-left: $spacing-unit * 2;
-    background-color: $grey-color;
+    background-color: $background-color;
     
     font-family: 'Open Sans', sans-serif;
     @extend %clearfix;
@@ -211,6 +211,11 @@ pre {
 
     @include media-query($on-palm) {
         max-width: 100%;
+        padding-right:0%;
+        padding-left: 0%;
+    }
+    @media screen and(max-width:1300px){
+        max-width: 90%;
         padding-right:0%;
         padding-left: 0%;
     }

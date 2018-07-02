@@ -1,4 +1,8 @@
+//
+//Icons used here are provided by https://icons8.com/. 
+
 // Site header navigation
+// 
 
 /**
 * Site Navigation
@@ -337,9 +341,6 @@
 /**
 * Page content
 */
-.page-content {
-    border-top:3px solid $brand-color;
-}
 
 .page-heading {
     font-size: 20px;
@@ -480,43 +481,59 @@
 /**
 Index-page
 **/
-#titlepage-title{
-    background-color: $grey-color;
-    width: 100%;
-    margin-top: 0px;
-    padding-bottom: 10px;
-    padding-top:10px;
-    text-indent: $spacing-unit*3;
-    font-size: 2.5em;
-    text-align: center;
-
-    @include media-query($on-laptop) {
-        margin-left: -$spacing-unit;
-        text-indent: $spacing-unit;
-        padding-right: $spacing-unit*2;
-        font-size: 1.5em;
-    }
-    @media screen and (max-width: 600px){
-        text-indent: 0;
-        padding-left: 10%
-        
-    }
-}
 
 .header-img{
-    min-height: 500px;
-    background-attachment: fixed;
-    background-position: center;
+    min-height: 600px;
+    padding-bottom: -50px;
+    background-position: center bottom;
     background-repeat: no-repeat;
     background-size: cover;
+    text-align: center;
+    color: white;
 
     @media screen and(max-width: 600px){
         min-height: 400px;
 
     }
+    ul{
+        margin: 0 200px 0 200px;
+    }
 }
+.header-img div {
+    background: $box-background-color; /* Fallback for older browsers without RGBA-support */
+    background: rgba(246, 232, 217, 0.8);
+    text-align: center;
+    list-style: none;
+    position: relative;
+    top:50%;
+    transform: translateY(50%);
+    max-width: calc(76% - (30px * 2));
+    margin-right:auto;
+    margin-left: auto;
+    padding-bottom: 15px;
+    
+
+    h2{
+        color: $brand-color;
+        font-size: 5em; 
+        padding-top: 0;
+        margin-bottom: 0%;
+    }
+    p{
+        color: black;
+        font-size: 2em;
+        font-weight: 200 
+
+    }
+    @media screen and(max-width:1300px){
+        max-width: 86%;
+    }
+
+ 
+}
+
 .index-img{
-    background-image: url("../assets/opendevstack-banner.png");
+    background-image: url("../assets/Container_banner.jpg");
 }
 .contact-img{
     background-image: url("../assets/denkfabrik.jpg");
@@ -532,41 +549,29 @@ Index-page
 }
 
 
-#short-description-container div:nth-child(2){
-    margin: 0 5% 0 5%;
-}
+#short-description-container-logo {
+    text-align: center;
 
-#short-description-container div{
+    div{
+    display: inline-block;
     max-width: 28%;
     margin-bottom: 30px;
-    padding: 30px 1% 10px 1%;
-    float: left;
+    padding: 30px 2% 10px 2%;
     text-align: center;
-    background-color: $grey-color-dark;
-    color:white;
-    min-height: 275px;
-
-    @media screen and(max-width: 600px){
-        float: none;
-        max-width: 90%;
-        padding-left: $spacing-unit/2;        
-    }
-}
-
-#short-description-container-logo div{
-    max-width: 28%;
-    margin-bottom: 30px;
-    padding: 30px 1% 10px 1%;
-    float: left;
-    text-align: center;
-    background-color: white;
+    background-color:$box-background-color;
     color:black;
     min-height: 175px;
-    margin: 15px 1% 15px 1%;
-    @media screen and(max-width: 600px){
-        float: none;
-        max-width: 90%;
-        padding-left: $spacing-unit/2;        
+    margin: 15px auto 15px auto;
+    box-shadow: 5px 5px 10px grey;
+        @media screen and(max-width: 600px){
+            float: none;
+            max-width: 90%;
+            padding-left: $spacing-unit/2;        
+        }
+    }
+    h2{
+        text-align: center;
+        margin-top:150px; 
     }
 }
 
@@ -583,52 +588,15 @@ Index-page
 }
 
 
-.separated-header{
-    display: none;
-    @media screen and(max-width: 1000px){
-        display: inline;
-    }
-    @media screen and(max-width: 600px){
-        display:none;
-    }
-}
-.long-header{
-    color: white;
-    padding-top:5px;
-
-    @media screen and(max-width: 1000px){
-         display: none;   
-    }
-    @media screen and(max-width: 600px){
-        display: inline;
-    }
-
-}
-#short-description-container div img{
-    height:100px;
-    clear:both;
-    width: auto;
-    display: block;
-    padding: 0 0 10px 0;
-    margin-left: auto;
-    margin-right: auto;
-    filter: drop-shadow(0 0 2em black);
-}
-
-
-
 #container{
     margin-top: 30px;
-    background-color: $grey-color-dark;
-    padding: 20px 0 20px 5%;
+    background-color: $background-color;
     @media screen and (max-width: 1700){
         padding-left: 0!important;
         
+        
     }
 
-}
-#container div div{
-    width: 100%;
 }
 
 #container-second-child{
@@ -636,6 +604,7 @@ Index-page
 }
 #container h2{
     text-align: center;
+    padding-top: 0px;
 }
 #container div h1{
     color: $brand-color;
@@ -645,6 +614,7 @@ Index-page
     padding-top:20px;
 }
 #container div h1:first-child{
+    margin:0;
     @media screen and (max-width: 800){
         padding-top: 0;
         
@@ -652,10 +622,26 @@ Index-page
 }
 
 #container div{
+    background-color: $box-background-color;
     float:left;
-    width:35%;
-    @media screen and(max-width:1700px){
-        width: 43%
+    width:40%;
+    padding:30px 30px 30px 30px;
+    min-height: 400px;
+    box-shadow: 5px 5px 10px grey;
+    margin:0 1% 50px 3%;
+    @media screen and(max-width:1300px){
+        width: 40%;
+        min-height:800px;
+        margin:0 1% 50px 2%;
+    }
+    @media screen and(min-width:4000px){
+        width: 40%;
+        margin-left: 5%;
+    }
+    @media screen and(min-width:1700px){
+        width: 40%;
+        margin-left: 5%;
+        margin:0 2% 50px 3%;
     }
     @media screen and(max-width: 600px){
         float: none;
@@ -673,12 +659,44 @@ Index-page
             padding-top:0;
         }
     }
+    .container-list{
+        width: 60%;
+        margin-right:-100px; 
+    }
 
+}
+#container div div{
+    float: left;
+    padding: 0;
+    box-shadow: 0 0 0;
+    margin-bottom:0; 
+
+    img{
+        vertical-align: middle;
+        margin: 70px -20px 0 20px;
+        width: 50%;
+    }
+    ul{
+        margin-left: 0px;
+    }
 }
 #container div ul li {
-    list-style-image: url(../assets/list_bullet.png);
+    background: url("../assets/list_bullet.png") no-repeat top left; /* <-- change `left` & `top` too for extra control */
+    padding: 0px 0px 3px 25px;
+    /* reset styles (optional): */
+    list-style: none;
+    margin: 0;
 }
 
+#visit-git-bt{
+    background-color:$brand-color;
+    color: $box-background-color;
+    border-radius:5px;
+    padding: 10px;
+    font-size: 1.5em;
+}
+
+/* ---------------------------Unused CSS
 #description-panel{
     padding: 50px 25% 50px 20%;
     background-color: rgb(224, 224, 224);
@@ -818,4 +836,4 @@ Index-page
 .credit{
     color:darken($grey-color-dark, 1%);
     text-align: right;
-}
+}*/ 
