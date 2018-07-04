@@ -511,6 +511,11 @@ Index-page
     margin-right:auto;
     margin-left: auto;
     padding-bottom: 15px;
+
+    @media screen and(min-width: 2100px){
+        max-width: 1500px;
+
+    }
     
 
     h2{
@@ -640,8 +645,11 @@ Index-page
     }
     @media screen and(min-width:1700px){
         width: 40%;
-        margin-left: 5%;
+        margin-left: 6%;
         margin:0 2% 50px 3%;
+        :first-child{
+            margin-right: 4%;
+        }
     }
     @media screen and(max-width: 600px){
         float: none;
