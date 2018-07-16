@@ -1,3 +1,7 @@
+---
+layout: index
+---
+
 # Getting started
 <!-- TOC depthFrom:1 depthTo:4 withLinks:1 updateOnSave:1 orderedList:0 -->
 
