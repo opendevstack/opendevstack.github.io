@@ -476,9 +476,9 @@ Ignore the error "verify error:num=19:self signed certificate in certificate cha
 
 Now import the certificate in the default JVM keystore.
 ```
-/usr/java/jdk1.8.0_172-amd64/jre/bin/keytool -import -alias minishift -keystore /usr/java/jdk1.8.0_172-amd64/jre/lib/security/cacerts -file /tmp/minishift.crt
+/usr/java/latest/jre/bin/keytool -import -alias minishift -keystore /usr/java/latest/jre/lib/security/cacerts -file /tmp/minishift.crt
 ```
-<!-- TODO> Is it always java version 172?<-->
+
 The default password is `changeit`.
 Confirm with yes when ask to trust the certificates.
 Restart the bitbucket service
