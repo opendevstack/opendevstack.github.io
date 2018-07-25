@@ -77,7 +77,7 @@ installation wizards of the tools, after the base setup provided by the Ansible 
 ### Minishift
 
 The provided provision application and Rundeck jobs work with links, which are designed to connect to a installed and configured [Minishift](https://docs.openshift.org/latest/minishift/index.html "Minishift") instance. Minishift is a tool provided by Redhat to run OpenShift locally by providing a single-node OpenShift cluster inside a VM.
-Informations, how to setup Minishift can be found at the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
+Information, how to setup Minishift can be found at the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
 For the OpenDevStack it is important, that you run Minishift with OpenShift v3.6.1 because the templates have been designed for OpenShift v3.6 and the current OpenShift version is not backward compatible.
 
 ### Bash
@@ -125,6 +125,13 @@ Downloading and Configuring as service
 ```
 ansible-playbook -v -i inventories/dev playbooks/crowd.yml --ask-vault
 ```
+
+
+If you are using windows you might get a warning that the directory containing the ansible files is world writable.
+Therefore the ansible.cfg config-file will not be used, which will cause ansible to use the wrong directory to search for roles.
+To fix this you can modify the ansible.cfg file in /etc/ansible and change the role_path to /vagrant/ansible/roles.
+
+
 ##### Run Configuration Wizard
 
 Access http://192.168.56.31:8095/crowd/console
@@ -277,6 +284,7 @@ Be patient. First time accessing this page takes time.
 ###### Step 1: Setup application properties
 Here you have to choose the application title, the mode and the base URL.
 You can leave the data as is for the test environment.
+<!--TODO Welchen Mode? -->
 
 ###### Step 2: Specify your license key
 Here you have to enter the license key for the JIRA instance (Jira Software (Server)). With the provided link in the dialogue you are able to generate an evaluation license at Atlassian.
@@ -354,7 +362,7 @@ Here you have to choose **Empty Site** or **Example Site**
 Choose **Manage users and groups within Confluence**. Crowd will be configured later.
 
 ###### Step 8: Configure System Administrator account
-Here you have to configure a local administrator account. After this step, you are able to work with Confluence.
+Here you have to configure a local administrator account. After this step, you are able to work with Confluence. Just press Start and create a space.
 
 ##### Configure Crowd access
 ###### Configure user directory
@@ -406,7 +414,8 @@ The file has to have the following content:
     "vm-driver": "virtualbox"
 }
 ```
-It is important to use *v3.6.1* to ensure, that the templates provided by the OpenDevStack work properly.
+It is important to use *v3.6.1* to ensure, that the templates provided by the OpenDevStack work properly. If you are on windows you have to run the "minishift start" command as administrator.
+
 After the start up you are able to open the webconsole with the `minishift console` command. This will open the webconsole in your standard browser.
 Please access the webconsole with the credentials `developer` `developer`.
 It is *important* not to use the `system` user, because Jenkins does not allow a user named `system`.
