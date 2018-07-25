@@ -420,10 +420,11 @@ After the start up you are able to open the webconsole with the `minishift conso
 Please access the webconsole with the credentials `developer` `developer`.
 It is *important* not to use the `system` user, because Jenkins does not allow a user named `system`.
 
-#### Install the OC CLI
-After you have accessed the webconsole, you have to open the question mark on the upper right corner and choose the **Command Line Tools**.
-Follow the instructions to install the CLI. The following steps assume that the command line tools have been installed.
-Please keep in mind to install the matching oc client version. In the above example, it would be the [oc client v3.6.1](https://github.com/openshift/origin/releases/tag/v3.6.1) version.
+
+### Configure the path for the OC CLI
+The OC CLI is automatically downloaded after "minishift start".
+To add it to the path you can run "minishift oc-env" and execute the 
+displayed command.
 
 #### Login with the CLI
 You have to login via the CLI with
@@ -477,7 +478,9 @@ Now import the certificate in the default JVM keystore.
 ```
 /usr/java/jdk1.8.0_172-amd64/jre/bin/keytool -import -alias minishift -keystore /usr/java/jdk1.8.0_172-amd64/jre/lib/security/cacerts -file /tmp/minishift.crt
 ```
-The default password is `changeit`
+<!-- TODO> Is it always java version 172?<-->
+The default password is `changeit`.
+Confirm with yes when ask to trust the certificates.
 Restart the bitbucket service
 ```
 service atlbitbucket restart
@@ -491,7 +494,7 @@ oc new-app sonatype/nexus3 -n cd
 ```
 
 After creation change to the webconsole.
-Access the base project "OpenDevStack Templates" and open the **Routes** section in the **Applications** tab.
+Access the base project "OpenDevStack Templates" and open the **Routes** section in the **Applications** tab in the menu.
 Click **Create Route**
 As name enter `nexus`.
 You don't need to provide a hostname. Ensure, that the route points to the `nexus3` service with the correct port.
