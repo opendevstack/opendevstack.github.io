@@ -434,8 +434,7 @@ oc login -u system:admin
 #### Setup the base template project
 After you have logged in, you are able to create a project, that will contain the base templates and the Nexus Repository Manager. Please enter the following command to add the base project:
 ```
-oc new-project cd \
-	--description="Base project holding the templates and the Repositoy Manager" --display-name="OpenDevStack Templates"
+oc new-project cd --description="Base project holding the templates and the Repositoy Manager" --display-name="OpenDevStack Templates"
 ```
 This command will create the base project.
 
