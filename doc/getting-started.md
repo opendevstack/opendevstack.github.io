@@ -526,8 +526,9 @@ Access Nexus3 http://nexus-cd.192.168.99.100.nip.io/
 Login with the default credentials for Nexus3 `admin` `admin123`
 
 ##### Configure repositories
-Open the **Server administration and configuration** menu.
-Now create two Blob Stores.
+Open the **Server administration and configuration** menu
+by clicking the gear icon in the top bar.
+Now create three Blob Stores.
 
 | Type | Name             | Path                               |
 | ---- | ---------------- | ---------------------------------- |
@@ -535,19 +536,20 @@ Now create two Blob Stores.
 | File | releases         | /nexus-data/blobs/releases         |
 | File | atlassian_public | /nexus-data/blobs/atlassian_public |
 
-After this you will have to create two hosted maven2 repositories in the **Repositories** Subsection.
+After this you will have to create three hosted maven2 repositories in the **Repositories** Subsection.
 
 | Name             | Format | Type   | Online  | Version policy | Layout policy | Storage    | Strict Content Type Validation | Deployment policy | Remote Storage                                                     |
 | ---------------- | ------ | ------ | ------- | -------------- | ------------- | ---------- | ------------------------------ | ----------------- | ------------------------------------------------------------------ |
 | candidates       | maven2 | hosted | checked | Release        | Strict        | candidates | checked                        | Disable-redeploy  |                                                                    |
 | releases         | maven2 | hosted | checked | Release        | Strict        | releases   | checked                        | Disable-redeploy  |                                                                    |
-| atlassian_public | maven2 | proxy  | checked | Release        | Strict        |            |                                |                   | https://maven.atlassian.com/content/repositories/atlassian-public/ |
+| atlassian_public | maven2 | proxy  | checked | Release        | Strict        | atlassian_public  | checked                 | Disable-redeploy  | https://maven.atlassian.com/content/repositories/atlassian-public/ |
 
 Add the three repositories to the *maven-public* group.
+You can access the settings for the maven public group by clicking on int in the repositories list.
 
 ##### Configure user and roles
 First disable the anonymous access in the **Security > Anonymous** section.
-Under **Security > Roles** create a role *OpenDevStack-Developer*.
+Under **Security > Roles** create a nexus-role *OpenDevStack-Developer*.
 
 | Role ID                | Role name              | Role description                  |
 | ---------------------- | ---------------------- | --------------------------------- |
@@ -570,6 +572,7 @@ Now create a user under **Security > Users**.
 | developer | developer |
 
 TODO: Correct?
+You can choose any First name, Last name and Email.
 Make this account active and assign role `OpenDevStack-Developer` to this account.
 END_TODO
 
@@ -583,7 +586,7 @@ Now run the following shell script from within the `scripts`folder:
 ```
 ./upload-templates.sh
 ```
-If not running under a cygwin environment, but with win-bash and bash located on your PATH, simply rundeck
+If not running under a cygwin environment, but with win-bash and bash located on your PATH, simply run
 ```
 bash ./upload-templates.sh
 ```
