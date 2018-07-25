@@ -80,10 +80,6 @@ The provided provision application and Rundeck jobs work with links, which are d
 Information, how to setup Minishift can be found at the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
 For the OpenDevStack it is important, that you run Minishift with OpenShift v3.6.1 because the templates have been designed for OpenShift v3.6 and the current OpenShift version is not backward compatible.
 
-### Bash
-
-You must have the possibility to run bash scripts to import the provided OpenShift templates. On Linux systems you can use these scripts out-of-the box, on Windows systems you will have to install either a bash port for Windows like [Cygwin](https://www.cygwin.com/ "Cygwin") or [win-bash](http://win-bash.sourceforge.net/ "win-bash") or you can use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10 "Windows Subsystem for Linux"), if you run Windows 10.
-
 ### Ansible
 
 The OpenDevStack uses [Ansible](https://www.ansible.com/ "Ansible") to install and configure the necessary software for the enabling stack, so it's recommended to get familiar with its core concepts and usage. Also credentials are stored within an Ansible vault, so even if you commit them in a public repository they are not available unless you know the vault password.
@@ -420,10 +416,9 @@ After the start up you are able to open the webconsole with the `minishift conso
 Please access the webconsole with the credentials `developer` `developer`.
 It is *important* not to use the `system` user, because Jenkins does not allow a user named `system`.
 
-#### Install the OC CLI
-After you have accessed the webconsole, you have to open the question mark on the upper right corner and choose the **Command Line Tools**.
-Follow the instructions to install the CLI. The following steps assume that the command line tools have been installed.
-Please keep in mind to install the matching oc client version. In the above example, it would be the [oc client v3.6.1](https://github.com/openshift/origin/releases/tag/v3.6.1) version.
+For further configuration, you need to run scripts that call the `oc` command.
+When you started up minishift, you should be able to call the `oc` command directly.
+Otherwise call `minishift oc-env` which prints out the command to execute to make the `oc` available on the command line.
 
 #### Login with the CLI
 You have to login via the CLI with
@@ -573,20 +568,30 @@ END_TODO
 
 ### Import base templates
 After you have configured Nexus3, import the base templates for OpenShift.
+On a Linux based system, this can be done directly as described here.
+On Windows either use the PowerShell script or Cygwin. Both options are described below.
+
 Clone the [ocp-templates repository](https://www.github.com/opendevstack/ocp-templates).
 Navigate to the folder, where the cloned repository is located.
-Navigate to the `scripts`subfolder.
+Navigate to the `scripts` subfolder.
 From with this folder, check if you are still logged in to the OpenShift CLI and login, if necessary.
 Now run the following shell script from within the `scripts`folder:
 ```
 ./upload-templates.sh
 ```
-If not running under a cygwin environment, but with win-bash and bash located on your PATH, simply rundeck
-```
-bash ./upload-templates.sh
-```
-This creates the basic templates used by the OpenDevStack quickstarters in the `cd` project.
-If you have to modify templates, there are also scripts to replace existing templates in OpenShift.
+
+#### Cygwin
+Under Cygwin, you need to ensure, that the `oc` command works as expected.
+Minishift updates the `.kube` config folder under your user profile.
+By default your cygwin home directory is different from your Windows home directory.
+Either you can [change your home directory](https://ryanharrison.co.uk/2015/12/01/cygwin-change-home-directory.html) using nsswitch or you need
+to copy your `.kube` config to your cygwin home, e.g. `cp -r /cygdrive/c/Users/myuser/.kube ~`.
+
+Then you can proceed as described above.
+
+#### Powershell
+<!-- TODO -->
+
 
 ### Configure CD user
 The continuous delivery process requires a dedicated system user in crowd for accessing bitbucket.
