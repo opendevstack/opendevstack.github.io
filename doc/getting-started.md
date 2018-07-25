@@ -125,6 +125,13 @@ Downloading and Configuring as service
 ```
 ansible-playbook -v -i inventories/dev playbooks/crowd.yml --ask-vault
 ```
+
+
+If you are using windows you might get a warning that the directory containing the ansible files is world writable.
+Therefore the ansible.cfg config-file will not be used, which will cause ansible to use the wrong directory to search for roles.
+To fix this you can modify the ansible.cfg file in /etc/ansible and change the role_path to /vagrant/ansible/roles.
+
+
 ##### Run Configuration Wizard
 
 Access http://192.168.56.31:8095/crowd/console
