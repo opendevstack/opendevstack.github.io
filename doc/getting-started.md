@@ -220,7 +220,7 @@ In the following wizard enter the data for the application you want to add. See 
 | Confluence          | confluence | confluence | http://192.168.56.31:8090         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
 | Bitbucket Server    | bitbucket  | bitbucket  | http://192.168.56.31:7990         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
 | Generic application | rundeck    | secret     | http://192.168.56.31:4440/rundeck | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
-| Generic application | provision  | provision  | http://127.0.0.1:8088             | 127.0.0.1     | Internal directory with OpenDevStack groups | all users     |
+| Generic application | provision  | provision  | http://192.168.56.1:8088             | 192.168.56.1  | Internal directory with OpenDevStack groups | all users     |
 
 #### Bitbucket Setup
 
@@ -536,7 +536,7 @@ Now create three Blob Stores.
 | File | releases         | /nexus-data/blobs/releases         |
 | File | atlassian_public | /nexus-data/blobs/atlassian_public |
 
-After this you will have to create three hosted maven2 repositories in the **Repositories** Subsection.
+After this you will have to create two hosted maven2 repositories and one proxy maven2 repository in the **Repositories** Subsection.
 
 | Name             | Format | Type   | Online  | Version policy | Layout policy | Storage    | Strict Content Type Validation | Deployment policy | Remote Storage                                                     |
 | ---------------- | ------ | ------ | ------- | -------------- | ------------- | ---------- | ------------------------------ | ----------------- | ------------------------------------------------------------------ |
@@ -590,6 +590,12 @@ If not running under a cygwin environment, but with win-bash and bash located on
 ```
 bash ./upload-templates.sh
 ```
+
+Alternatively you can use the powershell script on windows:
+```
+./upload-templates.ps1
+```
+
 This creates the basic templates used by the OpenDevStack quickstarters in the `cd` project.
 If you have to modify templates, there are also scripts to replace existing templates in OpenShift.
 
