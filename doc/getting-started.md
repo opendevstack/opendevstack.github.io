@@ -649,7 +649,7 @@ Open the configuration and go to the **SCM** section. This section is available 
 If you use the Github repository for the rundeck-projects no further configuration is needed.
 If you use an own repository you have to enter valid authorization credentials, stored in Rundeck's key storage.
 * In the next step ensure that the regular expression points to yaml files, if you want to use them.
-* Import the job definitions.
+* Import the job definitions under job actions.
 
 ##### Setup Export plugin
 If you use the Github repository, this step isn't necessary.
