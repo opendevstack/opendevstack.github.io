@@ -390,9 +390,44 @@ This will configure the authenticator.
 
 #### Rundeck Setup
 ##### Setup Application
+To setup the rundeck application, execute the playbook.
+
+Create a file called `rundeck_vars.yml` that customizes some of the rundeck configuration, e.g. the ssh key.
+
+This is a yaml file, looking structurally like this Example
+
+```yaml
+rundeck_bitbucket_host_external: 192.168.56.31
+rundeck_bitbucket_host_internal: localhost
+rundeck_bitbucket_port: 7999
+rundeck_cduser_name: cd_user
+rundeck_cduser_private_key: |
+  -----BEGIN RSA PRIVATE KEY-----
+  MIIJKgIBAAKCAgEA9byVUZKe0dB0gkFL5g4Zcxb3AUNPvtD2tpkejyaLoF/XnQj+
+  qn+UX9WZSn0YyTQH+cmNF1SFuMmq/eSZpdAL7JSRY2bAw9RLo3dPpabO2N3Teib1
+  HSvCnPncNQZa/tPUaWSddX0BTWEpS1fAl4NFfUmN02k+cEHIErv2OcbhMnq675aO
+  p4rU3NHN01kymhUCLz5cUCAj4CyEhxv3Fe7zSeKGuSceaD2Yq1vEnp8WmYnqdiFf
+  ....
+  0rMrGoSgTuttxQ+oU2a+2pRQD+vFXg6BpXMJNXeXyPuSIVfqfSFTqUdshZC8d76Q
+  8IwfUR/GtEjTO4l9nDr0eqb4LixvpREVVvMOH+Ea/a8yATejH9xR7xNHAA0AQqZ+
+  t1pNCqijBNTk2oUYNu9t9m16zF3Ly+ZIikBm0D67ke5yC5ziSPa1Xs6E70ens04H
+  RwP9We5Y453L2st43FlQXVAyXd4OacJcUqvYqQpd7c7u1syhpRzG5ALYcfoNJA==
+  -----END RSA PRIVATE KEY-----
 ```
-ansible-playbook -v -i inventories/dev playbooks/rundeck.yml --ask-vault
+
+You have to replace the private key with the key you created earlier and change
+other variables according to your environment.
+
+Now execute the playbook:
+
 ```
+ansible-playbook -v -i inventories/dev playbooks/rundeck.yml -e "@rundeck_vars.yml" --ask-vault
+```
+
+You can change `host` and `cduser` according to your environment.
+<!-- TODO
+This is superfluous if we mirror the repos first to our vagrant / local bitbucket server.
+-->
 After the playbook has been finished Rundeck is accessible via http://192.168.56.31:4440/rundeck
 
 ### Configure Minishift
@@ -423,7 +458,7 @@ It is *important* not to use the `system` user, because Jenkins does not allow a
 
 ### Configure the path for the OC CLI
 The OC CLI is automatically downloaded after "minishift start".
-To add it to the path you can run "minishift oc-env" and execute the 
+To add it to the path you can run "minishift oc-env" and execute the
 displayed command.
 
 #### Login with the CLI
@@ -579,10 +614,9 @@ END_TODO
 ### Import base templates
 After you have configured Nexus3, import the base templates for OpenShift.
 Clone the [ocp-templates repository](https://www.github.com/opendevstack/ocp-templates).
-Navigate to the folder, where the cloned repository is located.
-Navigate to the `scripts`subfolder.
+Navigate to the folder, where the cloned repository is located and navigate to the `scripts` subfolder.
 From with this folder, check if you are still logged in to the OpenShift CLI and login, if necessary.
-Now run the following shell script from within the `scripts`folder:
+
 ```
 ./upload-templates.sh
 ```
@@ -596,8 +630,45 @@ Alternatively you can use the powershell script on windows:
 ./upload-templates.ps1
 ```
 
-This creates the basic templates used by the OpenDevStack quickstarters in the `cd` project.
+This script creates the basic templates used by the OpenDevStack quickstarters in the `cd` project.
 If you have to modify templates, there are also scripts to replace existing templates in OpenShift.
+
+### Prepare CD project for Jenkins
+
+Now create secrets inside the CD project.
+
+```
+oc process -n cd templates/secrets -p PROJECT=cd | oc create -n cd -f-
+```
+
+We will now build base images for jenkins and jenkins slave:
+
+* Clone the [cicd project](https://github.com/opendevstack/cicd)
+* Customize the configuration in the `ods-configuration` project at **cicd > jenkins > ocp-config > bc.env**
+* Inside the cicd project execute `tailor`
+
+`tailor -n cd --template-dir jenkins/ocp-config --param-dir ../ods-configuration/cicd/jenkins/ocp-config update --selector app=jenkins`
+
+* Start jenkins slave base build: `oc start-build -n cd jenkins-slave-base`
+* check that builds for `jenkins-master` and `jenkins-slave-base` are running and successful.
+* You can optionally start the `jenkins-master` build using `oc start-buidl -n cd jenkins-master`
+
+#### Prepare Jenkins slave docker images
+To support different kinds of projects, we need different kinds of Jenkins slave images.
+These slave images are located in the project [jenkins-slave-dockerimages](https://github.com/opendevstack/jenkins-slaves-dockerimages).
+
+So as a first step clone this repository.
+Make the required customizations in the `ods-configuration` under **jenkins-slaves-dockerimages > maven > ocp-config > bc.env**
+
+and run `tailor` inside the `jenkins-slave-dockerimages` project:
+
+```
+tailor -n cd --template-dir maven/ocp-config --param-dir ../ods-configuration/jenkins-slaves-dockerimages/maven/ocp-config update --selector app=jenkins-slave-maven
+```
+
+and start the build: `oc start-build -n cd jenkins-slave-maven`.
+
+Repeat for every project type you require.
 
 ### Configure CD user
 The continuous delivery process requires a dedicated system user in crowd for accessing bitbucket.
@@ -610,12 +681,12 @@ After creating the user you have to add the following group:
 | opendevstack-users |
 
 After you have created the user in crowd, you have to generate a SSH key for use in Rundeck.
-Open the shell and generate a ssh key. On cygwig enter the following command:
+Open the shell and generate a ssh key. On cygwin enter the following command:
 ```
 ssh-keygen -f cd_user -t rsa -C "CD User"
 ```
 This saves the public and private key in a file `cd_user.pub` and `cd_user`.
-Open [Bitbucket](http://192.168.56.31:7990/), login with your crowd adminsitration user and go to the administration.
+Open [Bitbucket](http://192.168.56.31:7990/), login with your crowd administration user and go to the administration.
 Here open the User section. If you can't see the CD user, you have to synchronize the Crowd directory in the **User directories** section.
 Click on the CD user. In the user details you have the possiblity to add a SSH key. Click on the tab and enter the _public key_ from the generated key pair.
 
@@ -645,7 +716,7 @@ For initial code commit the CD user's private key has to be stored in Rundeck, t
 * Save the key.
 
 #### Configure SCM plugins
-Open the configuration and go to the **SCM** section. This section is available as soon as you are in the project configuration for the `Quickstarters`project.
+Open the configuration and go to the **SCM** section. This section is available as soon as you are in the project configuration for the `Quickstarters` project.
 
 ##### Setup Import plugin
 
@@ -654,18 +725,43 @@ Open the configuration and go to the **SCM** section. This section is available 
 * Enter the SSH Git URL for the rundeck-projects repository, .
 If you use the Github repository for the rundeck-projects no further configuration is needed.
 If you use an own repository you have to enter valid authorization credentials, stored in Rundeck's key storage.
+* Branch: Choose "production" (or master for bleeding edge)
 * In the next step ensure that the regular expression points to yaml files, if you want to use them.
 * Import the job definitions under job actions.
+
 
 ##### Setup Export plugin
 If you use the Github repository, this step isn't necessary.
 If you use your own repository, configure the export plugin in same way as the import plugin.
 
+##### Update the job properties
+
+Go to the project page and then configure. Edit the configuration file (using the button) and add the following line:
+
+<!-- TODO replace with Bitbucket URL as defined earlier -->
+```
+project.globals.bitbucket_sshhost=ssh://git@github.com
+project.globals.openshift_apihost=192.168.99.100.nip.io
+```
+<!-- TODO need to make rundeck instance accept bitbucket ssh host key, e.g. running git clone manually -->
+
 ### Configure provisioning application
 Clone the provisioning application repository.
+
+Because we disabled anonymous access for nexus, we need to provide some data.
+What you need to provide are environment variables:
+
+* NOMAD_USERNAME
+* NOMAD_PASSWORD
+
+Earlier we used `developer / developer`.
+
 If you run the application from your IDE, there is no further configuration needed.
 
 After startup via the IDE the application is available at http://localhost:8088/
+
+You can login in with the Crowd admin user you set up earlier.
+
 ## Try out the OpenDevStack
 After you have set up your local environment it's time to test the OpenDevStack and see it working.
 Open the Provisioning application in your web browser and login with your crowd credentials.
