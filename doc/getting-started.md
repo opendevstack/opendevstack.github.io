@@ -80,6 +80,10 @@ The provided provision application and Rundeck jobs work with links, which are d
 Information, how to setup Minishift can be found at the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
 For the OpenDevStack it is important, that you run Minishift with OpenShift v3.6.1 because the templates have been designed for OpenShift v3.6 and the current OpenShift version is not backward compatible.
 
+### Bash
+
+You must have the possibility to run bash scripts to import the provided OpenShift templates. On Linux systems you can use these scripts out-of-the box, on Windows systems you will have to install either a bash port for Windows like [Cygwin](https://www.cygwin.com/ "Cygwin") or [win-bash](http://win-bash.sourceforge.net/ "win-bash") or you can use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10 "Windows Subsystem for Linux"), if you run Windows 10.
+
 ### Ansible
 
 The OpenDevStack uses [Ansible](https://www.ansible.com/ "Ansible") to install and configure the necessary software for the enabling stack, so it's recommended to get familiar with its core concepts and usage. Also credentials are stored within an Ansible vault, so even if you commit them in a public repository they are not available unless you know the vault password.
@@ -216,7 +220,7 @@ In the following wizard enter the data for the application you want to add. See 
 | Confluence          | confluence | confluence | http://192.168.56.31:8090         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
 | Bitbucket Server    | bitbucket  | bitbucket  | http://192.168.56.31:7990         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
 | Generic application | rundeck    | secret     | http://192.168.56.31:4440/rundeck | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
-| Generic application | provision  | provision  | http://127.0.0.1:8088             | 127.0.0.1     | Internal directory with OpenDevStack groups | all users     |
+| Generic application | provision  | provision  | http://192.168.56.1:8088             | 192.168.56.1  | Internal directory with OpenDevStack groups | all users     |
 
 #### Bitbucket Setup
 
@@ -416,9 +420,11 @@ After the start up you are able to open the webconsole with the `minishift conso
 Please access the webconsole with the credentials `developer` `developer`.
 It is *important* not to use the `system` user, because Jenkins does not allow a user named `system`.
 
-For further configuration, you need to run scripts that call the `oc` command.
-When you started up minishift, you should be able to call the `oc` command directly.
-Otherwise call `minishift oc-env` which prints out the command to execute to make the `oc` available on the command line.
+
+### Configure the path for the OC CLI
+The OC CLI is automatically downloaded after "minishift start".
+To add it to the path you can run "minishift oc-env" and execute the 
+displayed command.
 
 #### Login with the CLI
 You have to login via the CLI with
@@ -429,8 +435,7 @@ oc login -u system:admin
 #### Setup the base template project
 After you have logged in, you are able to create a project, that will contain the base templates and the Nexus Repository Manager. Please enter the following command to add the base project:
 ```
-oc new-project cd \
-	--description="Base project holding the templates and the Repositoy Manager" --display-name="OpenDevStack Templates"
+oc new-project cd --description="Base project holding the templates and the Repositoy Manager" --display-name="OpenDevStack Templates"
 ```
 This command will create the base project.
 
@@ -471,9 +476,11 @@ Ignore the error "verify error:num=19:self signed certificate in certificate cha
 
 Now import the certificate in the default JVM keystore.
 ```
-/usr/java/jdk1.8.0_172-amd64/jre/bin/keytool -import -alias minishift -keystore /usr/java/jdk1.8.0_172-amd64/jre/lib/security/cacerts -file /tmp/minishift.crt
+/usr/java/latest/jre/bin/keytool -import -alias minishift -keystore /usr/java/latest/jre/lib/security/cacerts -file /tmp/minishift.crt
 ```
-The default password is `changeit`
+
+The default password is `changeit`.
+Confirm with yes when ask to trust the certificates.
 Restart the bitbucket service
 ```
 service atlbitbucket restart
@@ -487,7 +494,7 @@ oc new-app sonatype/nexus3 -n cd
 ```
 
 After creation change to the webconsole.
-Access the base project "OpenDevStack Templates" and open the **Routes** section in the **Applications** tab.
+Access the base project "OpenDevStack Templates" and open the **Routes** section in the **Applications** tab in the menu.
 Click **Create Route**
 As name enter `nexus`.
 You don't need to provide a hostname. Ensure, that the route points to the `nexus3` service with the correct port.
@@ -519,8 +526,9 @@ Access Nexus3 http://nexus-cd.192.168.99.100.nip.io/
 Login with the default credentials for Nexus3 `admin` `admin123`
 
 ##### Configure repositories
-Open the **Server administration and configuration** menu.
-Now create two Blob Stores.
+Open the **Server administration and configuration** menu
+by clicking the gear icon in the top bar.
+Now create three Blob Stores.
 
 | Type | Name             | Path                               |
 | ---- | ---------------- | ---------------------------------- |
@@ -528,19 +536,20 @@ Now create two Blob Stores.
 | File | releases         | /nexus-data/blobs/releases         |
 | File | atlassian_public | /nexus-data/blobs/atlassian_public |
 
-After this you will have to create two hosted maven2 repositories in the **Repositories** Subsection.
+After this you will have to create two hosted maven2 repositories and one proxy maven2 repository in the **Repositories** Subsection.
 
 | Name             | Format | Type   | Online  | Version policy | Layout policy | Storage    | Strict Content Type Validation | Deployment policy | Remote Storage                                                     |
 | ---------------- | ------ | ------ | ------- | -------------- | ------------- | ---------- | ------------------------------ | ----------------- | ------------------------------------------------------------------ |
 | candidates       | maven2 | hosted | checked | Release        | Strict        | candidates | checked                        | Disable-redeploy  |                                                                    |
 | releases         | maven2 | hosted | checked | Release        | Strict        | releases   | checked                        | Disable-redeploy  |                                                                    |
-| atlassian_public | maven2 | proxy  | checked | Release        | Strict        |            |                                |                   | https://maven.atlassian.com/content/repositories/atlassian-public/ |
+| atlassian_public | maven2 | proxy  | checked | Release        | Strict        | atlassian_public  | checked                 | Disable-redeploy  | https://maven.atlassian.com/content/repositories/atlassian-public/ |
 
 Add the three repositories to the *maven-public* group.
+You can access the settings for the maven public group by clicking on int in the repositories list.
 
 ##### Configure user and roles
 First disable the anonymous access in the **Security > Anonymous** section.
-Under **Security > Roles** create a role *OpenDevStack-Developer*.
+Under **Security > Roles** create a nexus-role *OpenDevStack-Developer*.
 
 | Role ID                | Role name              | Role description                  |
 | ---------------------- | ---------------------- | --------------------------------- |
@@ -563,35 +572,32 @@ Now create a user under **Security > Users**.
 | developer | developer |
 
 TODO: Correct?
+You can choose any First name, Last name and Email.
 Make this account active and assign role `OpenDevStack-Developer` to this account.
 END_TODO
 
 ### Import base templates
 After you have configured Nexus3, import the base templates for OpenShift.
-On a Linux based system, this can be done directly as described here.
-On Windows either use the PowerShell script or Cygwin. Both options are described below.
-
 Clone the [ocp-templates repository](https://www.github.com/opendevstack/ocp-templates).
 Navigate to the folder, where the cloned repository is located.
-Navigate to the `scripts` subfolder.
+Navigate to the `scripts`subfolder.
 From with this folder, check if you are still logged in to the OpenShift CLI and login, if necessary.
 Now run the following shell script from within the `scripts`folder:
 ```
 ./upload-templates.sh
 ```
+If not running under a cygwin environment, but with win-bash and bash located on your PATH, simply run
+```
+bash ./upload-templates.sh
+```
 
-#### Cygwin
-Under Cygwin, you need to ensure, that the `oc` command works as expected.
-Minishift updates the `.kube` config folder under your user profile.
-By default your cygwin home directory is different from your Windows home directory.
-Either you can [change your home directory](https://ryanharrison.co.uk/2015/12/01/cygwin-change-home-directory.html) using nsswitch or you need
-to copy your `.kube` config to your cygwin home, e.g. `cp -r /cygdrive/c/Users/myuser/.kube ~`.
+Alternatively you can use the powershell script on windows:
+```
+./upload-templates.ps1
+```
 
-Then you can proceed as described above.
-
-#### Powershell
-<!-- TODO -->
-
+This creates the basic templates used by the OpenDevStack quickstarters in the `cd` project.
+If you have to modify templates, there are also scripts to replace existing templates in OpenShift.
 
 ### Configure CD user
 The continuous delivery process requires a dedicated system user in crowd for accessing bitbucket.
@@ -649,7 +655,7 @@ Open the configuration and go to the **SCM** section. This section is available 
 If you use the Github repository for the rundeck-projects no further configuration is needed.
 If you use an own repository you have to enter valid authorization credentials, stored in Rundeck's key storage.
 * In the next step ensure that the regular expression points to yaml files, if you want to use them.
-* Import the job definitions.
+* Import the job definitions under job actions.
 
 ##### Setup Export plugin
 If you use the Github repository, this step isn't necessary.
