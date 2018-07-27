@@ -80,9 +80,10 @@ The provided provision application and Rundeck jobs work with links, which are d
 Information, how to setup Minishift can be found at the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
 For the OpenDevStack it is important, that you run Minishift with OpenShift v3.6.1 because the templates have been designed for OpenShift v3.6 and the current OpenShift version is not backward compatible.
 
-### Bash
+### Cygwin / Linux
 
-You must have the possibility to run bash scripts to import the provided OpenShift templates. On Linux systems you can use these scripts out-of-the box, on Windows systems you will have to install either a bash port for Windows like [Cygwin](https://www.cygwin.com/ "Cygwin") or [win-bash](http://win-bash.sourceforge.net/ "win-bash") or you can use the [Windows Subsystem for Linux](https://docs.microsoft.com/en-us/windows/wsl/install-win10 "Windows Subsystem for Linux"), if you run Windows 10.
+You must have the possibility to run bash scripts to import the provided OpenShift templates. On Linux systems you can use these scripts out-of-the box, on Windows systems you will have to install either a bash port for Windows like [Cygwin](https://www.cygwin.com/ "Cygwin").
+For Windows, our recommendation is to use Cygwin for starting a minishift cluster and further configuration.
 
 ### Ansible
 
@@ -91,10 +92,12 @@ The OpenDevStack uses [Ansible](https://www.ansible.com/ "Ansible") to install a
 ## Setup your local environment
 
 ### Prepare infrastructure
+From now on we assume, you work from a Bash (Cygwin / Linux).
 
-First you have to clone the [infrastructure repository](http://www.github.com/opendevstack/infrastructure).
-If you have cloned the repository in your IDE or via a GUI you have to open a Shell and navigate to the folder, where you have cloned the repository to.
-There you will find the Vagrant file. You can start the infrastructure provisioning and setup by using
+First you have to clone the [ods-core](http://www.github.com/opendevstack/ods-core) repository.
+
+Navigate to the folder **ods-core > infrastructure-setup**.
+There you will find a Vagrant file. You can start the infrastructure provisioning and setup by using
 ```
 vagrant up
 ```
@@ -126,11 +129,13 @@ Downloading and Configuring as service
 ansible-playbook -v -i inventories/dev playbooks/crowd.yml --ask-vault
 ```
 
+<!-- TODO 
+This can be fixed in the vagrant file. But should we really notice this here, because the recommendation is to use cygwin?
 
 If you are using windows you might get a warning that the directory containing the ansible files is world writable.
 Therefore the ansible.cfg config-file will not be used, which will cause ansible to use the wrong directory to search for roles.
 To fix this you can modify the ansible.cfg file in /etc/ansible and change the role_path to /vagrant/ansible/roles.
-
+-->
 
 ##### Run Configuration Wizard
 
@@ -239,7 +244,7 @@ Be patient. First time accessing this page takes some time.
 On the configuration page you have the possibility to define the application name, the base URL and to get an evaluation license or enter a valid license.
 If you choose to get an evaluation license you can retrieve it from the my atlassian page. You will be redirected automatically.
 After adding the license you have to create a local Bitbucket administrator account.
-Don't integrate Bitbucket with JIRA at this point, but proceed with going to Bitbucket.
+Don't integrate Bitbucket with Jira at this point, but proceed with going to Bitbucket.
 
 ##### Configure Crowd access
 Go to the Bitbucket start page at http://192.168.56.31:7990/
@@ -282,15 +287,14 @@ Access http://192.168.56.31:8080
 Be patient. First time accessing this page takes time.
 
 ###### Step 1: Setup application properties
-Here you have to choose the application title, the mode and the base URL.
+Here you have to choose the application title and the base URL.
 You can leave the data as is for the test environment.
-<!--TODO Welchen Mode? -->
 
 ###### Step 2: Specify your license key
-Here you have to enter the license key for the JIRA instance (Jira Software (Server)). With the provided link in the dialogue you are able to generate an evaluation license at Atlassian.
+Here you have to enter the license key for the Jira instance (Jira Software (Server)). With the provided link in the dialogue you are able to generate an evaluation license at Atlassian.
 
 ###### Step 3: Set up administrator account
-Now you have to set up a JIRA administrator account.
+Now you have to set up a Jira administrator account.
 
 ###### Step 4: Set up email notifications
 Unless you have configured a mail server, leave this for later.
@@ -320,6 +324,7 @@ To finish the SSO configuration, you will have to run the following playbook com
 ansible-playbook -v -i inventories/dev playbooks/jira_enable_sso.yml --ask-vault
 ```
 This will configure the authenticator.
+
 **After Jira has been restarted, you are not able to login with the local administrator anymore, but with your crowd credentials.**
 
 #### Confluence Setup
@@ -390,9 +395,16 @@ This will configure the authenticator.
 
 #### Rundeck Setup
 ##### Setup Application
-To setup the rundeck application, execute the playbook.
+Rundeck needs an account to access Bitbucket later. We will create an ssh keypair for this and add this later to the Bitbucket `cd_user` account.
 
-Create a file called `rundeck_vars.yml` that customizes some of the rundeck configuration, e.g. the ssh key.
+Open the shell and generate a ssh key. On cygwin enter the following command:
+```
+ssh-keygen -f cd_user -t rsa -C "CD User"
+```
+This saves the public and private key in a file `cd_user.pub` and `cd_user`.
+
+
+Create a file called `/home/vagrant/rundeck_vars.yml` that customizes some of the rundeck configuration, e.g. the ssh key.
 
 This is a yaml file, looking structurally like this Example
 
@@ -421,7 +433,7 @@ other variables according to your environment.
 Now execute the playbook:
 
 ```
-ansible-playbook -v -i inventories/dev playbooks/rundeck.yml -e "@rundeck_vars.yml" --ask-vault
+ansible-playbook -v -i inventories/dev playbooks/rundeck.yml -e "@/home/vagrant/rundeck_vars.yml" --ask-vault
 ```
 
 You can change `host` and `cduser` according to your environment.
@@ -430,9 +442,15 @@ This is superfluous if we mirror the repos first to our vagrant / local bitbucke
 -->
 After the playbook has been finished Rundeck is accessible via http://192.168.56.31:4440/rundeck
 
+
+### Mirror OpenDevStack Repos 
+<!-- TODO -->
+
+We will create an opendevstack project in our Bitbucket instance and mirror the opendevstack repositories from github to this local project.
+
 ### Configure Minishift
 #### Minishift startup
-First you have to install Minishift. You have to use a version <= 1.17.0, so openshift v3.6.1 (see below) is supported.
+First you have to install Minishift. You have to use a minishift version <= 1.17.0, so openshift v3.6.1 (see below) is supported.
 
 To do so, follow the installation instructions of the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
 
@@ -446,6 +464,7 @@ The file has to have the following content:
     "cpus": 2,
     "memory": "8192",
     "openshift-version": "v3.6.1",
+    "disk-size": "40GB",
     "vm-driver": "virtualbox"
 }
 ```
@@ -454,7 +473,7 @@ It is important to use *v3.6.1* to ensure, that the templates provided by the Op
 After the start up you are able to open the webconsole with the `minishift console` command. This will open the webconsole in your standard browser.
 Please access the webconsole with the credentials `developer` `developer`.
 It is *important* not to use the `system` user, because Jenkins does not allow a user named `system`.
-
+<!-- TODO we are not doing anything on the console with jenkins, why is this hint important -->
 
 ### Configure the path for the OC CLI
 The OC CLI is automatically downloaded after "minishift start".
@@ -533,7 +552,7 @@ Access the base project "OpenDevStack Templates" and open the **Routes** section
 Click **Create Route**
 As name enter `nexus`.
 You don't need to provide a hostname. Ensure, that the route points to the `nexus3` service with the correct port.
-For the test environment we don't need save routes, so no change is needed here.
+For the test environment we don't need secured routes, so no change is needed here.
 Click **Create** and the route is created. You should now be able to access Nexus 3 via http://nexus-cd.192.168.99.100.nip.io/
 
 #### Add persistent claim
@@ -680,12 +699,8 @@ After creating the user you have to add the following group:
 | ------------------ |
 | opendevstack-users |
 
-After you have created the user in crowd, you have to generate a SSH key for use in Rundeck.
-Open the shell and generate a ssh key. On cygwin enter the following command:
-```
-ssh-keygen -f cd_user -t rsa -C "CD User"
-```
-This saves the public and private key in a file `cd_user.pub` and `cd_user`.
+After you have created the user in crowd, you must add the public cd_user SSH key to the Bitbucket account.
+
 Open [Bitbucket](http://192.168.56.31:7990/), login with your crowd administration user and go to the administration.
 Here open the User section. If you can't see the CD user, you have to synchronize the Crowd directory in the **User directories** section.
 Click on the CD user. In the user details you have the possiblity to add a SSH key. Click on the tab and enter the _public key_ from the generated key pair.
