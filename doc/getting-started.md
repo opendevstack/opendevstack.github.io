@@ -91,6 +91,15 @@ The OpenDevStack uses [Ansible](https://www.ansible.com/ "Ansible") to install a
 
 ## Setup your local environment
 
+### Install tailor Utility
+
+We use the [tailor](https://github.com/opendevstack/tailor) for handling our versioned OpenShift templates and keep our cluster in sync.
+
+```bash
+curl -LO "https://github.com/opendevstack/tailor/releases/download/v0.6.1/tailor_windows_amd64.exe" && \
+mv tailor_windows_amd64.exe /usr/bin/tailor && chmod +x /usr/bin/tailor
+```
+
 ### Prepare infrastructure
 From now on we assume, you work from a Bash (Cygwin / Linux).
 
@@ -269,6 +278,8 @@ they are not available yet.
 | bitbucket-administrators | Bitbucket administrator group |
 | bitbucket-users          | Bitbucket user group          |
 
+
+
 ###### Add permissions
 The last step is to configure the permissions for the created groups.
 Go to the **Global permissions** menu.
@@ -393,6 +404,33 @@ ansible-playbook -v -i inventories/dev playbooks/confluence_enable_sso.yml --ask
 This will configure the authenticator.
 **After Confluence has been restarted, you are not able to login with the local administrator anymore, but with your crowd credentials.**
 
+#### Create opendevstack project in Bitbucket
+We will mirror the opendevstack project into this Bitbucket instance.
+Therefore, we need to create a new _project_.
+
+* Go to the Projects page in Bitbucket
+* Hit "Create" button
+* enter Project Name: OpenDevStack and key: OPENDEVSTACK
+* Hit `Create Project`
+* In the settings section, allow the `bitbucket-users` group write access.
+
+You will be directed to the projects dashboard.
+Using the '+' sign  you need to create a couple of repositories:
+
+* ods-core
+* ods-configuration
+* ods-configuration-sample
+* ods-jenkins-shared-library
+* ods-project-quickstarters
+* ods-provisioning-app
+
+On the Project Dashboard Navigate to the "Settings" menu and grant the group "opendevstack-users" admin access.
+
+Navigate to the **ods-core/infrastructure-setup/scripts** directory and execute
+`mirror-repos.sh`
+
+Verify that you have mirrored the github repos have been populated in your Bitbucket instance.
+
 #### Rundeck Setup
 ##### Setup Application
 Rundeck needs an account to access Bitbucket later. We will create an ssh keypair for this and add this later to the Bitbucket `cd_user` account.
@@ -442,11 +480,6 @@ This is superfluous if we mirror the repos first to our vagrant / local bitbucke
 -->
 After the playbook has been finished Rundeck is accessible via http://192.168.56.31:4440/rundeck
 
-
-### Mirror OpenDevStack Repos 
-<!-- TODO -->
-
-We will create an opendevstack project in our Bitbucket instance and mirror the opendevstack repositories from github to this local project.
 
 ### Configure Minishift
 #### Minishift startup
@@ -498,6 +531,7 @@ To be able to see all created projects, you will have to adjust the user rights 
 ```
 oc adm policy --as system:admin add-cluster-role-to-user cluster-admin developer
 ```
+
 #### Create service account for deployment
 Rundeck needs a technical account in Minishift to be able to create projects and provision resources. Therefore, we create a service account, which credentials are provided to Rundeck in a later step.
 ```
@@ -523,10 +557,9 @@ sudo -i
 ```
 Here execute the following command to get the certificate from the Minishift server:
 ```
-openssl s_client -connect 192.168.99.100:8443 < /dev/null | sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /tmp/minishift.crt
+ openssl s_client -connect 192.168.99.100:8443 < /dev/null 2>/dev/null| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /tmp/minishift.crt
 ```
-
-Ignore the error "verify error:num=19:self signed certificate in certificate chain". You should now have a PEM encoded certificate in /tmp/minishift.crt.
+You should now have a PEM encoded certificate in /tmp/minishift.crt.
 
 Now import the certificate in the default JVM keystore.
 ```
@@ -663,10 +696,10 @@ oc process -n cd templates/secrets -p PROJECT=cd | oc create -n cd -f-
 We will now build base images for jenkins and jenkins slave:
 
 * Clone the [cicd project](https://github.com/opendevstack/cicd)
-* Customize the configuration in the `ods-configuration` project at **cicd > jenkins > ocp-config > bc.env**
-* Inside the cicd project execute `tailor`
+* Customize the configuration in the `ods-configuration` project at **ods-core > jenkins > ocp-config > bc.env**
+* Inside the ods-core project execute `tailor`
 
-`tailor -n cd --template-dir jenkins/ocp-config --param-dir ../ods-configuration/cicd/jenkins/ocp-config update --selector app=jenkins`
+`tailor -n cd --template-dir jenkins/ocp-config --param-dir ../ods-configuration/ocd-core/jenkins/ocp-config update --selector app=jenkins`
 
 * Start jenkins slave base build: `oc start-build -n cd jenkins-slave-base`
 * check that builds for `jenkins-master` and `jenkins-slave-base` are running and successful.
@@ -693,11 +726,12 @@ Repeat for every project type you require.
 The continuous delivery process requires a dedicated system user in crowd for accessing bitbucket.
 Access the [crowd console](http://192.168.56.31:8095/crowd/console/) and choose **Add user** in the **Users** menu.
 Enter valid credentials. The only restriction here is, that the user has the username `cd_user` and that the user belongs to the internal crowd directory.
-After creating the user you have to add the following group:
+After creating the user you have to add the following groups:
 
 | Group              |
 | ------------------ |
 | opendevstack-users |
+| bitbucket-users    |
 
 After you have created the user in crowd, you must add the public cd_user SSH key to the Bitbucket account.
 
@@ -705,7 +739,8 @@ Open [Bitbucket](http://192.168.56.31:7990/), login with your crowd administrati
 Here open the User section. If you can't see the CD user, you have to synchronize the Crowd directory in the **User directories** section.
 Click on the CD user. In the user details you have the possiblity to add a SSH key. Click on the tab and enter the _public key_ from the generated key pair.
 
-### Configure Rundeck
+### Prepare Rundeck and required Dockerfiles
+
 After configuring the Atlassian tools and Minishift, Rundeck has to be configured as well.
 Access [Rundeck](http://192.168.56.31:4440/rundeck), login and open the configuration.
 
