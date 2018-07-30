@@ -818,10 +818,9 @@ Go to the project page and then configure. Edit the configuration file (using th
 
 ```
 project.globals.bitbucket_sshhost=ssh://git@192.168.56.31:7999
-project.globals.openshift_apihost=192.168.99.100.nip.io
+project.globals.openshift_apihost=https://192.168.99.100:8443
 project.globals.nexus_host=http://nexus-cd.192.168.99.100.nip.io/
 ```
-<!-- TODO need to make rundeck instance accept bitbucket ssh host key, e.g. running git clone manually -->
 
 ### Configure provisioning application
 Clone the provisioning application repository.
