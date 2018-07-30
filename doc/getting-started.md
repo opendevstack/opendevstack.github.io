@@ -437,7 +437,7 @@ Rundeck needs an account to access Bitbucket later. We will create an ssh keypai
 
 Open the shell and generate a ssh key. On cygwin enter the following command:
 ```
-ssh-keygen -f cd_user -t rsa -C "CD User"
+ssh-keygen -f /home/vagrant/cd_user -t rsa -C "CD User"
 ```
 This saves the public and private key in a file `cd_user.pub` and `cd_user`.
 
@@ -466,7 +466,7 @@ rundeck_cduser_private_key: |
 ```
 
 You have to replace the private key with the key you created earlier and change
-other variables according to your environment.
+other variables according to your environment. Be careful about the 2 spaces at the beginning of every line of the private key.
 
 Now execute the playbook:
 
@@ -557,21 +557,50 @@ sudo -i
 ```
 Here execute the following command to get the certificate from the Minishift server:
 ```
- openssl s_client -connect 192.168.99.100:8443 < /dev/null 2>/dev/null| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /tmp/minishift.crt
+ openssl s_client -connect 192.168.99.100:8443 -showcerts < /dev/null 2>/dev/null| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /tmp/minishift.crt
 ```
-You should now have a PEM encoded certificate in /tmp/minishift.crt.
+You should now have two PEM encoded certificate in /tmp/minishift.crt.
+Remove the first one (this is the server certificate) and keep the CA Cert.
+
+Check that you got the CA certificate:
+```
+openssl x509 -in /tmp/minishift.crt -text
+```
+
+You should see a section:
+```
+    X509v3 extensions:
+            X509v3 Key Usage: critical
+                Digital Signature, Key Encipherment, Certificate Sign
+            X509v3 Basic Constraints: critical
+                CA:TRUE
+```
 
 Now import the certificate in the default JVM keystore.
 ```
-/usr/java/latest/jre/bin/keytool -import -alias minishift -keystore /usr/java/latest/jre/lib/security/cacerts -file /tmp/minishift.crt
+sudo /usr/java/latest/jre/bin/keytool -import -alias minishift -keystore /usr/java/latest/jre/lib/security/cacerts -file /tmp/minishift.crt
 ```
 
 The default password is `changeit`.
 Confirm with yes when ask to trust the certificates.
 Restart the bitbucket service
 ```
-service atlbitbucket restart
+sudo service atlbitbucket restart
 ```
+
+We need this certificate for the Rundeck part later as well.
+On the atlassian1 server clone the `ocp-project-quickstarters` from your Bitbucket server.
+```
+sudo su - rundeck
+git clone http://192.168.56.31:7990/scm/opendevstack/ods-project-quickstarters.git
+git config --global user.email "cd_user@opendevstack.local"
+git config --global user.name "cd_user"
+cat /tmp/minishift.crt >> ods-project-quickstarters/ocp-templates/root.ca/ca-bundle.crt
+cd ods-project-quickstarters
+git commit -am "added local root ca"
+git push origin master
+```
+we do this as the rundeck user, so we can accept the ssh host key.
 
 ### Setup and Configure Nexus3
 #### Prepare in Minishift
@@ -772,11 +801,10 @@ Open the configuration and go to the **SCM** section. This section is available 
 
 * Change the **File Path Template** to `${job.group}${job.name}.${config.format}`
 * Change the format for the **Job Source Files** to `yaml`
-* Enter the SSH Git URL for the rundeck-projects repository, .
-If you use the Github repository for the rundeck-projects no further configuration is needed.
-If you use an own repository you have to enter valid authorization credentials, stored in Rundeck's key storage.
+* Enter the SSH Git URL for the `ods-project-quickstarters` repository.
+You have to enter valid authorization credentials, stored in Rundeck's key storage. This will be the ` id_rsa_bitbucket` key specified in the previous step.
 * Branch: Choose "production" (or master for bleeding edge)
-* In the next step ensure that the regular expression points to yaml files, if you want to use them.
+* In the next step ensure that the regular expression points to yaml files. Change the regexp to rundeck-jobs/.*\.yaml
 * Import the job definitions under job actions.
 
 
@@ -788,10 +816,10 @@ If you use your own repository, configure the export plugin in same way as the i
 
 Go to the project page and then configure. Edit the configuration file (using the button) and add the following line:
 
-<!-- TODO replace with Bitbucket URL as defined earlier -->
 ```
-project.globals.bitbucket_sshhost=ssh://git@github.com
+project.globals.bitbucket_sshhost=ssh://git@192.168.56.31:7999
 project.globals.openshift_apihost=192.168.99.100.nip.io
+project.globals.nexus_host=http://nexus-cd.192.168.99.100.nip.io/
 ```
 <!-- TODO need to make rundeck instance accept bitbucket ssh host key, e.g. running git clone manually -->
 
