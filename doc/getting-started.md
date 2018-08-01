@@ -652,15 +652,16 @@ Now create three Blob Stores.
 | File | releases         | /nexus-data/blobs/releases         |
 | File | atlassian_public | /nexus-data/blobs/atlassian_public |
 
-After this you will have to create two hosted maven2 repositories and one proxy maven2 repository in the **Repositories** Subsection.
+After this you will have to create two hosted maven2 repositories and two proxy maven2 repository in the **Repositories** Subsection.
 
 | Name             | Format | Type   | Online  | Version policy | Layout policy | Storage    | Strict Content Type Validation | Deployment policy | Remote Storage                                                     |
 | ---------------- | ------ | ------ | ------- | -------------- | ------------- | ---------- | ------------------------------ | ----------------- | ------------------------------------------------------------------ |
 | candidates       | maven2 | hosted | checked | Release        | Strict        | candidates | checked                        | Disable-redeploy  |                                                                    |
 | releases         | maven2 | hosted | checked | Release        | Strict        | releases   | checked                        | Disable-redeploy  |                                                                    |
 | atlassian_public | maven2 | proxy  | checked | Release        | Strict        | atlassian_public  | checked                 | Disable-redeploy  | https://maven.atlassian.com/content/repositories/atlassian-public/ |
+| jcenter | maven2 | proxy  | checked | Release        | Strict        | default  | checked                 | Disable-redeploy  | https://jcenter.bintray.com |
 
-Add the three repositories to the *maven-public* group.
+Add the first 3 repositories to the *maven-public* group.
 You can access the settings for the maven public group by clicking on int in the repositories list.
 
 ##### Configure user and roles
@@ -826,12 +827,13 @@ project.globals.nexus_host=http://nexus-cd.192.168.99.100.nip.io/
 Clone the provisioning application repository.
 
 Because we disabled anonymous access for nexus, we need to provide some data.
-What you need to provide are environment variables:
+What you need to provide are gradle guild variables. You do this by creating a `gradle.properties` file in the ods-provisioning-app project:
 
-* NOMAD_USERNAME
-* NOMAD_PASSWORD
-
-Earlier we used `developer / developer`.
+```
+nexus_url=http://nexus-cd.192.168.99.100.nip.io
+nexus_user=developer
+nexus_pw=developer
+```
 
 If you run the application from your IDE, there is no further configuration needed.
 
@@ -842,3 +844,5 @@ You can login in with the Crowd admin user you set up earlier.
 ## Try out the OpenDevStack
 After you have set up your local environment it's time to test the OpenDevStack and see it working.
 Open the Provisioning application in your web browser and login with your crowd credentials.
+
+Provision your first project and have a look at OpenShift.
