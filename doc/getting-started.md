@@ -429,7 +429,8 @@ On the Project Dashboard Navigate to the "Settings" menu and grant the group "op
 Navigate to the **ods-core/infrastructure-setup/scripts** directory and execute
 `mirror-repos.sh`
 
-Verify that you have mirrored the github repos have been populated in your Bitbucket instance.
+Use your crowd login when asked for credentials.
+Verify that you have mirrored the github repos and that they have been populated in your Bitbucket instance. The ods-configuration repositpory will remain empty.
 
 #### Rundeck Setup
 ##### Setup Application
@@ -510,8 +511,11 @@ It is *important* not to use the `system` user, because Jenkins does not allow a
 
 ### Configure the path for the OC CLI
 The OC CLI is automatically downloaded after "minishift start".
-To add it to the path you can run "minishift oc-env" and execute the
-displayed command.
+To add it to the path you can run 
+```
+minishift oc-env
+```
+and execute the displayed command.
 
 #### Login with the CLI
 You have to login via the CLI with
@@ -600,6 +604,8 @@ cd ods-project-quickstarters
 git commit -am "added local root ca"
 git push origin master
 ```
+
+Use your crowd login when asked for credentials.
 we do this as the rundeck user, so we can accept the ssh host key.
 
 ### Setup and Configure Nexus3
