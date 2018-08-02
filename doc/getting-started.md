@@ -765,6 +765,29 @@ Open [Bitbucket](http://192.168.56.31:7990/), login with your crowd administrati
 Here open the User section. If you can't see the CD user, you have to synchronize the Crowd directory in the **User directories** section.
 Click on the CD user. In the user details you have the possiblity to add a SSH key. Click on the tab and enter the _public key_ from the generated key pair.
 
+### Prepare Docker Registry
+<!-- TODO 
+This is required for later for the quickstarters, see, e.g. be_spring_boot.yaml
+-->
+ 
+
+* `minishift addons apply registry-route` 
+*  `openssl s_client -connect docker-registry-default.192.168.99.100.nip.io:443 -showcerts < /dev/null 2>/dev/null| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /tmp/registry.crt`
+* Extract 2nd and 3rd certificate (CA certificates) as /tmp/cert2.crt and /tmp/cert3.crt
+* `sudo mkdir /etc/docker/certs.d`
+* `sudo cp /tmp/cert2.crt /tmp/cert3.crt /etc/docker/certs.d && sudo service restart docker`
+* `sudo -i`
+* `oc login -u developer -n default`
+* `oc whoami -t` should show the token
+* `docker login -u developer -p `oc whoami -t` docker-registry-default.192.168.99.100.nip.io:443`
+* `docker pull busybox`
+* `docker tag busybox docker-registry-default.192.168.99.100.nip.io:443/openshift/busybox`
+* `docker push docker-registry-default.192.168.99.100.nip.io:443/openshift/busybox`
+
+
+
+<!-- END TODO -->
+
 ### Prepare Rundeck and required Dockerfiles
 
 After configuring the Atlassian tools and Minishift, Rundeck has to be configured as well.
@@ -817,6 +840,7 @@ Go to the project page and then configure. Edit the configuration file (using th
 project.globals.bitbucket_sshhost=ssh://git@192.168.56.31:7999
 project.globals.openshift_apihost=https://192.168.99.100:8443
 project.globals.nexus_host=http://nexus-cd.192.168.99.100.nip.io/
+project.globals.openshift_dockerregistry=https://docker-registry-default.192.168.99.100.nip.io:443
 ```
 
 ### Configure provisioning application
