@@ -593,7 +593,7 @@ sudo service atlbitbucket restart
 ```
 
 We need this certificate for the Rundeck part later as well.
-On the atlassian1 server clone the `ocp-project-quickstarters` from your Bitbucket server.
+On the atlassian1 server clone the `ods-project-quickstarters` from your Bitbucket server.
 ```
 sudo su - rundeck
 git clone http://192.168.56.31:7990/scm/opendevstack/ods-project-quickstarters.git
@@ -667,8 +667,10 @@ After this you will have to create two hosted maven2 repositories and two proxy 
 | atlassian_public | maven2 | proxy  | checked | Release        | Strict        | atlassian_public  | checked                 | Disable-redeploy  | https://maven.atlassian.com/content/repositories/atlassian-public/ |
 | jcenter | maven2 | proxy  | checked | Release        | Strict        | default  | checked                 | Disable-redeploy  | https://jcenter.bintray.com |
 
+
 Add the first 3 repositories to the *maven-public* group.
-You can access the settings for the maven public group by clicking on int in the repositories list.
+You can access the settings for the maven public group by clicking on the group in the repositories list.
+
 
 ##### Configure user and roles
 First disable the anonymous access in the **Security > Anonymous** section.
@@ -701,8 +703,8 @@ END_TODO
 
 ### Import base templates
 After you have configured Nexus3, import the base templates for OpenShift.
-Clone the [ocp-templates repository](https://www.github.com/opendevstack/ocp-templates).
-Navigate to the folder, where the cloned repository is located and navigate to the `scripts` subfolder.
+Clone the [ods-project-quickstarters](https://www.github.com/opendevstack/ods-project-quickstarters).
+Navigate to the folder, where the cloned repository is located and navigate to the `ocp-templates/scripts` subfolder.
 From with this folder, check if you are still logged in to the OpenShift CLI and login, if necessary.
 
 ```
@@ -711,11 +713,6 @@ From with this folder, check if you are still logged in to the OpenShift CLI and
 If not running under a cygwin environment, but with win-bash and bash located on your PATH, simply run
 ```
 bash ./upload-templates.sh
-```
-
-Alternatively you can use the powershell script on windows:
-```
-./upload-templates.ps1
 ```
 
 This script creates the basic templates used by the OpenDevStack quickstarters in the `cd` project.
@@ -731,11 +728,8 @@ oc process -n cd templates/secrets -p PROJECT=cd | oc create -n cd -f-
 
 We will now build base images for jenkins and jenkins slave:
 
-* Clone the [cicd project](https://github.com/opendevstack/cicd)
 * Customize the configuration in the `ods-configuration` project at **ods-core > jenkins > ocp-config > bc.env**
-* Inside the ods-core project execute `tailor`
-
-`tailor -n cd --template-dir jenkins/ocp-config --param-dir ../ods-configuration/ocd-core/jenkins/ocp-config update --selector app=jenkins`
+* Execute `tailor update` inside ods-core/jenkins/ocp-config: 
 
 * Start jenkins slave base build: `oc start-build -n cd jenkins-slave-base`
 * check that builds for `jenkins-master` and `jenkins-slave-base` are running and successful.
@@ -748,11 +742,7 @@ These slave images are located in the project [jenkins-slave-dockerimages](https
 So as a first step clone this repository.
 Make the required customizations in the `ods-configuration` under **jenkins-slaves-dockerimages > maven > ocp-config > bc.env**
 
-and run `tailor` inside the `jenkins-slave-dockerimages` project:
-
-```
-tailor -n cd --template-dir maven/ocp-config --param-dir ../ods-configuration/jenkins-slaves-dockerimages/maven/ocp-config update --selector app=jenkins-slave-maven
-```
+and run `tailor update` inside `ods-project-quickstarters\jenkins-slaves\maven\ocp-config`:
 
 and start the build: `oc start-build -n cd jenkins-slave-maven`.
 
@@ -833,6 +823,7 @@ project.globals.nexus_host=http://nexus-cd.192.168.99.100.nip.io/
 Clone the provisioning application repository.
 
 Because we disabled anonymous access for nexus, we need to provide some data.
+
 What you need to provide are gradle guild variables. You do this by creating a `gradle.properties` file in the ods-provisioning-app project:
 
 ```
