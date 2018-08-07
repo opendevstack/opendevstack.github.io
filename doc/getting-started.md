@@ -921,6 +921,9 @@ for the runtime projects (prov-test and prov-dev) run
 tailor update pvc
 tailor update 
 ```
+Create a secret called cd-user-token with the cd user credential in both test and dev projects. 
+
+Once jenkins deployed - you can trigger the build in prov-cd/test - it should automatically deploy - and you can start using the provision app.
 
 TODO: fix_me END_TODO
 
