@@ -903,6 +903,11 @@ After startup via the IDE the application is available at http://localhost:8088/
 
 You can login in with the Crowd admin user you set up earlier.
 
+tailor update pvc/jenkins 
+tailor update 
+
+TODO: fix_me END_TODO
+
 ## Try out the OpenDevStack
 After you have set up your local environment it's time to test the OpenDevStack and see it working.
 Open the Provisioning application in your web browser and login with your crowd credentials.
