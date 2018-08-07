@@ -903,8 +903,24 @@ After startup via the IDE the application is available at http://localhost:8088/
 
 You can login in with the Crowd admin user you set up earlier.
 
+Create 3 projects
+- prov-cd (for the jenkins builder)
+- prov-test (production will be built and deployed here)
+- prov-dev (feature branches will be built and deployed here)
+
+Add `prov-cd/default` service account with admin rights into -dev & -test projects, so jenkins can update the build config and trigger the corresponding oc start build.
+
+start with prov-cd and issue
+``` bash
 tailor update pvc/jenkins 
 tailor update 
+```
+
+for the runtime projects (prov-test and prov-dev) run 
+``` bash
+tailor update pvc
+tailor update 
+```
 
 TODO: fix_me END_TODO
 
