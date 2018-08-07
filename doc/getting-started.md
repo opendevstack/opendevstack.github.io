@@ -32,9 +32,8 @@ layout: index
 			- [Create service account for deployment](#create-service-account-for-deployment)
 			- [Install Minishift certificate on Atlassian server](#install-minishift-certificate-on-atlassian-server)
 		- [Setup and Configure Nexus3](#setup-and-configure-nexus3)
-			- [Prepare in Minishift](#prepare-in-minishift)
-			- [Add persistent claim](#add-persistent-claim)
 			- [Configure Repository Manager](#configure-repository-manager)
+		- [Setup and Configure Sonarqube](#setup-and-configure-sonarqube)			
 		- [Import base templates](#import-base-templates)
 		- [Configure CD user](#configure-cd-user)
 		- [Configure Rundeck](#configure-rundeck)
@@ -96,7 +95,7 @@ The OpenDevStack uses [Ansible](https://www.ansible.com/ "Ansible") to install a
 We use the [tailor](https://github.com/opendevstack/tailor) for handling our versioned OpenShift templates and keep our cluster in sync.
 
 ```bash
-curl -LO "https://github.com/opendevstack/tailor/releases/download/v0.6.1/tailor_windows_amd64.exe" && \
+curl -LO "https://github.com/opendevstack/tailor/releases/download/v0.8.0/tailor_windows_amd64.exe" && \
 mv tailor_windows_amd64.exe /usr/bin/tailor && chmod +x /usr/bin/tailor
 ```
 
@@ -432,6 +431,8 @@ Navigate to the **ods-core/infrastructure-setup/scripts** directory and execute
 Use your crowd login when asked for credentials.
 Verify that you have mirrored the github repos and that they have been populated in your Bitbucket instance. The ods-configuration repositpory will remain empty.
 
+Setup project branch permissions - `production` should be guarded against direct merges except thru admins
+
 #### Rundeck Setup
 ##### Setup Application
 Rundeck needs an account to access Bitbucket later. We will create an ssh keypair for this and add this later to the Bitbucket `cd_user` account.
@@ -608,40 +609,49 @@ git push origin master
 Use your crowd login when asked for credentials.
 we do this as the rundeck user, so we can accept the ssh host key.
 
+### Prepare environment settings
+Copy the entire directory structure from `ods-configuration-sample` into `ods-configuration`and remove the .sample postfixes.
+
 ### Setup and Configure Nexus3
-#### Prepare in Minishift
-The OpenDevStack Quickstarters assume, that you will have a Nexus3 Repository Manager in place to store the artifacts, generated during build. So we have to setup a Nexus3 in the bas project.
-```
-oc new-app sonatype/nexus3 -n cd
-```
 
-After creation change to the webconsole.
-Access the base project "OpenDevStack Templates" and open the **Routes** section in the **Applications** tab in the menu.
-Click **Create Route**
-As name enter `nexus`.
-You don't need to provide a hostname. Ensure, that the route points to the `nexus3` service with the correct port.
-For the test environment we don't need secured routes, so no change is needed here.
-Click **Create** and the route is created. You should now be able to access Nexus 3 via http://nexus-cd.192.168.99.100.nip.io/
+Amend `ods-configuration/ods-core/nexus/ocp-config/route.env` and change the domain to match your openshift/minishift domain (`nexus-cd.192.168.99.100.nip.io`)
 
-#### Add persistent claim
-To have a stable state for the Repository Manager between several Minishift starts, you will have to add a persistent claim to the deployment.
-First open the **Storage** menu and click **Create Storage**.
-Define a name, e.g. `nexus3-pv` and define the size. 5GiB should last for testing purposes. Finish by clicking **Create**
-Go to **Deployments** in the **Applications** menu, click the *nexus3* Deployment and choose the **Edit Yaml** action in the upper right corner in the **Actions** drop down.
-Now replace the part
+Go to `ods-core/nexus/ocp-config` - and type 
+``` bash
+tailor update
 ```
-      volumes:
-        - emptyDir: {}
-          name: nexus3-volume-1
+You should see a proposed list of new objects that are created - and confirm with `y`
+
 ```
-with
-```
-      volumes:
-        - name: nexus3-volume-1
-          persistentVolumeClaim:
-            claimName: nexus3-pv
-```
-A new deployment will start with a mounted persistent volume.
+Comparing templates in C:\code_bix\opendevstack_at_BIX\ods-core\nexus\ocp-config with OCP namespace cd.
+Limiting resources to dc,is,pvc,route,svc with selector app=nexus3.
+Found 0 resources in OCP cluster (current state) and 5 resources in processed templates (desired state).
+
+[32m+ dc/nexus3 to be created
+[0m--- Current State (OpenShift cluster)
++++ Desired State (Processed template)
+@@ -1 +1,63 @@
++apiVersion: v1
++kind: DeploymentConfig
++metadata:
++  annotations:
++    original-values.tailor.io/spec.template.spec.containers.0.image: sonatype/nexus3:latest
++  creationTimestamp: null
++  labels:
++    app: nexus3
++  name: nexus3
++spec:
++  replicas: 1
++  selector:
++    app: nexus3
++    deploymentconfig: nexus3
++  strategy:
++    activeDeadlineSeconds: 21600
++    recreateParams:
+
+.......
+
+``` 
 
 #### Configure Repository Manager
 Access Nexus3 http://nexus-cd.192.168.99.100.nip.io/
@@ -671,6 +681,8 @@ After this you will have to create two hosted maven2 repositories and two proxy 
 Add the first 3 repositories to the *maven-public* group.
 You can access the settings for the maven public group by clicking on the group in the repositories list.
 
+TODO: Add all other repos needed - e.g. for nodejs /scala
+END_TODO
 
 ##### Configure user and roles
 First disable the anonymous access in the **Security > Anonymous** section.
@@ -696,16 +708,36 @@ Now create a user under **Security > Users**.
 | --------- | --------- |
 | developer | developer |
 
-TODO: Correct?
 You can choose any First name, Last name and Email.
-Make this account active and assign role `OpenDevStack-Developer` to this account.
+Make this account active and assign role `OpenDevStack-Developer` to this account. 
+
+This account is later used for authentication against nexus to pull artifacts during build phase
+
+### Setup and configure Sonarqube
+
+Amend `ods-configuration/ods-core/sonarqube/ocp-config/sonarqube.env`
+and type
+
+``` bash
+tailor update
+
+``` 
+confirm with `y` and installation should start
+
+Go to http://sonarqube-cd.192.168.99.100.nip.io/ and log in with your crowd user. Click on your profile on the top right, my account / security - and create a new token (and save it in your notes). This token will be used throughout the codebase to trigger the code quality scan.
+
+TODO: Explain all variables
 END_TODO
+
+Check out the cd project 
 
 ### Import base templates
 After you have configured Nexus3, import the base templates for OpenShift.
 Clone the [ods-project-quickstarters](https://www.github.com/opendevstack/ods-project-quickstarters).
 Navigate to the folder, where the cloned repository is located and navigate to the `ocp-templates/scripts` subfolder.
 From with this folder, check if you are still logged in to the OpenShift CLI and login, if necessary.
+
+Amend `ods-configuration/ods-project-quickstarters/ocp-templates/templates/templates.env` and run
 
 ```
 ./upload-templates.sh
@@ -815,6 +847,12 @@ For initial code commit the CD user's private key has to be stored in Rundeck, t
 * Save the key.
 
 #### Configure SCM plugins
+
+Within the ods-project-quickstarters create a new branch called `rundeck-changes` - and let it inherit from production 
+
+TODO: verify the branch source is correct!
+END_TODO
+
 Open the configuration and go to the **SCM** section. This section is available as soon as you are in the project configuration for the `Quickstarters` project.
 
 ##### Setup Import plugin
@@ -823,24 +861,27 @@ Open the configuration and go to the **SCM** section. This section is available 
 * Change the format for the **Job Source Files** to `yaml`
 * Enter the SSH Git URL for the `ods-project-quickstarters` repository.
 You have to enter valid authorization credentials, stored in Rundeck's key storage. This will be the ` id_rsa_bitbucket` key specified in the previous step.
-* Branch: Choose "production" (or master for bleeding edge)
-* In the next step ensure that the regular expression points to yaml files. Change the regexp to rundeck-jobs/.*\.yaml
+* Branch: Choose "rundeck-changes" 
+* In the next step ensure that the regular expression points to yaml files. Change the regexp to `rundeck-jobs/.*\.yaml`
+* Change the file path template to `rundeck-jobs${job.group}${job.name}-${job.id}.${config.format}`
 * Import the job definitions under job actions.
 
 
 ##### Setup Export plugin
-If you use the Github repository, this step isn't necessary.
-If you use your own repository, configure the export plugin in same way as the import plugin.
+If you use the Github repository, and use as is this step isn't necessary!
+If you use your own repository, configure the export plugin in same way as the import plugin, except the file path template - set to `rundeck-jobs/${job.group}${job.name}.${config.format}`
 
 ##### Update the job properties
 
 Go to the project page and then configure. Edit the configuration file (using the button) and add the following line:
 
 ```
+project.globals.bitbucket_host=https\://192.168.56.31
 project.globals.bitbucket_sshhost=ssh://git@192.168.56.31:7999
 project.globals.openshift_apihost=https://192.168.99.100:8443
 project.globals.nexus_host=http://nexus-cd.192.168.99.100.nip.io/
 project.globals.openshift_dockerregistry=https://docker-registry-default.192.168.99.100.nip.io:443
+project.globals.rundeck_os_user=root:root
 ```
 
 ### Configure provisioning application
@@ -861,6 +902,30 @@ If you run the application from your IDE, there is no further configuration need
 After startup via the IDE the application is available at http://localhost:8088/
 
 You can login in with the Crowd admin user you set up earlier.
+
+Create 3 projects
+- prov-cd (for the jenkins builder)
+- prov-test (production will be built and deployed here)
+- prov-dev (feature branches will be built and deployed here)
+
+Add `prov-cd/default` service account with admin rights into -dev & -test projects, so jenkins can update the build config and trigger the corresponding oc start build.
+
+start with prov-cd and issue
+``` bash
+tailor update pvc/jenkins 
+tailor update 
+```
+
+for the runtime projects (prov-test and prov-dev) run 
+``` bash
+tailor update pvc
+tailor update 
+```
+Create a secret called cd-user-token with the cd user credential in both test and dev projects. 
+
+Once jenkins deployed - you can trigger the build in prov-cd/test - it should automatically deploy - and you can start using the provision app.
+
+TODO: fix_me END_TODO
 
 ## Try out the OpenDevStack
 After you have set up your local environment it's time to test the OpenDevStack and see it working.
