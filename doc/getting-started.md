@@ -873,14 +873,22 @@ If you use your own repository, configure the export plugin in same way as the i
 
 ##### Update the job properties
 
-Go to the project page and then configure. Edit the configuration file (using the button) and add the following line:
+Go to the project page and then configure. Edit the configuration file (using the button) and add the following lines - based on your environment
 
 ```
+# bitbucket https host including url schema
 project.globals.bitbucket_host=https\://192.168.56.31
+# bitbucket ssh host including url schema
 project.globals.bitbucket_sshhost=ssh://git@192.168.56.31:7999
+# openshift host including url scheme
 project.globals.openshift_apihost=https://192.168.99.100:8443
+# openshift host without url scheme - used to grab CA etc
+project.globals.openshift_apihost_lookup=192.168.99.100:8443
+# openshift nexus host including url scheme
 project.globals.nexus_host=http://nexus-cd.192.168.99.100.nip.io/
+# public route of docker registry including url scheme 
 project.globals.openshift_dockerregistry=https://docker-registry-default.192.168.99.100.nip.io:443
+# os user and group rundeck is running with
 project.globals.rundeck_os_user=root:root
 ```
 
@@ -921,8 +929,6 @@ for the runtime projects (prov-test and prov-dev) run
 tailor update pvc
 tailor update 
 ```
-Create a secret called cd-user-token with the cd user credential in both test and dev projects. 
-
 Once jenkins deployed - you can trigger the build in prov-cd/test - it should automatically deploy - and you can start using the provision app.
 
 TODO: fix_me END_TODO
