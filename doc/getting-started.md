@@ -82,13 +82,15 @@ For the OpenDevStack it is important, that you run Minishift with OpenShift v3.6
 ### Cygwin / Linux
 
 You must have the possibility to run bash scripts to import the provided OpenShift templates. On Linux systems you can use these scripts out-of-the box, on Windows systems you will have to install either a bash port for Windows like [Cygwin](https://www.cygwin.com/ "Cygwin").
-For Windows, our recommendation is to use Cygwin for starting a minishift cluster and further configuration.
+For Windows, our recommendation is to use Cygwin for starting a minishift cluster and further configuration. Make sure to select the curl package under the "net" category when installing cygwin.
 
 ### Ansible
 
 The OpenDevStack uses [Ansible](https://www.ansible.com/ "Ansible") to install and configure the necessary software for the enabling stack, so it's recommended to get familiar with its core concepts and usage. Also credentials are stored within an Ansible vault, so even if you commit them in a public repository they are not available unless you know the vault password.
 
 ## Setup your local environment
+
+From now on we assume, you work from a Bash (Cygwin / Linux).
 
 ### Install tailor Utility
 
@@ -100,7 +102,6 @@ mv tailor_windows_amd64.exe /usr/bin/tailor && chmod +x /usr/bin/tailor
 ```
 
 ### Prepare infrastructure
-From now on we assume, you work from a Bash (Cygwin / Linux).
 
 First you have to clone the [ods-core](http://www.github.com/opendevstack/ods-core) repository.
 
