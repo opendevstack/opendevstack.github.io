@@ -432,7 +432,7 @@ Navigate to the **ods-core/infrastructure-setup/scripts** directory and execute
 Use your crowd login when asked for credentials.
 Verify that you have mirrored the github repos and that they have been populated in your Bitbucket instance. The ods-configuration repositpory will remain empty.
 
-Setup project branch permissions - `production` should be guarded against direct merges except thru admins
+Setup project branch permissions - `production` should be guarded against direct merges except through admins
 
 #### Rundeck Setup
 ##### Setup Application
