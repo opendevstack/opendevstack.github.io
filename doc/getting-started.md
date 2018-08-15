@@ -77,7 +77,7 @@ installation wizards of the tools, after the base setup provided by the Ansible 
 
 The provided provision application and Rundeck jobs work with links, which are designed to connect to a installed and configured [Minishift](https://docs.openshift.org/latest/minishift/index.html "Minishift") instance. Minishift is a tool provided by Redhat to run OpenShift locally by providing a single-node OpenShift cluster inside a VM.
 Information, how to setup Minishift can be found at the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
-For the OpenDevStack it is important, that you run Minishift with OpenShift v3.6.1 because the templates have been designed for OpenShift v3.6 and the current OpenShift version is not backward compatible.
+Currently the OpenDevStack works with Openshift 3.9.0.
 
 ### Cygwin / Linux
 
@@ -499,7 +499,7 @@ The file has to have the following content:
 {
     "cpus": 2,
     "memory": "8192",
-    "openshift-version": "v3.6.1",
+    "openshift-version": "v3.9.0",
     "disk-size": "40GB",
     "vm-driver": "virtualbox"
 }
