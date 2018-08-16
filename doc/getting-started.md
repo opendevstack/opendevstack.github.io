@@ -788,7 +788,7 @@ tailor update
 ``` 
 confirm with `y` and installation should start.
 
-After th installation has taken place, change to the Openshift Webconsole and start a sonarqube build. 
+After the installation has taken place, change to the OpenShift Webconsole and start a SonarQube build. 
 
 Go to http://sonarqube-cd.192.168.99.100.nip.io/ and log in with your crowd user. Click on your profile on the top right, my account / security - and create a new token (and save it in your notes). This token will be used throughout the codebase to trigger the code quality scan.
 
