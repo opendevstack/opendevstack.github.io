@@ -1,7 +1,7 @@
 # The terminal is empty when using vagrant ssh in cygwin
 
 By default cygwin uses the ssh client from it's msys environment
-Use "VAGRANT_PREFER_SYSTEM_BIN=1 vagrant ssh " to tell cygwin to use it's embedded ssh-client
+You can use "VAGRANT_PREFER_SYSTEM_BIN=1 vagrant ssh" on Windows 10 to tell cygwin to use windows's ssh-client
 
 Source: https://github.com/hashicorp/vagrant/issues/9143#issuecomment-343311263
 
