@@ -611,11 +611,19 @@ Use your crowd login when asked for credentials.
 we do this as the rundeck user, so we can accept the ssh host key.
 
 ### Prepare environment settings
+Switch to your local machine and clone the repositories: `ods-configuration-sample` and `ods-configuration` from your bitbucket server.
 Copy the entire directory structure from `ods-configuration-sample` into `ods-configuration`and remove the .sample postfixes.
 
-### Setup and Configure Nexus3
+```
+git clone http://192.168.56.31:7990/scm/opendevstack/ods-configuration-sample.git
+git clone http://192.168.56.31:7990/scm/opendevstack/ods-configuration.git
+cp -r ./ods-configuration-sample/. ./ods-configuration
+find ods-configuration -name '*.sample' -type f | while read NAME ; do mv "${NAME}" "${NAME%.sample}" ; done
+```
 
-Amend `ods-configuration/ods-core/nexus/ocp-config/route.env` and change the domain to match your openshift/minishift domain (`nexus-cd.192.168.99.100.nip.io`)
+
+### Setup and Configure Nexus3
+Amend `ods-configuration/ods-core/nexus/ocp-config/route.env` and change the domain to match your openshift/minishift domain (for example `nexus-cd.192.168.99.100.nip.io`)
 
 Go to `ods-core/nexus/ocp-config` - and type 
 ``` bash
