@@ -33,9 +33,9 @@ layout: index
 			- [Install Minishift certificate on Atlassian server](#install-minishift-certificate-on-atlassian-server)
 		- [Setup and Configure Nexus3](#setup-and-configure-nexus3)
 			- [Configure Repository Manager](#configure-repository-manager)
-		- [Setup and Configure Sonarqube](#setup-and-configure-sonarqube)			
 		- [Import base templates](#import-base-templates)
 		- [Configure CD user](#configure-cd-user)
+		- [Setup and Configure Sonarqube](#setup-and-configure-sonarqube)	
 		- [Configure Rundeck](#configure-rundeck)
 			- [Create Quickstarters project](#create-quickstarters-project)
 			- [Openshift API token](#openshift-api-token)
@@ -77,7 +77,7 @@ installation wizards of the tools, after the base setup provided by the Ansible 
 
 The provided provision application and Rundeck jobs work with links, which are designed to connect to a installed and configured [Minishift](https://docs.openshift.org/latest/minishift/index.html "Minishift") instance. Minishift is a tool provided by Redhat to run OpenShift locally by providing a single-node OpenShift cluster inside a VM.
 Information, how to setup Minishift can be found at the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
-For the OpenDevStack it is important, that you run Minishift with OpenShift v3.6.1 because the templates have been designed for OpenShift v3.6 and the current OpenShift version is not backward compatible.
+Currently the OpenDevStack works with Openshift 3.9.0.
 
 ### Cygwin / Linux
 
@@ -499,7 +499,7 @@ The file has to have the following content:
 {
     "cpus": 2,
     "memory": "8192",
-    "openshift-version": "v3.6.1",
+    "openshift-version": "v3.9.0",
     "disk-size": "40GB",
     "vm-driver": "virtualbox"
 }
@@ -677,7 +677,7 @@ Now create three Blob Stores.
 | File | releases         | /nexus-data/blobs/releases         |
 | File | atlassian_public | /nexus-data/blobs/atlassian_public |
 
-After this you will have to create two hosted maven2 repositories and two proxy maven2 repository in the **Repositories** Subsection.
+After this step you will have to create the following repositories in the **Repositories** Subsection.
 
 | Name             | Format | Type   | Online  | Version policy | Layout policy | Storage    | Strict Content Type Validation | Deployment policy | Remote Storage | belongs to group                                                    |
 | ---------------- | ------ | ------ | ------- | -------------- | ------------- | ---------- | ------------------------------ | ----------------- | ------------------------------------------------------------------ | ------------ |
@@ -685,10 +685,10 @@ After this you will have to create two hosted maven2 repositories and two proxy 
 | releases         | maven2 | hosted | checked | Release        | Strict        | releases   | checked                        | Disable-redeploy  | | none                                                                   |
 | atlassian_public | maven2 | proxy  | checked | Release        | Strict        | atlassian_public  | checked                 | Disable-redeploy  | https://maven.atlassian.com/content/repositories/atlassian-public/ |
 | jcenter | maven2 | proxy  | checked | Release        | Strict        | default  | checked                 | Disable-redeploy  | https://jcenter.bintray.com | maven-public
-| ivy-releases | maven2 | group  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | | 
-| sbt-plugins | maven2 | group  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | http://dl.bintray.com/sbt/sbt-plugin-releases/ | ivy-releases
-| sbt-releases | maven2 | group  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases | ivy-releases
-| typesafe-ivy-releases | maven2 | group  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | https://dl.bintray.com/typesafe/ivy-releases | ivy-releases
+| sbt-plugins | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | http://dl.bintray.com/sbt/sbt-plugin-releases/ | ivy-releases
+| sbt-releases | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases | ivy-releases
+| typesafe-ivy-releases | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | https://dl.bintray.com/typesafe/ivy-releases | ivy-releases
+| ivy-releases | maven2 | group  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | |
 
 ##### Configure user and roles
 First disable the anonymous access in the **Security > Anonymous** section.
@@ -718,24 +718,6 @@ You can choose any First name, Last name and Email.
 Make this account active and assign role `OpenDevStack-Developer` to this account. 
 
 This account is later used for authentication against nexus to pull artifacts during build phase
-
-### Setup and configure Sonarqube
-
-Amend `ods-configuration/ods-core/sonarqube/ocp-config/sonarqube.env`
-and type
-
-``` bash
-tailor update
-
-``` 
-confirm with `y` and installation should start
-
-Go to http://sonarqube-cd.192.168.99.100.nip.io/ and log in with your crowd user. Click on your profile on the top right, my account / security - and create a new token (and save it in your notes). This token will be used throughout the codebase to trigger the code quality scan.
-
-TODO: Explain all variables
-END_TODO
-
-Check out the cd project 
 
 ### Import base templates
 After you have configured Nexus3, import the base templates for OpenShift.
@@ -803,26 +785,41 @@ Open [Bitbucket](http://192.168.56.31:7990/), login with your crowd administrati
 Here open the User section. If you can't see the CD user, you have to synchronize the Crowd directory in the **User directories** section.
 Click on the CD user. In the user details you have the possiblity to add a SSH key. Click on the tab and enter the _public key_ from the generated key pair.
 
+### Setup and configure Sonarqube
+
+Amend `ods-configuration/ods-core/sonarqube/ocp-config/sonarqube.env`
+and type
+
+``` bash
+tailor update
+
+``` 
+confirm with `y` and installation should start.
+
+After the installation has taken place, change to the OpenShift Webconsole and start a SonarQube build. 
+
+Go to http://sonarqube-cd.192.168.99.100.nip.io/ and log in with your crowd user. Click on your profile on the top right, my account / security - and create a new token (and save it in your notes). This token will be used throughout the codebase to trigger the code quality scan.
+
+TODO: Explain all variables
+END_TODO
+
+Check out the cd project 
+
 ### Prepare Docker Registry
 <!-- TODO 
 This is required for later for the quickstarters, see, e.g. be_spring_boot.yaml
 -->
- 
+ The Docker registry preparation is needed for several quickstarters, e.g. be_spring_boot. To do so, make sure you have the Docker client binary installed on your machine.
 
 * `minishift addons apply registry-route` 
-*  `openssl s_client -connect docker-registry-default.192.168.99.100.nip.io:443 -showcerts < /dev/null 2>/dev/null| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /tmp/registry.crt`
-* Extract 2nd and 3rd certificate (CA certificates) as /tmp/cert2.crt and /tmp/cert3.crt
-* `sudo mkdir /etc/docker/certs.d`
-* `sudo cp /tmp/cert2.crt /tmp/cert3.crt /etc/docker/certs.d && sudo service restart docker`
-* `sudo -i`
+* Run `minishift docker-env` to display the commend you need to execute in order to configure your Docker client.
+* Execute the displayed command, e.g. on Windows CMD `@FOR /f "tokens=*" %i IN ('minishift docker-env') DO @call %i`
 * `oc login -u developer -n default`
-* `oc whoami -t` should show the token
-* `docker login -u developer -p `oc whoami -t` docker-registry-default.192.168.99.100.nip.io:443`
+* `oc whoami -t` should show the token for you user
+* `docker login -u developer -p `<Token from oc whoami -t>` docker-registry-default.192.168.99.100.nip.io:443`
 * `docker pull busybox`
 * `docker tag busybox docker-registry-default.192.168.99.100.nip.io:443/openshift/busybox`
 * `docker push docker-registry-default.192.168.99.100.nip.io:443/openshift/busybox`
-
-
 
 <!-- END TODO -->
 
