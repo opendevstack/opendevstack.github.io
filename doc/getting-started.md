@@ -43,6 +43,7 @@ layout: index
 			- [Configure SCM plugins](#configure-scm-plugins)
 		- [Configure provisioning application](#configure-provisioning-application)
 	- [Try out the OpenDevStack](#try-out-the-opendevstack)
+	- [Troubleshooting](troubleshooting.md)
 
 <!-- /TOC -->
 
