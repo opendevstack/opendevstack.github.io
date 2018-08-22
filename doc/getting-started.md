@@ -620,7 +620,7 @@ git clone http://192.168.56.31:7990/scm/opendevstack/ods-configuration.git
 cp -r ./ods-configuration-sample/. ./ods-configuration
 find ods-configuration -name '*.sample' -type f | while read NAME ; do mv "${NAME}" "${NAME%.sample}" ; done
 ```
-
+(Assuming your host/ip for bitbucket is: 192.168.56.31:7990)
 
 ### Setup and Configure Nexus3
 Amend `ods-configuration/ods-core/nexus/ocp-config/route.env` and change the domain to match your openshift/minishift domain (for example `nexus-cd.192.168.99.100.nip.io`)
