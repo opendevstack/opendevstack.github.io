@@ -490,6 +490,7 @@ Index-page
     background-size: cover;
     text-align: center;
     color: white;
+    
 
     @media screen and(max-width: 600px){
         min-height: 400px;
@@ -500,34 +501,54 @@ Index-page
     }
 }
 .header-img div {
-    background: $box-background-color; /* Fallback for older browsers without RGBA-support */
-    background: rgba(246, 232, 217, 0.8);
+    background: white; /* Fallback for older browsers without RGBA-support */
+    background: rgba(255, 255, 255, 0.8);
     text-align: center;
     list-style: none;
     position: relative;
-    top:50%;
-    transform: translateY(50%);
+    height:auto;
+    top:40%;
+    transform: translateY(40%);
     max-width: calc(76% - (30px * 2));
     margin-right:auto;
     margin-left: auto;
-    padding-bottom: 15px;
+    padding-bottom: 45px;
 
     @media screen and(min-width: 2100px){
         max-width: 1500px;
 
     }
+
     
 
-    h2{
+    h2 a{
+        display: inline-block;
         color: $brand-color;
-        font-size: 5em; 
+        font-size: 2em;        
         padding-top: 0;
         margin-bottom: 0%;
+        padding:0px 10px;
+        border-radius: 5px;
+        @media screen and(max-width: 900px){
+            font-size: 1em;
+            padding: 0 3px;
+            }
     }
-    p{
+    h2 a:hover{
+        display: inline-block;
+        background-color: $box-background-color;
+        -moz-box-shadow:    inset 0 0 10px #000000;
+        -webkit-box-shadow: inset 0 0 10px #000000;
+        box-shadow:         inset 0 0 10px #000000;
+    }
+    subheading{
         color: black;
-        font-size: 2em;
-        font-weight: 200 
+        font-size: 2.5em;
+        font-weight: 200; 
+        
+        @media screen and(max-width: 900px){
+            font-size: 1em;
+        } 
 
     }
     @media screen and(max-width:1300px){
@@ -535,6 +556,58 @@ Index-page
     }
 
  
+}
+
+#header-btn{
+    background-color:$brand-color;
+    border-radius:5px;
+    min-height: 50px;
+    padding-bottom: 8px;
+    width: 46%;
+    @media screen and(max-width: 900px){
+        width: 90%;
+        text-align: center;
+
+    }
+
+      div{
+        margin-top:-10px !important;
+        font-size: 1.5em;  
+        background-color:$brand-color;
+        float: left;
+        width: 49%;
+        padding-top:0px;
+        height:0px;
+        border-radius:5px;
+        @media screen and(max-width: 900px){
+            font-size: 1em;
+        }
+
+
+            
+        a{
+            color: $box-background-color;
+              
+        }
+        
+    }
+    div:hover{
+        -webkit-filter: brightness(90%); /* Safari 6.0 - 9.0 */
+        filter: brightness(90%); 
+        -moz-box-shadow:    inset 0 0 10px #000000;
+        -webkit-box-shadow: inset 0 0 10px #000000;
+        box-shadow:         inset 0 0 10px #000000;
+    }
+    div:first-child{
+        margin-left:1%;
+        border-right: 1px solid $box-background-color;
+        border-radius:5px 0px 0px 5px;
+    }
+    @media screen and (max-width: 900){
+        float: none;
+    }
+        
+
 }
 
 .index-img{
@@ -556,21 +629,22 @@ Index-page
 
 #short-description-container-logo {
     text-align: center;
+    margin-top:20px;
 
     div{
     display: inline-block;
-    max-width: 28%;
+    width: 20%;
     margin-bottom: 30px;
     padding: 30px 2% 10px 2%;
     text-align: center;
-    background-color:$box-background-color;
+    background-color:white;
     color:black;
-    min-height: 175px;
+    //min-height: 175px;
     margin: 15px auto 15px auto;
     box-shadow: 5px 5px 10px grey;
         @media screen and(max-width: 600px){
             float: none;
-            max-width: 90%;
+            width: 100%;
             padding-left: $spacing-unit/2;        
         }
     }
@@ -581,7 +655,7 @@ Index-page
 }
 
 #short-description-container-logo div img{
-    height:200px;
+    height:150px;
     max-height:200px;
     width:auto;
     max-width:200px;
@@ -620,24 +694,38 @@ Index-page
 }
 #container div h1:first-child{
     margin:0;
+    
     @media screen and (max-width: 800){
-        padding-top: 0;
+        padding-top: 30px;
+        
+
         
     }
 }
 
 #container div{
-    background-color: $box-background-color;
+    background-color: white;
     float:left;
     width:40%;
     padding:30px 30px 30px 30px;
-    min-height: 400px;
+    min-height: 480px;
     box-shadow: 5px 5px 10px grey;
     margin:0 1% 50px 3%;
-    @media screen and(max-width:1300px){
-        width: 40%;
-        min-height:800px;
-        margin:0 1% 50px 2%;
+
+    div{
+        float: left;
+        padding: 0;
+        box-shadow: 0 0 0;
+        margin-bottom:0; 
+
+        img{
+            vertical-align: middle;
+            margin: 70px -20px 0 20px;
+            width: 50%;
+        }
+        ul{
+            margin-left: 0px;
+        }
     }
     @media screen and(min-width:4000px){
         width: 40%;
@@ -647,14 +735,30 @@ Index-page
         width: 40%;
         margin-left: 6%;
         margin:0 2% 50px 3%;
+        min-height: 390px;
         :first-child{
             margin-right: 4%;
         }
     }
-    @media screen and(max-width: 600px){
+    @media screen and(max-width:1400px){
+        min-height: 500px;
+        width: 39%;
+    }
+
+    @media screen and(max-width:1100px){
+        width: 39%;
+        height:600px;
+        margin:0 1% 50px 2%;
+        div {
+            height: initial;
+        }
+    }
+    @media screen and(max-width: 900px){
         float: none;
-        width: 90%;
+        width: 88%;
         padding: none;
+        min-height: 0px;
+        
         
          h1{
             text-decoration: underline;
@@ -665,6 +769,16 @@ Index-page
         }
         #container-second-child{
             padding-top:0;
+            
+        }
+        div{
+            height: initial;
+            width: 95%;
+        
+            img{
+                width: 20% !important;
+                margin: 20px 0 20px 41%;
+            }
         }
     }
     .container-list{
@@ -673,37 +787,96 @@ Index-page
     }
 
 }
-#container div div{
-    float: left;
-    padding: 0;
-    box-shadow: 0 0 0;
-    margin-bottom:0; 
 
-    img{
-        vertical-align: middle;
-        margin: 70px -20px 0 20px;
-        width: 50%;
-    }
-    ul{
-        margin-left: 0px;
-    }
-}
 #container div ul li {
     background: url("../assets/list_bullet.png") no-repeat top left; /* <-- change `left` & `top` too for extra control */
     padding: 0px 0px 3px 25px;
+    margin: 0 -40px 0 -10px;
+    width: 100%;
     /* reset styles (optional): */
     list-style: none;
     margin: 0;
 }
 
-#visit-git-bt{
-    background-color:$brand-color;
-    color: $box-background-color;
-    border-radius:5px;
-    padding: 10px;
-    font-size: 1.5em;
+/*   
+Markdown page content
+*/
+
+.page-content{
+    height: 100%;
 }
 
+#documentation_navigation{
+    height: 100%;
+    float:left;
+    background-color:white;
+    filter: grayscale(120%);
+    border-radius: 0px 10px 10px 0px;
+    box-shadow: 5px 5px 10px grey;
+    -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
+    transition: width 1s;
+    margin-right: 15px;
+    padding-right: 10px;
+    line-height: 16px;
+    ul li{
+        list-style: square;
+        a{
+        color:$brand-color;
+        }
+       
+    }
+    @media screen and (max-width:1400px){
+        line-height: 14px;
+        list-style: none;
+        
+    }
+    @media screen and(max-width:900px) {
+        line-break: loose;
+        width:100%;
+        line-height: 14px;
+        
+    }
+}
+
+.sticky {
+    position: fixed;
+    top: 0;
+    width: 2%;
+    margin-top:10px; 
+    -webkit-transition: width 1s; /* For Safari 3.1 to 6.0 */
+    transition: width 1s;
+    .menu_icon{
+        height: 30%;
+        background:  url("../assets/menu.png") no-repeat;
+        margin: 35%; 
+    }
+
+    ul{
+        display: none;
+    }
+    @media screen and(max-width:700px) {
+        position: absolute;
+        width: 35%;
+        top:none;
+        display: block;
+        
+    }
+ 
+  }
+  .sticky:hover{
+    width: 35%;
+    ul{
+        display: block;
+    }
+    .menu_icon{
+        display: none;
+        height: 0%;
+    }
+  }
+
+  .oblique{
+      font-style: oblique;
+  }
 /* ---------------------------Unused CSS
 #description-panel{
     padding: 50px 25% 50px 20%;
