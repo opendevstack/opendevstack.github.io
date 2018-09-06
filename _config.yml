@@ -13,14 +13,13 @@ github:
   owner_name: opendevstack
   repository_name: opendevstack.github.io
   repository_url: https://github.com/opendevstack/opendevstack.github.io
-  organization: https://github.com/opendevstack
 
 # Build settings
 baseurl:
-permalink: docs/:title
+permalink: doc/:title
 markdown: kramdown
 highlighter: rouge
 relative_permalinks: false
 collections:
-  docs:
+  doc:
     output: true

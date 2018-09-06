@@ -1,0 +1,74 @@
+<div id="documentation_navigation"> 
+    <div class="menu_icon"></div>
+    <ul>
+        <li><a href="#Introduction">Introduction</a> </li>
+        <li><a href="#Requirements">Requirements</a> </li>
+            <ul class="oblique">
+                <li><a href="#Git">Git</a> </li>
+                <li><a href="#Vagrant">Vagrant</a> </li>
+                <li><a href="#Virtualbox">Virtualbox</a> </li>
+                <li><a href="#Atlassian tools licenses">Atlassian tools licenses</a> </li>
+                <li><a href="#Minishift">Minishift</a> </li>
+                <li><a href="#Bash">Bash</a> </li>
+                <li><a href="#Ansible">Ansible</a> </li>
+            </ul>
+        <li><a href="#Setup your local environment">Setup your local environment</a></li>
+            <ul>
+                <li><a href="#Prepare infrastructure">Prepare infrastructure</a> </li>
+                <li><a href="#Install Atlassian Tools and Rundeck">Install Atlassian Tools and Rundeck</a> </li>
+                    <ul class="oblique">
+                        <li><a href="#Crowd Setup">Crowd Setup</a> </li>
+                        <li><a href="#Bitbucket Setup">Bitbucket Setup</a> </li>
+                        <li><a href="#Jira Setup">Jira Setup</a> </li>
+                        <li><a href="#Confluence Setup">Confluence Setup</a> </li>
+                        <li><a href="#Rundeck Setup">Rundeck Setup</a> </li>
+                    </ul>
+                <li><a href="#Configure Minishift">Configure Minishift</a> </li>
+                    <ul class="oblique">
+                        <li><a href="#Minishift startup">Minishift startup</a> </li>
+                        <li><a href="#Install the OC CLI">Install the OC CLI</a> </li>
+                        <li><a href="#Login with the CLI">Login with the CLI</a> </li>
+                        <li><a href="#Setup the base template project">Setup the base template project</a> </li>
+                        <li><a href="#Adjust user rights for the developer user">Adjust user rights for the developer user</a> </li>
+                        <li><a href="#Create service account for deployment">Create service account for deployment</a> </li>
+                        <li><a href="#Install Minishift certificate on Atlassian server">Install Minishift certificate on Atlassian server</a> </li>
+                    </ul>
+                <li><a href="#Setup and Configure Nexus3">Setup and Configure Nexus3</a></li>
+                    <ul class="oblique">
+                        <li><a href="#Configure Repository Manager">Configure Repository Manager</a></li>  
+                    </ul>
+                <li><a href="#Import base templates">Import base templates</a></li>
+                <li><a href="#Configure CD user">Configure CD user</a></li>
+                <li><a href="#Setup and Configure Sonarqube">Setup and Configure Sonarqube</a></li>
+                <li><a href="#Configure Rundeck">Configure Rundeck</a></li>
+                    <ul class="oblique">
+                        <li><a href="#Create Quickstarters project">Create Quickstarters project</a></li>
+                        <li><a href="#Openshift API token">Openshift API token</a></li>
+                        <li><a href="#CD user private key">CD user private key</a></li>
+                        <li><a href="#Configure SCM plugins">Configure SCM plugins</a></li>
+                    </ul>
+                <li><a href="#Configure provisioning application">Configure provisioning application</a></li> 
+            </ul>
+        <li><a href="#Try out the OpenDevStack">Try out the OpenDevStack</a></li>
+        <li><a href="troubleshooting">Troubleshooting</a></li>
+    </ul>
+</div>
+<script>
+// When the user scrolls the page, execute myFunction
+window.onscroll = function() {myFunction()};
+
+// Get the navbar
+var navbar = document.getElementById("documentation_navigation");
+
+// Get the offset position of the navbar
+var sticky = navbar.offsetTop;
+
+// Add the sticky class to the navbar when you reach its scroll position. Remove "sticky" when you leave the scroll position
+function myFunction() {
+  if (window.pageYOffset >= sticky) {
+    navbar.classList.add("sticky")
+  } else {
+    navbar.classList.remove("sticky");
+  }
+} 
+</script>
