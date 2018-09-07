@@ -1,3 +1,7 @@
+---
+layout: index
+---
+
 # The terminal is empty when using vagrant ssh in cygwin
 
 By default cygwin uses the ssh client from it's msys environment
