@@ -1,10 +1,11 @@
 ---
 layout: index
+tags: documentation
 ---
 
 # Getting started
 <!-- TOC depthFrom:1 depthTo:4 withLinks:1 updateOnSave:1 orderedList:0 -->
-
+<!--
 - [Getting started](#getting-started)
 	- [Introduction](#introduction)
 	- [Requirements](#requirements)
@@ -45,6 +46,7 @@ layout: index
 	- [Try out the OpenDevStack](#try-out-the-opendevstack)
 	- [Troubleshooting](troubleshooting.md)
 
+-->
 <!-- /TOC -->
 
 ## Introduction
