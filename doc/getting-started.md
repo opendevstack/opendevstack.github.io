@@ -1,77 +1,120 @@
 ---
 layout: index
-tags: 'documentation'
+tags: documentation
 ---
+<!--
+- [Introduction](#introduction)
+- [Requirements](#requirements)
+	- [Git](#git)
+	- [Vagrant](#vagrant)
+	- [Virtualbox](#virtualbox)
+	- [Atlassian tools licenses](#atlassian-tools-licenses)
+	- [Minishift](#minishift)
+	- [Cygwin / Linux](#cygwin--linux)
+	- [Ansible](#ansible)
+- [Setup your local environment](#setup-your-local-environment)
+	- [Install tailor Utility](#install-tailor-utility)
+	- [Prepare infrastructure](#prepare-infrastructure)
+	- [Install Atlassian Tools and Rundeck](#install-atlassian-tools-and-rundeck)
+		- [Crowd Setup](#crowd-setup)
+			- [Setup Application](#setup-application)
+			- [Run Configuration Wizard](#run-configuration-wizard)
+				- [Step 1: License key](#step-1-license-key)
+				- [Step 2: Crowd installation](#step-2-crowd-installation)
+				- [Step 3: Database Configuration](#step-3-database-configuration)
+				- [Step 4: Options](#step-4-options)
+				- [Step 5: Mail configuration](#step-5-mail-configuration)
+				- [Step 6: Internal directory](#step-6-internal-directory)
+				- [Step 7: Default administrator](#step-7-default-administrator)
+				- [Step 8: Integrated applications](#step-8-integrated-applications)
+				- [Step 9: Log in to Crowd console](#step-9-log-in-to-crowd-console)
+			- [Configure Crowd](#configure-crowd)
+				- [Add OpenDevStack groups](#add-opendevstack-groups)
+				- [Add Atlassian groups](#add-atlassian-groups)
+				- [Add groups to user](#add-groups-to-user)
+				- [Add applications to crowd](#add-applications-to-crowd)
+		- [Bitbucket Setup](#bitbucket-setup)
+			- [Setup Application](#setup-application)
+			- [Run Configuration Wizard](#run-configuration-wizard)
+			- [Configure Crowd access](#configure-crowd-access)
+			- [Configure user groups](#configure-user-groups)
+				- [Add groups](#add-groups)
+				- [Add permissions](#add-permissions)
+		- [Jira Setup](#jira-setup)
+			- [Setup Application](#setup-application)
+			- [Run Configuration Wizard](#run-configuration-wizard)
+				- [Step 1: Setup application properties](#step-1-setup-application-properties)
+				- [Step 2: Specify your license key](#step-2-specify-your-license-key)
+				- [Step 3: Set up administrator account](#step-3-set-up-administrator-account)
+				- [Step 4: Set up email notifications](#step-4-set-up-email-notifications)
+				- [Step 5: Basic configuration](#step-5-basic-configuration)
+			- [Configure Crowd access](#configure-crowd-access)
+				- [Configure user directory](#configure-user-directory)
+				- [Configure SSO with crowd](#configure-sso-with-crowd)
+		- [Confluence Setup](#confluence-setup)
+			- [Setup Application](#setup-application)
+			- [Run Configuration Wizard](#run-configuration-wizard)
+				- [Step 1: Set up Confluence](#step-1-set-up-confluence)
+				- [Step 2: Get add-ons](#step-2-get-add-ons)
+				- [Step 3: License key](#step-3-license-key)
+				- [Step 4: Choose a Database Configuration](#step-4-choose-a-database-configuration)
+				- [Step 5: Configure Database](#step-5-configure-database)
+				- [Step 6: Load Content](#step-6-load-content)
+				- [Step 7: Configure User Management](#step-7-configure-user-management)
+				- [Step 8: Configure System Administrator account](#step-8-configure-system-administrator-account)
+			- [Configure Crowd access](#configure-crowd-access)
+				- [Configure user directory](#configure-user-directory)
+				- [Configure SSO with crowd](#configure-sso-with-crowd)
+		- [Create opendevstack project in Bitbucket](#create-opendevstack-project-in-bitbucket)
+		- [Rundeck Setup](#rundeck-setup)
+			- [Setup Application](#setup-application)
+	- [Configure Minishift](#configure-minishift)
+		- [Minishift startup](#minishift-startup)
+	- [Configure the path for the OC CLI](#configure-the-path-for-the-oc-cli)
+		- [Login with the CLI](#login-with-the-cli)
+		- [Setup the base template project](#setup-the-base-template-project)
+		- [Adjust user rights for the developer user](#adjust-user-rights-for-the-developer-user)
+		- [Create service account for deployment](#create-service-account-for-deployment)
+		- [Install Minishift certificate on Atlassian server](#install-minishift-certificate-on-atlassian-server)
+	- [Prepare environment settings](#prepare-environment-settings)
+	- [Setup and Configure Nexus3](#setup-and-configure-nexus3)
+		- [Configure Repository Manager](#configure-repository-manager)
+			- [Configure repositories](#configure-repositories)
+			- [Configure user and roles](#configure-user-and-roles)
+	- [Import base templates](#import-base-templates)
+	- [Prepare CD project for Jenkins](#prepare-cd-project-for-jenkins)
+		- [Prepare Jenkins slave docker images](#prepare-jenkins-slave-docker-images)
+	- [Configure CD user](#configure-cd-user)
+	- [Setup and configure Sonarqube](#setup-and-configure-sonarqube)
+	- [Prepare Docker Registry](#prepare-docker-registry)
+	- [Prepare Rundeck and required Dockerfiles](#prepare-rundeck-and-required-dockerfiles)
+		- [Create Quickstarters project](#create-quickstarters-project)
+		- [Openshift API token](#openshift-api-token)
+		- [CD user private key](#cd-user-private-key)
+		- [Configure SCM plugins](#configure-scm-plugins)
+			- [Setup Import plugin](#setup-import-plugin)
+			- [Setup Export plugin](#setup-export-plugin)
+			- [Update the job properties](#update-the-job-properties)
+	- [Configure provisioning application](#configure-provisioning-application)
+- [Try out the OpenDevStack](#try-out-the-opendevstack)
 
-#### Getting started
+-->
 
-
-<!-- TOC depthFrom:1 depthTo:4 withLinks:1 updateOnSave:1 orderedList:0 
-
-
-- [Getting started](#getting-started)
-	- [Introduction](#introduction)
-	- [Requirements](#requirements)
-		- [Git](#git)
-		- [Vagrant](#vagrant)
-		- [Virtualbox](#virtualbox)
-		- [Atlassian tools licenses](#atlassian-tools-licenses)
-		- [Minishift](#minishift)
-		- [Bash](#bash)
-		- [Ansible](#ansible)
-	- [Setup your local environment](#setup-your-local-environment)
-		- [Prepare infrastructure](#prepare-infrastructure)
-		- [Install Atlassian Tools and Rundeck](#install-atlassian-tools-and-rundeck)
-			- [Crowd Setup](#crowd-setup)
-			- [Bitbucket Setup](#bitbucket-setup)
-			- [Jira Setup](#jira-setup)
-			- [Confluence Setup](#confluence-setup)
-			- [Rundeck Setup](#rundeck-setup)
-		- [Configure Minishift](#configure-minishift)
-			- [Minishift startup](#minishift-startup)
-			- [Install the OC CLI](#install-the-oc-cli)
-			- [Login with the CLI](#login-with-the-cli)
-			- [Setup the base template project](#setup-the-base-template-project)
-			- [Adjust user rights for the developer user](#adjust-user-rights-for-the-developer-user)
-			- [Create service account for deployment](#create-service-account-for-deployment)
-			- [Install Minishift certificate on Atlassian server](#install-minishift-certificate-on-atlassian-server)
-		- [Setup and Configure Nexus3](#setup-and-configure-nexus3)
-			- [Configure Repository Manager](#configure-repository-manager)
-		- [Import base templates](#import-base-templates)
-		- [Configure CD user](#configure-cd-user)
-		- [Setup and Configure Sonarqube](#setup-and-configure-sonarqube)	
-		- [Configure Rundeck](#configure-rundeck)
-			- [Create Quickstarters project](#create-quickstarters-project)
-			- [Openshift API token](#openshift-api-token)
-			- [CD user private key](#cd-user-private-key)
-			- [Configure SCM plugins](#configure-scm-plugins)
-		- [Configure provisioning application](#configure-provisioning-application)
-	- [Try out the OpenDevStack](#try-out-the-opendevstack)
-	- [Troubleshooting](troubleshooting.md)
-
-
-/TOC -->	
-
-
-
-
-
-
-## <a name="Introduction"></a>Introduction
+## Introduction
 Welcome to the OpenDevStack. The OpenDevStack is a framework to help in setting up a project infrastructure and continuous delivery processes on OpenShift and Atlassian toolstack with one click. This guide shall help you to setup the OpenDevStack, so you can work with it and test it in a local environment setup. The steps for the setup can also be adapted for running the OpenDevstack with an existing OpenShift installation or to connect it with your Atlassian tools, if you use [Atlassian Crowd](https://www.atlassian.com/software/crowd "Atlassian Crowd") as SSO provider.
 
 **Important: The credentials provided in the guide are only meant to be used within the local test installation. For use in production you will have to customize paths, URLs and credentials!**
 
-## <a name="Requirements"></a>Requirements
+## Requirements
 The following requirements have to be met to setup a local environment
-### <a name="Git"></a>Git
+### Git
 We use Git as code repository, so you have to be familiar to work with [Git](https://git-scm.com/ "Git").
-### <a name="Vagrant"></a>Vagrant
+### Vagrant
 The OpenDevStack uses Vagrant to provide a sample infrastructure for the Atlassian tools, Rundeck and a so called Ansible controller, a VM, where you can run Ansible scripts against the Atlassian VM. It is recommended to use the latest Vagrant version available from the [HashiCorp Vagrant page](https://www.vagrantup.com "Vagrant").
 
-### <a name="Virtualbox"></a>Virtualbox
+### Virtualbox
 Vagrant uses Virtualbox for running the provisioned VMs. Therefore you must have [Virtualbox](https://www.virtualbox.org/ "Virtualbox") installed.
-### <a name="Atlassian tools license"></a>Atlassian tools licenses
+### Atlassian tools licenses
 To use the Atlassian tools you need a license to run them. For testing and evaluation Atlassian provides evalutation licenses, which you can get on the [My Atlassian license page](https://my.atlassian.com/products/index "My Atlassian").
 Here you have to keep in mind, that you have to register, if you don't have an Atlassian account. The registration is for free.
 You need licenses for the following products:
@@ -84,22 +127,22 @@ You need licenses for the following products:
 The evaluation licenses are valid for 30 days from the date of purchase. If you need a server id, this will be provided by the tools within the installation, so you are able to inlcude the licenses within the
 installation wizards of the tools, after the base setup provided by the Ansible scripts.
 
-### <a name="Minishift"></a>Minishift
+### Minishift
 
 The provided provision application and Rundeck jobs work with links, which are designed to connect to a installed and configured [Minishift](https://docs.openshift.org/latest/minishift/index.html "Minishift") instance. Minishift is a tool provided by Redhat to run OpenShift locally by providing a single-node OpenShift cluster inside a VM.
 Information, how to setup Minishift can be found at the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
 Currently the OpenDevStack works with Openshift 3.9.0.
 
-### <a name="Bash"></a>Bash: Cygwin / Linux
+### Cygwin / Linux
 
 You must have the possibility to run bash scripts to import the provided OpenShift templates. On Linux systems you can use these scripts out-of-the box, on Windows systems you will have to install either a bash port for Windows like [Cygwin](https://www.cygwin.com/ "Cygwin").
 For Windows, our recommendation is to use Cygwin for starting a minishift cluster and further configuration. Make sure to select the curl package under the "net" category when installing cygwin.
 
-### <a name="Ansible"></a>Ansible
+### Ansible
 
 The OpenDevStack uses [Ansible](https://www.ansible.com/ "Ansible") to install and configure the necessary software for the enabling stack, so it's recommended to get familiar with its core concepts and usage. Also credentials are stored within an Ansible vault, so even if you commit them in a public repository they are not available unless you know the vault password.
 
-## <a name="Setup your local environment"></a>Setup your local environment
+## Setup your local environment
 
 From now on we assume, you work from a Bash (Cygwin / Linux).
 
@@ -112,7 +155,7 @@ curl -LO "https://github.com/opendevstack/tailor/releases/download/v0.8.0/tailor
 mv tailor_windows_amd64.exe /usr/bin/tailor && chmod +x /usr/bin/tailor
 ```
 
-### <a name="Prepare infrastructure"></a>Prepare infrastructure
+### Prepare infrastructure
 
 First you have to clone the [ods-core](http://www.github.com/opendevstack/ods-core) repository.
 
@@ -137,19 +180,19 @@ Depending on your network or proxy configuration it might happen that some onlin
 
 **All ansible playbook commands in this guide have to be executed from the Ansible controller like described before!**
 
-### <a name="Install Atlassian Tools and Rundeck"></a>Install Atlassian Tools and Rundeck
+### Install Atlassian Tools and Rundeck
 
 The following steps explain the Atlassian tools and the Rundeck installation.
 
-#### <a name="Crowd Setup"></a>Crowd Setup
+#### Crowd Setup
 
-#####Setup Application
+##### Setup Application
 Downloading and Configuring as service
 ```
 ansible-playbook -v -i inventories/dev playbooks/crowd.yml --ask-vault
 ```
 
-<!-- TODO 
+<!-- TODO
 This can be fixed in the vagrant file. But should we really notice this here, because the recommendation is to use cygwin?
 
 If you are using windows you might get a warning that the directory containing the ansible files is world writable.
@@ -247,7 +290,7 @@ In the following wizard enter the data for the application you want to add. See 
 | Generic application | rundeck    | secret     | http://192.168.56.31:4440/rundeck | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
 | Generic application | provision  | provision  | http://192.168.56.1:8088             | 192.168.56.1  | Internal directory with OpenDevStack groups | all users     |
 
-#### <a name="Bitbucket Setup"></a>Bitbucket Setup
+#### Bitbucket Setup
 
 ##### Setup Application
 
@@ -297,7 +340,7 @@ Go to the **Global permissions** menu.
 In the groups section add the `bitbucket-administrators` group with *System Admin* rights.
 Add the `bitbucket-users` group with *Project Creator* rights.
 
-#### <a name="Jira Setup"></a>Jira Setup
+#### Jira Setup
 ##### Setup Application
 ```
 ansible-playbook -v -i inventories/dev playbooks/jira.yml --ask-vault
@@ -349,7 +392,7 @@ This will configure the authenticator.
 
 **After Jira has been restarted, you are not able to login with the local administrator anymore, but with your crowd credentials.**
 
-#### <a name="Confluence Setup"></a>Confluence Setup
+#### Confluence Setup
 
 ##### Setup Application
 ```
@@ -445,7 +488,7 @@ Verify that you have mirrored the github repos and that they have been populated
 
 Setup project branch permissions - `production` should be guarded against direct merges except through admins
 
-#### <a name="Rundeck Setup"></a>Rundeck Setup
+#### Rundeck Setup
 ##### Setup Application
 Rundeck needs an account to access Bitbucket later. We will create an ssh keypair for this and add this later to the Bitbucket `cd_user` account.
 
@@ -495,8 +538,8 @@ This is superfluous if we mirror the repos first to our vagrant / local bitbucke
 After the playbook has been finished Rundeck is accessible via http://192.168.56.31:4440/rundeck
 
 
-### <a name="Configure Minishift"></a>Configure Minishift
-#### <a name="Minishift startup"></a>Minishift startup
+### Configure Minishift
+#### Minishift startup
 First you have to install Minishift. You have to use a minishift version <= 1.17.0, so openshift v3.6.1 (see below) is supported.
 
 To do so, follow the installation instructions of the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
@@ -522,34 +565,34 @@ Please access the webconsole with the credentials `developer` `developer`.
 It is *important* not to use the `system` user, because Jenkins does not allow a user named `system`.
 <!-- TODO we are not doing anything on the console with jenkins, why is this hint important -->
 
-### <a name="Install OC CLI"></a>Install OC CLI
+### Configure the path for the OC CLI
 The OC CLI is automatically downloaded after "minishift start".
-To add it to the path you can run 
+To add it to the path you can run
 ```
 minishift oc-env
 ```
 and execute the displayed command.
 
-#### <a name="Login with the CLI"></a>Login with the CLI
+#### Login with the CLI
 You have to login via the CLI with
 ```
 oc login -u system:admin
 ```
 
-#### <a name="Setup the base template project"></a>Setup the base template project
+#### Setup the base template project
 After you have logged in, you are able to create a project, that will contain the base templates and the Nexus Repository Manager. Please enter the following command to add the base project:
 ```
 oc new-project cd --description="Base project holding the templates and the Repositoy Manager" --display-name="OpenDevStack Templates"
 ```
 This command will create the base project.
 
-#### <a name="Adjust user rights for the developer user"></a>Adjust user rights for the developer user
+#### Adjust user rights for the developer user
 To be able to see all created projects, you will have to adjust the user rights for the developer use. Do so by using the provided command
 ```
 oc adm policy --as system:admin add-cluster-role-to-user cluster-admin developer
 ```
 
-#### <a name="Create service account for deployment"></a>Create service account for deployment
+#### Create service account for deployment
 Rundeck needs a technical account in Minishift to be able to create projects and provision resources. Therefore, we create a service account, which credentials are provided to Rundeck in a later step.
 ```
 oc create sa deployment -n cd
@@ -561,7 +604,7 @@ oc sa get-token deployment -n cd
 ```
 Save the token text. It will be used in the Rundeck configuration later.
 
-#### <a name="Install Minishift certificate on Atlassian server"></a>Install Minishift certificate on Atlassian server
+#### Install Minishift certificate on Atlassian server
 You have to add the Minishift certificate to the `atlassian1` JVM, so Bitbucket is able to execute REST Calls against Minishift, triggered by Webhooks.
 Go to the directory, where you have started Vagrant.
 Here open a SSH connection to the `atlassian1` server
@@ -633,10 +676,10 @@ find ods-configuration -name '*.sample' -type f | while read NAME ; do mv "${NAM
 ```
 (Assuming your host/ip for bitbucket is: 192.168.56.31:7990)
 
-### <a name="Setup and Configure Nexus3"></a>Setup and Configure Nexus3
+### Setup and Configure Nexus3
 Amend `ods-configuration/ods-core/nexus/ocp-config/route.env` and change the domain to match your openshift/minishift domain (for example `nexus-cd.192.168.99.100.nip.io`)
 
-Go to `ods-core/nexus/ocp-config` - and type 
+Go to `ods-core/nexus/ocp-config` - and type
 ``` bash
 tailor update
 ```
@@ -671,9 +714,9 @@ Found 0 resources in OCP cluster (current state) and 5 resources in processed te
 
 .......
 
-``` 
+```
 
-#### <a name="Configure Repository Manager"></a>Configure Repository Manager
+#### Configure Repository Manager
 Access Nexus3 http://nexus-cd.192.168.99.100.nip.io/
 Login with the default credentials for Nexus3 `admin` `admin123`
 
@@ -726,11 +769,11 @@ Now create a user under **Security > Users**.
 | developer | developer |
 
 You can choose any First name, Last name and Email.
-Make this account active and assign role `OpenDevStack-Developer` to this account. 
+Make this account active and assign role `OpenDevStack-Developer` to this account.
 
 This account is later used for authentication against nexus to pull artifacts during build phase
 
-### <a name="Import base templates"></a>Import base templates
+### Import base templates
 After you have configured Nexus3, import the base templates for OpenShift.
 Clone the [ods-project-quickstarters](https://www.github.com/opendevstack/ods-project-quickstarters).
 Navigate to the folder, where the cloned repository is located and navigate to the `ocp-templates/scripts` subfolder.
@@ -760,7 +803,7 @@ oc process -n cd templates/secrets -p PROJECT=cd | oc create -n cd -f-
 We will now build base images for jenkins and jenkins slave:
 
 * Customize the configuration in the `ods-configuration` project at **ods-core > jenkins > ocp-config > bc.env**
-* Execute `tailor update` inside ods-core/jenkins/ocp-config: 
+* Execute `tailor update` inside ods-core/jenkins/ocp-config:
 
 * Start jenkins slave base build: `oc start-build -n cd jenkins-slave-base`
 * check that builds for `jenkins-master` and `jenkins-slave-base` are running and successful.
@@ -779,7 +822,7 @@ and start the build: `oc start-build -n cd jenkins-slave-maven`.
 
 Repeat for every project type you require.
 
-### <a name="Configure CD user"></a>Configure CD user
+### Configure CD user
 The continuous delivery process requires a dedicated system user in crowd for accessing bitbucket.
 Access the [crowd console](http://192.168.56.31:8095/crowd/console/) and choose **Add user** in the **Users** menu.
 Enter valid credentials. The only restriction here is, that the user has the username `cd_user` and that the user belongs to the internal crowd directory.
@@ -796,7 +839,7 @@ Open [Bitbucket](http://192.168.56.31:7990/), login with your crowd administrati
 Here open the User section. If you can't see the CD user, you have to synchronize the Crowd directory in the **User directories** section.
 Click on the CD user. In the user details you have the possiblity to add a SSH key. Click on the tab and enter the _public key_ from the generated key pair.
 
-### <a name="Setup and configure Sonarqube"></a>Setup and configure Sonarqube
+### Setup and configure Sonarqube
 
 Amend `ods-configuration/ods-core/sonarqube/ocp-config/sonarqube.env`
 and type
@@ -804,25 +847,25 @@ and type
 ``` bash
 tailor update
 
-``` 
+```
 confirm with `y` and installation should start.
 
-After the installation has taken place, change to the OpenShift Webconsole and start a SonarQube build. 
+After the installation has taken place, change to the OpenShift Webconsole and start a SonarQube build.
 
 Go to http://sonarqube-cd.192.168.99.100.nip.io/ and log in with your crowd user. Click on your profile on the top right, my account / security - and create a new token (and save it in your notes). This token will be used throughout the codebase to trigger the code quality scan.
 
 TODO: Explain all variables
 END_TODO
 
-Check out the cd project 
+Check out the cd project
 
 ### Prepare Docker Registry
-<!-- TODO 
+<!-- TODO
 This is required for later for the quickstarters, see, e.g. be_spring_boot.yaml
 -->
  The Docker registry preparation is needed for several quickstarters, e.g. be_spring_boot. To do so, make sure you have the Docker client binary installed on your machine.
 
-* `minishift addons apply registry-route` 
+* `minishift addons apply registry-route`
 * Run `minishift docker-env` to display the commend you need to execute in order to configure your Docker client.
 * Execute the displayed command, e.g. on Windows CMD `@FOR /f "tokens=*" %i IN ('minishift docker-env') DO @call %i`
 * `oc login -u developer -n default`
@@ -834,15 +877,15 @@ This is required for later for the quickstarters, see, e.g. be_spring_boot.yaml
 
 <!-- END TODO -->
 
-### <a name="Configure Rundeck"></a>Configure Rundeck and required Dockerfiles
+### Prepare Rundeck and required Dockerfiles
 
 After configuring the Atlassian tools and Minishift, Rundeck has to be configured as well.
 Access [Rundeck](http://192.168.56.31:4440/rundeck), login and open the configuration.
 
-#### <a name="Create Quickstarters project"></a>Create Quickstarters project
+#### Create Quickstarters project
 Create a project named `Quickstarters`. The project doesn't need any additional information, so leave all other options blank.
 
-#### <a name="Openshift API token"></a>Openshift API token
+#### Openshift API token
 You have to store the API token for the service account in Rundeck, so Rundeck is able to communicate with Openshift.
 
 * In the **Key Storage** section click on **Add or Upload a Key**, choose the Key Type *Password*.
@@ -851,7 +894,7 @@ You have to store the API token for the service account in Rundeck, so Rundeck i
 * The key has to have the name `openshift-api-token`
 * Save the key.
 
-#### <a name="CD user private key"></a>CD user private key
+#### CD user private key
 For initial code commit the CD user's private key has to be stored in Rundeck, to enable an SSH communication between Rundeck and Bitbucket.
 
 * In the **Key Storage** section click on **Add or Upload a Key**, choose the Key Type *Private key*.
@@ -860,12 +903,13 @@ For initial code commit the CD user's private key has to be stored in Rundeck, t
 * The key has to have the name `id_rsa_bitbucket`
 * Save the key.
 
-#### <a name="Configure SCM plugins"></a>Configure SCM plugins
+#### Configure SCM plugins
 
-Within the ods-project-quickstarters create a new branch called `rundeck-changes` - and let it inherit from production 
-
+Within the ods-project-quickstarters create a new branch called `rundeck-changes` - and let it inherit from production
+<!-- 
 TODO: verify the branch source is correct!
 END_TODO
+-->
 
 Open the configuration and go to the **SCM** section. This section is available as soon as you are in the project configuration for the `Quickstarters` project.
 
@@ -875,7 +919,7 @@ Open the configuration and go to the **SCM** section. This section is available 
 * Change the format for the **Job Source Files** to `yaml`
 * Enter the SSH Git URL for the `ods-project-quickstarters` repository.
 You have to enter valid authorization credentials, stored in Rundeck's key storage. This will be the ` id_rsa_bitbucket` key specified in the previous step.
-* Branch: Choose "rundeck-changes" 
+* Branch: Choose "rundeck-changes"
 * In the next step ensure that the regular expression points to yaml files. Change the regexp to `rundeck-jobs/.*\.yaml`
 * Change the file path template to `rundeck-jobs${job.group}${job.name}-${job.id}.${config.format}`
 * Import the job definitions under job actions.
@@ -900,13 +944,13 @@ project.globals.openshift_apihost=https://192.168.99.100:8443
 project.globals.openshift_apihost_lookup=192.168.99.100:8443
 # openshift nexus host including url scheme
 project.globals.nexus_host=http://nexus-cd.192.168.99.100.nip.io/
-# public route of docker registry including url scheme 
+# public route of docker registry including url scheme
 project.globals.openshift_dockerregistry=https://docker-registry-default.192.168.99.100.nip.io:443
 # os user and group rundeck is running with
 project.globals.rundeck_os_user=root:root
 ```
 
-### <a name="Configure provisioning application"></a>Configure provisioning application
+### Configure provisioning application
 Clone the provisioning application repository.
 
 Because we disabled anonymous access for nexus, we need to provide some data.
@@ -934,20 +978,20 @@ Add `prov-cd/default` service account with admin rights into -dev & -test projec
 
 start with prov-cd and issue
 ``` bash
-tailor update pvc/jenkins 
-tailor update 
+tailor update pvc/jenkins
+tailor update
 ```
 
-for the runtime projects (prov-test and prov-dev) run 
+for the runtime projects (prov-test and prov-dev) run
 ``` bash
 tailor update pvc
-tailor update 
+tailor update
 ```
 Once jenkins deployed - you can trigger the build in prov-cd/test - it should automatically deploy - and you can start using the provision app.
 
-TODO: fix_me END_TODO
+<!-- TODO: fix_me END_TODO -->
 
-## <a name="Try out the OpenDevStack"></a>Try out the OpenDevStack
+## Try out the OpenDevStack
 After you have set up your local environment it's time to test the OpenDevStack and see it working.
 Open the Provisioning application in your web browser and login with your crowd credentials.
 

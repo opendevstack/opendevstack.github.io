@@ -830,12 +830,6 @@ Markdown page content
         list-style: none;
         
     }
-    @media screen and(max-width:900px) {
-        line-break: loose;
-        width:100%;
-        line-height: 14px;
-        
-    }
 }
 
 .sticky {
@@ -859,6 +853,10 @@ Markdown page content
         width: 35%;
         top:none;
         display: block;
+        margin-bottom: 50px;
+        line-break: loose;
+        width:100%;
+        line-height: 15px;
         
     }
  
