@@ -899,6 +899,16 @@ project.globals.openshift_dockerregistry=https://docker-registry-default.192.168
 # os user and group rundeck is running with
 project.globals.rundeck_os_user=root:root
 ```
+### Add shared images 
+OpenDevStack provides shared images used accross the stack - like the authproxy based on NGINX and lua for crowd
+
+In order to install, create a new project called `shared-services` 
+
+Make the required customizations in the `ods-configuration` under **ods-core > shared-images > nginx-authproxy-crowd >  ocp-config > bc.env and secret.env**
+
+and run `tailor update` inside `ods-core\shared-images\nginx-authproxy-crowd`:
+
+and start the build: `oc start-build -n shared-services nginx-authproxy`.
 
 ### Configure provisioning application
 Clone the provisioning application repository.
