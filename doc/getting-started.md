@@ -757,7 +757,7 @@ We will now build base images for jenkins and jenkins slave:
 
 * Start jenkins slave base build: `oc start-build -n cd jenkins-slave-base`
 * check that builds for `jenkins-master` and `jenkins-slave-base` are running and successful.
-* You can optionally start the `jenkins-master` build using `oc start-buidl -n cd jenkins-master`
+* You can optionally start the `jenkins-master` build using `oc start-build -n cd jenkins-master`
 
 #### Prepare Jenkins slave docker images
 To support different kinds of projects, we need different kinds of Jenkins slave images.
