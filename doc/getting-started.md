@@ -933,25 +933,22 @@ You can login in with the Crowd admin user you set up earlier.
 
 Create 3 projects
 - prov-cd (for the jenkins builder)
-- prov-test (production will be built and deployed here)
-- prov-dev (feature branches will be built and deployed here)
+- prov-test (*production* branch will be built and deployed here)
+- prov-dev (*feature* branches will be built and deployed here)
 
-Add `prov-cd/default` service account with admin rights into -dev & -test projects, so jenkins can update the build config and trigger the corresponding oc start build.
+Add `prov-cd/jenkins` and `prov-cd/default` service accounts with edit rights into -dev & -test projects, so jenkins can update the build config and trigger the corresponding `oc start build / oc update bc` from within the jenkins build.
 
 start with prov-cd and issue
 ``` bash
-tailor update pvc/jenkins
 tailor update
 ```
 
 for the runtime projects (prov-test and prov-dev) run
 ``` bash
-tailor update pvc
 tailor update
 ```
-Once jenkins deployed - you can trigger the build in prov-cd/test - it should automatically deploy - and you can start using the provision app.
 
-<!-- TODO: fix_me END_TODO -->
+Once jenkins deployed - you can trigger the build in prov-cd/test - it should automatically deploy - and you can start using the provision app.
 
 ## Try out the OpenDevStack
 After you have set up your local environment it's time to test the OpenDevStack and see it working.
