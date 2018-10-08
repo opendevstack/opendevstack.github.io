@@ -687,12 +687,14 @@ After this step you will have to create the following repositories in the **Repo
 | ---------------- | ------ | ------ | ------- | -------------- | ------------- | ---------- | ------------------------------ | ----------------- | ------------------------------------------------------------------ | ------------ |
 | candidates       | maven2 | hosted | checked | Release        | Strict        | candidates | checked                        | Disable-redeploy  | | none                                                                   |
 | releases         | maven2 | hosted | checked | Release        | Strict        | releases   | checked                        | Disable-redeploy  | | none                                                                   |
+| npmjs           | npm     | proxy  | checked |                |               | default    | checked                        |   |                 | https://registry.npmjs.org | 
 | atlassian_public | maven2 | proxy  | checked | Release        | Strict        | atlassian_public  | checked                 | Disable-redeploy  | https://maven.atlassian.com/content/repositories/atlassian-public/ |
 | jcenter | maven2 | proxy  | checked | Release        | Strict        | default  | checked                 | Disable-redeploy  | https://jcenter.bintray.com | maven-public
 | sbt-plugins | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | http://dl.bintray.com/sbt/sbt-plugin-releases/ | ivy-releases
 | sbt-releases | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases | ivy-releases
 | typesafe-ivy-releases | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | https://dl.bintray.com/typesafe/ivy-releases | ivy-releases
 | ivy-releases | maven2 | group  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | |
+
 
 ##### Configure user and roles
 First disable the anonymous access in the **Security > Anonymous** section.
@@ -757,7 +759,7 @@ We will now build base images for jenkins and jenkins slave:
 
 * Start jenkins slave base build: `oc start-build -n cd jenkins-slave-base`
 * check that builds for `jenkins-master` and `jenkins-slave-base` are running and successful.
-* You can optionally start the `jenkins-master` build using `oc start-buidl -n cd jenkins-master`
+* You can optionally start the `jenkins-master` build using `oc start-build -n cd jenkins-master`
 
 #### Prepare Jenkins slave docker images
 To support different kinds of projects, we need different kinds of Jenkins slave images.
@@ -899,6 +901,16 @@ project.globals.openshift_dockerregistry=https://docker-registry-default.192.168
 # os user and group rundeck is running with
 project.globals.rundeck_os_user=root:root
 ```
+### Add shared images 
+OpenDevStack provides shared images used accross the stack - like the authproxy based on NGINX and lua for crowd
+
+In order to install, create a new project called `shared-services` 
+
+Make the required customizations in the `ods-configuration` under **ods-core > shared-images > nginx-authproxy-crowd >  ocp-config > bc.env and secret.env**
+
+and run `tailor update` inside `ods-core\shared-images\nginx-authproxy-crowd`:
+
+and start the build: `oc start-build -n shared-services nginx-authproxy`.
 
 ### Configure provisioning application
 Clone the provisioning application repository.
@@ -921,25 +933,22 @@ You can login in with the Crowd admin user you set up earlier.
 
 Create 3 projects
 - prov-cd (for the jenkins builder)
-- prov-test (production will be built and deployed here)
-- prov-dev (feature branches will be built and deployed here)
+- prov-test (*production* branch will be built and deployed here)
+- prov-dev (*feature* branches will be built and deployed here)
 
-Add `prov-cd/default` service account with admin rights into -dev & -test projects, so jenkins can update the build config and trigger the corresponding oc start build.
+Add `prov-cd/jenkins` and `prov-cd/default` service accounts with edit rights into -dev & -test projects, so jenkins can update the build config and trigger the corresponding `oc start build / oc update bc` from within the jenkins build.
 
 start with prov-cd and issue
 ``` bash
-tailor update pvc/jenkins
 tailor update
 ```
 
 for the runtime projects (prov-test and prov-dev) run
 ``` bash
-tailor update pvc
 tailor update
 ```
-Once jenkins deployed - you can trigger the build in prov-cd/test - it should automatically deploy - and you can start using the provision app.
 
-<!-- TODO: fix_me END_TODO -->
+Once jenkins deployed - you can trigger the build in prov-cd/test - it should automatically deploy - and you can start using the provision app.
 
 ## Try out the OpenDevStack
 After you have set up your local environment it's time to test the OpenDevStack and see it working.
