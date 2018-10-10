@@ -8,13 +8,19 @@
 
         <div class="header-img index-img">
             <div>
-                <h2>OpenDevStack</h2>
-                <p>Rapid infrastructure generation and continuous delivery for your projects</p>
-                <a id="visit-git-bt" href="{{ site.github.organization }}">Visit our repository</a>
+                <h2><a href="/">OpenDevStack</a></h2>
+                <subheading >provision.commit.run</subheading>
+                <div class="clearfix" id="header-btn"><div><a href="/doc/getting-started"> Getting started</a></div><div><a target="_blank" href="https://github.com/opendevstack">Visit our repository</a></div></div>
             </div>
-            
-      </div>
+        </div>
         <div class="page-content">
+                {% if page.tags=='documentation' %}
+      
+                <div>
+                          {% include documentation_navigation.html %} 
+                </div>
+                {% endif %}
+
             <div class="wrapper">
                     {{content}}
             </div>

@@ -23,6 +23,8 @@ $grey-color:       #828282;
 $grey-color-light: lighten($grey-color, 40%);
 $grey-color-dark:  darken($grey-color, 25%);
 
+$documentation: false !default;
+
 // Width of the content area
 $content-width:    80%;
 
@@ -48,4 +50,4 @@ $on-laptop:        800px;
         "layout",
         "syntax-highlighting"
 ;
-@import url('https://fonts.googleapis.com/css?family=Open+Sans|Roboto')
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400|Roboto')
