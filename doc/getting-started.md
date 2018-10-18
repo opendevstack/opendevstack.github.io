@@ -687,7 +687,7 @@ After this step you will have to create the following repositories in the **Repo
 | ---------------- | ------ | ------ | ------- | -------------- | ------------- | ---------- | ------------------------------ | ----------------- | ------------------------------------------------------------------ | ------------ |
 | candidates       | maven2 | hosted | checked | Release        | Strict        | candidates | checked                        | Disable-redeploy  | | none                                                                   |
 | releases         | maven2 | hosted | checked | Release        | Strict        | releases   | checked                        | Disable-redeploy  | | none                                                                   |
-| npmjs           | npm     | proxy  | checked |                |               | default    | checked                        |   |                 | https://registry.npmjs.org | 
+| npmjs           | npm     | proxy  | checked |                |               | default    | checked                        |   |  https://registry.npmjs.org  | | 
 | atlassian_public | maven2 | proxy  | checked | Release        | Strict        | atlassian_public  | checked                 | Disable-redeploy  | https://maven.atlassian.com/content/repositories/atlassian-public/ |
 | jcenter | maven2 | proxy  | checked | Release        | Strict        | default  | checked                 | Disable-redeploy  | https://jcenter.bintray.com | maven-public
 | sbt-plugins | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | http://dl.bintray.com/sbt/sbt-plugin-releases/ | ivy-releases
@@ -931,10 +931,12 @@ After startup via the IDE the application is available at http://localhost:8088/
 
 You can login in with the Crowd admin user you set up earlier.
 
-Create 3 projects
-- prov-cd (for the jenkins builder)
-- prov-test (*production* branch will be built and deployed here)
-- prov-dev (*feature* branches will be built and deployed here)
+### Setup within Openshift
+
+Create 3 openshift projects projects
+- `prov-cd` (for the jenkins builder)
+- `prov-test` (*production* branch will be built and deployed here)
+- `prov-dev` (*feature* branches will be built and deployed here)
 
 Add `prov-cd/jenkins` and `prov-cd/default` service accounts with edit rights into -dev & -test projects, so jenkins can update the build config and trigger the corresponding `oc start build / oc update bc` from within the jenkins build.
 
@@ -949,6 +951,12 @@ tailor update
 ```
 
 Once jenkins deployed - you can trigger the build in prov-cd/test - it should automatically deploy - and you can start using the provision app.
+
+Depending on the performance of jira / confluence & Bitbucket - you may get a 504 timeout in the provision app. To fix this - and increase this timeout - run 
+
+`oc annotate route prov-app --overwrite haproxy.router.openshift.io/timeout=5m`
+
+in `prov-dev` and `prov-test` projects
 
 ## Try out the OpenDevStack
 After you have set up your local environment it's time to test the OpenDevStack and see it working.
