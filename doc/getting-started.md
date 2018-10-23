@@ -508,7 +508,7 @@ The file has to have the following content:
     "vm-driver": "virtualbox"
 }
 ```
-It is important to use *v3.6.1* to ensure, that the templates provided by the OpenDevStack work properly. If you are on windows you have to run the "minishift start" command as administrator.
+It is important to use *v3.9.0* as minimum version to ensure, that the templates provided by the OpenDevStack work properly. If you are on windows you have to run the "minishift start" command as administrator.
 
 After the start up you are able to open the webconsole with the `minishift console` command. This will open the webconsole in your standard browser.
 Please access the webconsole with the credentials `developer` `developer`.
