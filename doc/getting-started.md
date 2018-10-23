@@ -713,6 +713,7 @@ This role has to have the following privileges:
 | nx-repository-admin-maven2-candidates-read   |
 | nx-repository-view-maven2-\*-\*              |
 | nx-repository-view-maven2-candidates-\*      |
+| nx-repository-view-npm-\*-\* |
 
 Now create a user under **Security > Users**.
 
