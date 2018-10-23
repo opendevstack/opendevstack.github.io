@@ -490,7 +490,7 @@ After the playbook has been finished Rundeck is accessible via http://192.168.56
 
 ### Configure Minishift
 #### Minishift startup
-First you have to install Minishift. You have to use a minishift version <= 1.17.0, so openshift v3.6.1 (see below) is supported.
+First you have to install Minishift. You have to use a minishift version >= 1.14.0, so openshift v3.9.0 (see below) is supported.
 
 To do so, follow the installation instructions of the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
 
