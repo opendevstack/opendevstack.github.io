@@ -626,6 +626,8 @@ find ods-configuration -name '*.sample' -type f | while read NAME ; do mv "${NAM
 ```
 (Assuming your host/ip for bitbucket is: 192.168.56.31:7990)
 
+Now you will have to check the `.env` configuration files in `ods-configuration`. Change all values with the suffix `_base64` to a Base64 encoded value.  
+
 ### Setup and Configure Nexus3
 Amend `ods-configuration/ods-core/nexus/ocp-config/route.env` and change the domain to match your openshift/minishift domain (for example `nexus-cd.192.168.99.100.nip.io`)
 
