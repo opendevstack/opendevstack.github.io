@@ -59,7 +59,7 @@ body {
     font-family: 'Open Sans', sans-serif;
     font-size: $base-font-size;
     line-height: $base-line-height;
-    font-weight: 300;
+    font-weight: 400;
     color: $text-color;
     background-color: $background-color;
     -webkit-text-size-adjust: 100%;
@@ -116,16 +116,17 @@ li {
  * Headings
  */
 h1, h2, h3, h4, h5, h6 {
-  font-weight: 700;
+  font-weight: 600;
   font-family: 'Roboto', sans-serif;
   color: $heading-color;
-  font-size: 3em;
+  font-size: 2em;
+
 }
 h1 {
     text-align: center;
 }
 h2 {
-    padding-top: 25px;
+    padding-top: 30px;
 }
 h3 {
     padding-top:15px;
@@ -168,7 +169,7 @@ code {
     font-size: 14px;
     border: 1px solid $grey-color-light;
     border-radius: 3px;
-    background-color: $grey-color-light ;
+    background-color: black;
     font-family: Consolas, Menlo, Monaco, Lucida Console, Liberation Mono, DejaVu Sans Mono, Bitstream Vera Sans Mono, Courier New, monospace, serif;
 }
 
@@ -201,6 +202,10 @@ pre {
     
     font-family: 'Open Sans', sans-serif;
     @extend %clearfix;
+
+    @if $documentation {
+        margin-top:-500px;
+    }
 
     @include media-query($on-laptop) {
         max-width: -webkit-calc(#{$content-width} - (#{$spacing-unit}));

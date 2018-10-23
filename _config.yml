@@ -17,10 +17,10 @@ github:
 
 # Build settings
 baseurl:
-permalink: docs/:title
+permalink: doc/:title
 markdown: kramdown
 highlighter: rouge
 relative_permalinks: false
 collections:
-  docs:
+  doc:
     output: true

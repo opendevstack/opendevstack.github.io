@@ -3,54 +3,60 @@ layout: index
 ---
 
 <div class="clearfix" id="container">
-    <div>
-        <h2>Teaser</h2>
+    <div class="child">
+        <h2>Introduction</h2>
         <div>
             <img src="assets/teaser.png">
         </div>
-        <div>
-            OpenDevStack allows to set up required infrastructure and continuous delivery processes for new projects in less than 5 min.
-            OpenDevStack creates the required Confluence spaces, Jira projects, Bitbucket projects and repositories and the required OpenShift resources.
-            And all is tightly integrated. Simply provision a new project, commit and then run your code.
+        <div class="inner-container">
+                OpenDevStack allows to set up required infrastructure and continuous delivery processes for new projects in less than 5 min. OpenDevStack creates the required Confluence spaces, Jira projects, Bitbucket projects and repositories and the required OpenShift resources. And all is tightly integrated. Simply provision a new project, commit and then run your code.
         </div>
     </div>
     <div>
-        <h2>Main advantages</h2>
-        <div> 
-            <img src="assets/advantages.png">
-        </div>
-        <div>
-            <ul>
-                <li>Shortens ramp-up times for new projects to under 5 min</li>
-                <li>Pre-defined quick start templates for different project flavors</li>
-                <li>Easily add new quickstarters for your projects</li>
-                <li>Pre-defined Jenkins pipelines and integration of Atlassian tools and OpenShift</li>
-            </ul>
-        </div>
-    </div>
-    <div>
+          <h2>Main advantages</h2>
+          <div>
+              <img src="assets/advantages.png">
+          </div>
+          <div>
+              <ul>
+                  <li>Shortens ramp-up times for new projects to under 5 min</li>
+                  <li>Pre-defined quick start templates for different project flavors</li>
+                  <li>Easily add new quickstarters for your projects</li>
+                  <li>Pre-defined Jenkins pipelines and integration of Atlassian tools and OpenShift</li>
+              </ul>
+          </div>
+      </div>
+      <div class="child">
         <h2>Roadmap</h2>
         <div class="clearfix container-img" id="roadmap-img">
             <img src="assets/roadmap.png">
         </div>
-        <div >
+        <div class="inner-container">
                 <ul>
-                        <li>July: First public release</li>
+                        <li>October: Release V1.0 </li>
+                        <li>Following: Release of continuously advanced versions</li>
                     </ul>
-                    We will release the first version in July, 2018. If you are interested in OpenDevStack, as a user or contributor, please contact us.
+                    If you are interested in OpenDevStack, as a user or contributor, please contact us.
         </div>
     </div>
+
+
     <div>
-            <h2>Futher Material</h2>
-            
+            <h2>Documentation</h2>
+
             <div>
                 <img src="assets/materials.png">
             </div>
-            <div>
-                    <p>Please have a look at the following material</p>
+
+            <div class="inner-container">
+
                 <ul>
                     <li>
-                        <a href="https://youtu.be/SyIsCLXvBpo">Screencast</a> of using OpenDevStack
+                        <a href="/doc/getting-started">Getting started</a>
+                    </li>
+                    <li>
+                        <a href="https://youtu.be/SyIsCLXvBpo">Screencast</a>
+
                     </li>
                 </ul>
             </div>
@@ -60,25 +66,24 @@ layout: index
 <div class="clearfix" id="short-description-container-logo">
     <h2>Supported Technologies</h2>
     <div>
-        <a title="See page for author [Public domain], via Wikimedia Commons" href="https://commons.wikimedia.org/wiki/File:OpenShift-LogoType.svg"><img width="512" alt="OpenShift-LogoType" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/OpenShift-LogoType.svg/512px-OpenShift-LogoType.svg.png"></a>
+        <a title="See page for author [Public domain], via Wikimedia Commons" href="https://www.openshift.com/"><img width="512" alt="OpenShift-LogoType" src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/OpenShift-LogoType.svg/512px-OpenShift-LogoType.svg.png"></a>
     </div>
     <div>
-        <img src="https://www.atlassian.com/dam/jcr:9cfdc538-fb05-4229-9ecd-cb4eef5cee00/Jira%20Core-blue.svg"/>
+            <a target="_blank" href="https://de.atlassian.com/software/jira/core"><img src="https://www.atlassian.com/dam/jcr:9cfdc538-fb05-4229-9ecd-cb4eef5cee00/Jira%20Core-blue.svg" alt="Jira Core"/></a>
     </div>
     <div>
-        <img  src="https://www.atlassian.com/dam/jcr:1b7f4009-27d0-4882-8629-cecae97fc00f/Confluence-blue.svg">
+            <a target="_blank" href="https://www.atlassian.com/software/confluence"><img  src="https://www.atlassian.com/dam/jcr:1b7f4009-27d0-4882-8629-cecae97fc00f/Confluence-blue.svg" alt="Confluence"/></a>
     </div>
     <div>
-        <img  src="https://www.atlassian.com/dam/jcr:bd56917e-e361-4f03-b672-9f5ef5b06e80/Bitbucket-blue.svg">
+            <a target="_blank" href="https://bitbucket.org/"><img  src="https://www.atlassian.com/dam/jcr:bd56917e-e361-4f03-b672-9f5ef5b06e80/Bitbucket-blue.svg"/ alt="Bitbucket"></a>
     </div>
     <div>
-        <img  src="https://wiki.jenkins.io/download/attachments/2916393/logo.png?version=1&modificationDate=1302753947000&api=v2">
+            <a target="_blank" href="https://jenkins.io/"><img  src="https://jenkins.io/images/logos/jenkins/jenkins.png" alt="Jenkins"></a>
     </div>
     <div>
-        <img  src="https://www.sonarqube.org/assets/logo-31ad3115b1b4b120f3d1efd63e6b13ac9f1f89437f0cf6881cc4d8b5603a52b4.svg">
+            <a target="_blank" href="https://www.sonarqube.org/"><img src="https://www.sonarqube.org/assets/logo-31ad3115b1b4b120f3d1efd63e6b13ac9f1f89437f0cf6881cc4d8b5603a52b4.svg" alt="Sonarqube"/></a>
     </div>
     <div>
-        <img  src="https://www.sonatype.com/hs-fs/hubfs/Sonatype_Logos/SON_logo_main.png?t=1534204741988&width=236&name=SON_logo_main.png">
+            <a target="_blank" href="https://de.sonatype.com/nexus-repository-sonatype"><img src="https://user-images.githubusercontent.com/7955995/29498304-ee71d418-85c6-11e7-9f95-e87a4439ed3c.png" alt="Sonatype Nexus"/></a>
     </div>
 </div>
-    
