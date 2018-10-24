@@ -490,7 +490,7 @@ After the playbook has been finished Rundeck is accessible via http://192.168.56
 
 ### Configure Minishift
 #### Minishift startup
-First you have to install Minishift. You have to use a minishift version <= 1.17.0, so openshift v3.6.1 (see below) is supported.
+First you have to install Minishift. You have to use a minishift version >= 1.14.0, so openshift v3.9.0 (see below) is supported.
 
 To do so, follow the installation instructions of the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
 
@@ -508,7 +508,7 @@ The file has to have the following content:
     "vm-driver": "virtualbox"
 }
 ```
-It is important to use *v3.6.1* to ensure, that the templates provided by the OpenDevStack work properly. If you are on windows you have to run the "minishift start" command as administrator.
+It is important to use *v3.9.0* as minimum version to ensure, that the templates provided by the OpenDevStack work properly. If you are on windows you have to run the "minishift start" command as administrator.
 
 After the start up you are able to open the webconsole with the `minishift console` command. This will open the webconsole in your standard browser.
 Please access the webconsole with the credentials `developer` `developer`.
@@ -626,6 +626,8 @@ find ods-configuration -name '*.sample' -type f | while read NAME ; do mv "${NAM
 ```
 (Assuming your host/ip for bitbucket is: 192.168.56.31:7990)
 
+Now you will have to check the `.env` configuration files in `ods-configuration`. Change all values with the suffix `_base64` to a Base64 encoded value.  
+
 ### Setup and Configure Nexus3
 Amend `ods-configuration/ods-core/nexus/ocp-config/route.env` and change the domain to match your openshift/minishift domain (for example `nexus-cd.192.168.99.100.nip.io`)
 
@@ -713,6 +715,7 @@ This role has to have the following privileges:
 | nx-repository-admin-maven2-candidates-read   |
 | nx-repository-view-maven2-\*-\*              |
 | nx-repository-view-maven2-candidates-\*      |
+| nx-repository-view-npm-\*-\* |
 
 Now create a user under **Security > Users**.
 
