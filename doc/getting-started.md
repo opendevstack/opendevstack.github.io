@@ -232,13 +232,13 @@ Access the Crowd console at http://192.168.56.31:8095/crowd/console/
 Choose the **Applications** menu point and click **Add application**
 In the following wizard enter the data for the application you want to add. See the data for the applications in the test environment in the table below.
 
-| Application type    | Name       | Password   | URL                               | IP address    | Directories                                 | Authorisation |
-| ------------------- | ---------- | ---------- | --------------------------------- | ------------- | ------------------------------------------- | ------------- |
-| Jira                | jira       | jira       | http://192.168.56.31:8080         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
-| Confluence          | confluence | confluence | http://192.168.56.31:8090         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
-| Bitbucket Server    | bitbucket  | bitbucket  | http://192.168.56.31:7990         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
-| Generic application | rundeck    | secret     | http://192.168.56.31:4440/rundeck | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
-| Generic application | provision  | provision  | http://192.168.56.1:8088             | 192.168.56.1  | Internal directory with OpenDevStack groups | all users     |
+| Application type    | Name       | Password   | URL                               | IP address    | Directories                                 | Authorisation | Additional Remote Adresses |
+| ------------------- | ---------- | ---------- | --------------------------------- | ------------- | ------------------------------------------- | ------------- | -------------------------- |
+| Jira                | jira       | jira       | http://192.168.56.31:8080         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
+| Confluence          | confluence | confluence | http://192.168.56.31:8090         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
+| Bitbucket Server    | bitbucket  | bitbucket  | http://192.168.56.31:7990         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
+| Generic application | rundeck    | secret     | http://192.168.56.31:4440/rundeck | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
+| Generic application | provision  | provision  | http://192.168.56.1:8088             | 192.168.56.1  | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
 
 #### Bitbucket Setup
 
@@ -805,7 +805,7 @@ tailor update
 ```
 confirm with `y` and installation should start.
 
-After the installation has taken place, change to the OpenShift Webconsole and start a SonarQube build.
+After the installation has taken place, you will have to build sonarqube: `oc start-build -n cd sonarqube`
 
 Go to http://sonarqube-cd.192.168.99.100.nip.io/ and log in with your crowd user. Click on your profile on the top right, my account / security - and create a new token (and save it in your notes). This token will be used throughout the codebase to trigger the code quality scan.
 
@@ -941,14 +941,14 @@ Create 3 openshift projects projects
 - `prov-test` (*production* branch will be built and deployed here)
 - `prov-dev` (*feature* branches will be built and deployed here)
 
-Add `prov-cd/jenkins` and `prov-cd/default` service accounts with edit rights into -dev & -test projects, so jenkins can update the build config and trigger the corresponding `oc start build / oc update bc` from within the jenkins build.
-
-start with prov-cd and issue
+Start with prov-cd and issue
 ``` bash
 tailor update
 ```
 
-for the runtime projects (prov-test and prov-dev) run
+Add `prov-cd/jenkins` and `prov-cd/default` service accounts with edit rights into -dev & -test projects, so jenkins can update the build config and trigger the corresponding `oc start build / oc update bc` from within the jenkins build.
+
+For the runtime projects (prov-test and prov-dev) run
 ``` bash
 tailor update
 ```
