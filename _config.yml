@@ -24,3 +24,8 @@ relative_permalinks: false
 collections:
   doc:
     output: true
+ 
+# this must be excluded for the gradle build
+# otherwise jekyll tries to source this directory as well
+# ... and failes ..
+exclude: [build]
