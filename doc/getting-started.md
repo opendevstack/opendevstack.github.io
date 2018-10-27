@@ -232,13 +232,13 @@ Access the Crowd console at http://192.168.56.31:8095/crowd/console/
 Choose the **Applications** menu point and click **Add application**
 In the following wizard enter the data for the application you want to add. See the data for the applications in the test environment in the table below.
 
-| Application type    | Name       | Password   | URL                               | IP address    | Directories                                 | Authorisation |
-| ------------------- | ---------- | ---------- | --------------------------------- | ------------- | ------------------------------------------- | ------------- |
-| Jira                | jira       | jira       | http://192.168.56.31:8080         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
-| Confluence          | confluence | confluence | http://192.168.56.31:8090         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
-| Bitbucket Server    | bitbucket  | bitbucket  | http://192.168.56.31:7990         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
-| Generic application | rundeck    | secret     | http://192.168.56.31:4440/rundeck | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     |
-| Generic application | provision  | provision  | http://192.168.56.1:8088             | 192.168.56.1  | Internal directory with OpenDevStack groups | all users     |
+| Application type    | Name       | Password   | URL                               | IP address    | Directories                                 | Authorisation | Additional Remote Adresses |
+| ------------------- | ---------- | ---------- | --------------------------------- | ------------- | ------------------------------------------- | ------------- | -------------------------- |
+| Jira                | jira       | jira       | http://192.168.56.31:8080         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
+| Confluence          | confluence | confluence | http://192.168.56.31:8090         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
+| Bitbucket Server    | bitbucket  | bitbucket  | http://192.168.56.31:7990         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
+| Generic application | rundeck    | secret     | http://192.168.56.31:4440/rundeck | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
+| Generic application | provision  | provision  | http://192.168.56.1:8088             | 192.168.56.1  | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
 
 #### Bitbucket Setup
 
@@ -490,7 +490,7 @@ After the playbook has been finished Rundeck is accessible via http://192.168.56
 
 ### Configure Minishift
 #### Minishift startup
-First you have to install Minishift. You have to use a minishift version <= 1.17.0, so openshift v3.6.1 (see below) is supported.
+First you have to install Minishift. You have to use a minishift version >= 1.14.0, so openshift v3.9.0 (see below) is supported.
 
 To do so, follow the installation instructions of the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
 
@@ -508,7 +508,7 @@ The file has to have the following content:
     "vm-driver": "virtualbox"
 }
 ```
-It is important to use *v3.6.1* to ensure, that the templates provided by the OpenDevStack work properly. If you are on windows you have to run the "minishift start" command as administrator.
+It is important to use *v3.9.0* as minimum version to ensure, that the templates provided by the OpenDevStack work properly. If you are on windows you have to run the "minishift start" command as administrator.
 
 After the start up you are able to open the webconsole with the `minishift console` command. This will open the webconsole in your standard browser.
 Please access the webconsole with the credentials `developer` `developer`.
@@ -626,6 +626,8 @@ find ods-configuration -name '*.sample' -type f | while read NAME ; do mv "${NAM
 ```
 (Assuming your host/ip for bitbucket is: 192.168.56.31:7990)
 
+Now you will have to check the `.env` configuration files in `ods-configuration`. Change all values with the suffix `_base64` to a Base64 encoded value.  
+
 ### Setup and Configure Nexus3
 Amend `ods-configuration/ods-core/nexus/ocp-config/route.env` and change the domain to match your openshift/minishift domain (for example `nexus-cd.192.168.99.100.nip.io`)
 
@@ -687,12 +689,14 @@ After this step you will have to create the following repositories in the **Repo
 | ---------------- | ------ | ------ | ------- | -------------- | ------------- | ---------- | ------------------------------ | ----------------- | ------------------------------------------------------------------ | ------------ |
 | candidates       | maven2 | hosted | checked | Release        | Strict        | candidates | checked                        | Disable-redeploy  | | none                                                                   |
 | releases         | maven2 | hosted | checked | Release        | Strict        | releases   | checked                        | Disable-redeploy  | | none                                                                   |
+| npmjs           | npm     | proxy  | checked |                |               | default    | checked                        |   |  https://registry.npmjs.org  | | 
 | atlassian_public | maven2 | proxy  | checked | Release        | Strict        | atlassian_public  | checked                 | Disable-redeploy  | https://maven.atlassian.com/content/repositories/atlassian-public/ |
 | jcenter | maven2 | proxy  | checked | Release        | Strict        | default  | checked                 | Disable-redeploy  | https://jcenter.bintray.com | maven-public
 | sbt-plugins | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | http://dl.bintray.com/sbt/sbt-plugin-releases/ | ivy-releases
 | sbt-releases | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases | ivy-releases
 | typesafe-ivy-releases | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | https://dl.bintray.com/typesafe/ivy-releases | ivy-releases
 | ivy-releases | maven2 | group  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | |
+
 
 ##### Configure user and roles
 First disable the anonymous access in the **Security > Anonymous** section.
@@ -711,6 +715,7 @@ This role has to have the following privileges:
 | nx-repository-admin-maven2-candidates-read   |
 | nx-repository-view-maven2-\*-\*              |
 | nx-repository-view-maven2-candidates-\*      |
+| nx-repository-view-npm-\*-\* |
 
 Now create a user under **Security > Users**.
 
@@ -757,7 +762,7 @@ We will now build base images for jenkins and jenkins slave:
 
 * Start jenkins slave base build: `oc start-build -n cd jenkins-slave-base`
 * check that builds for `jenkins-master` and `jenkins-slave-base` are running and successful.
-* You can optionally start the `jenkins-master` build using `oc start-buidl -n cd jenkins-master`
+* You can optionally start the `jenkins-master` build using `oc start-build -n cd jenkins-master`
 
 #### Prepare Jenkins slave docker images
 To support different kinds of projects, we need different kinds of Jenkins slave images.
@@ -800,7 +805,7 @@ tailor update
 ```
 confirm with `y` and installation should start.
 
-After the installation has taken place, change to the OpenShift Webconsole and start a SonarQube build.
+After the installation has taken place, you will have to build sonarqube: `oc start-build -n cd sonarqube`
 
 Go to http://sonarqube-cd.192.168.99.100.nip.io/ and log in with your crowd user. Click on your profile on the top right, my account / security - and create a new token (and save it in your notes). This token will be used throughout the codebase to trigger the code quality scan.
 
@@ -899,6 +904,16 @@ project.globals.openshift_dockerregistry=https://docker-registry-default.192.168
 # os user and group rundeck is running with
 project.globals.rundeck_os_user=root:root
 ```
+### Add shared images 
+OpenDevStack provides shared images used accross the stack - like the authproxy based on NGINX and lua for crowd
+
+In order to install, create a new project called `shared-services` 
+
+Make the required customizations in the `ods-configuration` under **ods-core > shared-images > nginx-authproxy-crowd >  ocp-config > bc.env and secret.env**
+
+and run `tailor update` inside `ods-core\shared-images\nginx-authproxy-crowd`:
+
+and start the build: `oc start-build -n shared-services nginx-authproxy`.
 
 ### Configure provisioning application
 Clone the provisioning application repository.
@@ -919,27 +934,32 @@ After startup via the IDE the application is available at http://localhost:8088/
 
 You can login in with the Crowd admin user you set up earlier.
 
-Create 3 projects
-- prov-cd (for the jenkins builder)
-- prov-test (production will be built and deployed here)
-- prov-dev (feature branches will be built and deployed here)
+### Setup within Openshift
 
-Add `prov-cd/default` service account with admin rights into -dev & -test projects, so jenkins can update the build config and trigger the corresponding oc start build.
+Create 3 openshift projects projects
+- `prov-cd` (for the jenkins builder)
+- `prov-test` (*production* branch will be built and deployed here)
+- `prov-dev` (*feature* branches will be built and deployed here)
 
-start with prov-cd and issue
+Start with prov-cd and issue
 ``` bash
-tailor update pvc/jenkins
 tailor update
 ```
 
-for the runtime projects (prov-test and prov-dev) run
+Add `prov-cd/jenkins` and `prov-cd/default` service accounts with edit rights into -dev & -test projects, so jenkins can update the build config and trigger the corresponding `oc start build / oc update bc` from within the jenkins build.
+
+For the runtime projects (prov-test and prov-dev) run
 ``` bash
-tailor update pvc
 tailor update
 ```
+
 Once jenkins deployed - you can trigger the build in prov-cd/test - it should automatically deploy - and you can start using the provision app.
 
-<!-- TODO: fix_me END_TODO -->
+Depending on the performance of jira / confluence & Bitbucket - you may get a 504 timeout in the provision app. To fix this - and increase this timeout - run 
+
+`oc annotate route prov-app --overwrite haproxy.router.openshift.io/timeout=5m`
+
+in `prov-dev` and `prov-test` projects
 
 ## Try out the OpenDevStack
 After you have set up your local environment it's time to test the OpenDevStack and see it working.
