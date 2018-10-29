@@ -42,6 +42,17 @@ Currently the OpenDevStack works with Openshift 3.9.0.
 You must have the possibility to run bash scripts to import the provided OpenShift templates. On Linux systems you can use these scripts out-of-the box, on Windows systems you will have to install either a bash port for Windows like [Cygwin](https://www.cygwin.com/ "Cygwin").
 For Windows, our recommendation is to use Cygwin for starting a minishift cluster and further configuration. Make sure to select the curl package under the "net" category when installing cygwin.
 
+`minishift` will use the [.kube/config](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/#explore-the-home-kube-directory) mechanism to configure access to the kubernetes cluster. Minishift will place the config in the Windows home directory. To make this work under `cygwin`, we will point the cygwin home directory to the Windows Home directory.
+This can easily be achieved by changing the `db_home` entry in `/etc/nsswitch.conf` to
+
+    dbhome: windows
+
+or
+
+    dbhome: /%H
+
+This is described in the [cygwin user guide](https://cygwin.com/cygwin-ug-net/ntsec.html#ntsec-mapping-nsswitch-syntax).
+
 ### Ansible
 
 The OpenDevStack uses [Ansible](https://www.ansible.com/ "Ansible") to install and configure the necessary software for the enabling stack, so it's recommended to get familiar with its core concepts and usage. Also credentials are stored within an Ansible vault, so even if you commit them in a public repository they are not available unless you know the vault password.
@@ -450,9 +461,10 @@ To do so, follow the installation instructions of the [Minishift Getting Started
 
 Before you start up Minishift with the `minishift start` command you will have to create or modify a `config.json` file.
 This file is located in the `.minishift/config` folder in the user home directory.
-On a Windows system, you will find this file under `C:\Users\<username>\.minishift\config\config.json`.
+On a Windows system, you will find this file under `C:\Users\<username>\.minishift\config\config.json` or under cygwin `~/.minishift/config/config.json`.
 If the file doesn't exist, you will have to create it.
 The file has to have the following content:
+
 ```javascript
 {
     "cpus": 2,
@@ -462,6 +474,7 @@ The file has to have the following content:
     "vm-driver": "virtualbox"
 }
 ```
+
 It is important to use *v3.9.0* as minimum version to ensure, that the templates provided by the OpenDevStack work properly. If you are on windows you have to run the "minishift start" command as administrator.
 
 After the start up you are able to open the webconsole with the `minishift console` command. This will open the webconsole in your standard browser.
