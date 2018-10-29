@@ -1,54 +1,8 @@
 ---
-layout: index
-tags: documentation
+layout: documentation
 ---
 
 # Getting started
-<!-- TOC depthFrom:1 depthTo:4 withLinks:1 updateOnSave:1 orderedList:0 -->
-<!--
-- [Getting started](#getting-started)
-	- [Introduction](#introduction)
-	- [Requirements](#requirements)
-		- [Git](#git)
-		- [Vagrant](#vagrant)
-		- [Virtualbox](#virtualbox)
-		- [Atlassian tools licenses](#atlassian-tools-licenses)
-		- [Minishift](#minishift)
-		- [Bash](#bash)
-		- [Ansible](#ansible)
-	- [Setup your local environment](#setup-your-local-environment)
-		- [Prepare infrastructure](#prepare-infrastructure)
-		- [Install Atlassian Tools and Rundeck](#install-atlassian-tools-and-rundeck)
-			- [Crowd Setup](#crowd-setup)
-			- [Bitbucket Setup](#bitbucket-setup)
-			- [Jira Setup](#jira-setup)
-			- [Confluence Setup](#confluence-setup)
-			- [Rundeck Setup](#rundeck-setup)
-		- [Configure Minishift](#configure-minishift)
-			- [Minishift startup](#minishift-startup)
-			- [Install the OC CLI](#install-the-oc-cli)
-			- [Login with the CLI](#login-with-the-cli)
-			- [Setup the base template project](#setup-the-base-template-project)
-			- [Adjust user rights for the developer user](#adjust-user-rights-for-the-developer-user)
-			- [Create service account for deployment](#create-service-account-for-deployment)
-			- [Install Minishift certificate on Atlassian server](#install-minishift-certificate-on-atlassian-server)
-		- [Setup and Configure Nexus3](#setup-and-configure-nexus3)
-			- [Configure Repository Manager](#configure-repository-manager)
-		- [Import base templates](#import-base-templates)
-		- [Configure CD user](#configure-cd-user)
-		- [Setup and Configure Sonarqube](#setup-and-configure-sonarqube)	
-		- [Configure Rundeck](#configure-rundeck)
-			- [Create Quickstarters project](#create-quickstarters-project)
-			- [Openshift API token](#openshift-api-token)
-			- [CD user private key](#cd-user-private-key)
-			- [Configure SCM plugins](#configure-scm-plugins)
-		- [Configure provisioning application](#configure-provisioning-application)
-	- [Try out the OpenDevStack](#try-out-the-opendevstack)
-	- [Troubleshooting](troubleshooting.md)
-
--->
-<!-- /TOC -->
-
 
 ## Introduction
 Welcome to the OpenDevStack. The OpenDevStack is a framework to help in setting up a project infrastructure and continuous delivery processes on OpenShift and Atlassian toolstack with one click. This guide shall help you to setup the OpenDevStack, so you can work with it and test it in a local environment setup. The steps for the setup can also be adapted for running the OpenDevstack with an existing OpenShift installation or to connect it with your Atlassian tools, if you use [Atlassian Crowd](https://www.atlassian.com/software/crowd "Atlassian Crowd") as SSO provider.
