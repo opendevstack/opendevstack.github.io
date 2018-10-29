@@ -45,7 +45,7 @@ task jekyllBuild(type: JRubyExec, group: 'Jekyll', description: 'Build your site
     // scriptArgs "--incremental"
 }
 
-task jekyllServe(type: JRubyExec, description: 'serve your site.') {
+task jekyllServe(type: JRubyExec, group: 'Jekyll', description: 'serve your site.') {
     script "jekyll"
     scriptArgs "serve"
     scriptArgs commonFlags
