@@ -95,7 +95,7 @@ This can easily be achieved by changing the `db_home` entry in `/etc/nsswitch.co
 
 or
 
-    dbhome: %H
+    dbhome: /%H
 
 This is described in the [cygwin user guide](https://cygwin.com/cygwin-ug-net/ntsec.html#ntsec-mapping-nsswitch-syntax).
 
