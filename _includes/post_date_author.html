@@ -1,0 +1,13 @@
+<i class="fa fa-calendar"></i>&nbsp;<time datetime="{{ include.date | date_to_xmlschema }}">{{ include.date | date: "%Y-%m-%d" }}</time>
+{% if include.author %}
+  {% for author in site.authors %}
+    {% if author.username == include.author %}
+      {% assign current_author = author %}
+    {% endif %}
+  {% endfor %}
+  {% if current_author %}
+  • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><a href="{{ "/authors/" | prepend: site.baseurl | append: current_author.username }}">{{ current_author.title }}</a></span></span>
+  {% else %}
+  • <span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ include.author }}</span></span>
+  {% endif %}
+{% endif %}

@@ -26,6 +26,12 @@ repositories {
 
 dependencies {
   jrubyExec 'rubygems:jekyll:3.7.4'
+  gems 'rubygems:bundler:+'
+  // adding jekyll plugins as defined here https://github.com/github/pages-gem/blob/master/lib/github-pages/dependencies.rb
+  jrubyExec 'rubygems:jekyll-sitemap:1.2.0'
+  jrubyExec 'rubygems:jekyll-feed:0.10.0'
+  jrubyExec 'rubygems:jekyll-paginate:1.1.0'
+  jrubyExec 'rubygems:jekyll-github-metadata:2.9.4'
 }
 
 
@@ -48,5 +54,6 @@ task jekyllBuild(type: JRubyExec, group: 'Jekyll', description: 'Build your site
 task jekyllServe(type: JRubyExec, group: 'Jekyll', description: 'serve your site.') {
     script "jekyll"
     scriptArgs "serve"
+    scriptArgs "--incremental"
     scriptArgs commonFlags
 }
