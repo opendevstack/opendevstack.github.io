@@ -10,13 +10,7 @@ social:
   stackoverflow: 1838932/rattermeyer
   facebook: rattermeyer
   xing: richard_attermeyer
-  lanyrd: richard_attermeyer
 topics:
-  - Softwarearchitektur
-  - Continuous Delivery
-  - DevOps
-  - Software Craftsmanship
 ---
-
-**Richard Attermeyer** ist Senior Solution Architect bei der OPITZ CONSULTING Deutschland GmbH. Er beschäftigt sich seit mehreren Jahren mit der Architektur und Implementierung von Anwendungen im agilen Umfeld. Er konzentriert sich dabei aktuell sowohl auf die methodischen, organisatorischen und
-technologischen Herausforderungen im Bereich Continuous Delivery und DevOps.
+**Richard Attermeyer** father of two. Always learning. Jack of all trades, master of none. IT architecture geek.
+Continuous Delivery and software delivery automation enthusiast.

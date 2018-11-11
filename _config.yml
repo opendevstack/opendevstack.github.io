@@ -52,7 +52,7 @@ defaults:
       path: ""
       type: "authors"
     values:
-      layout: "author_profile"
+      layout: "author-profile"
 # Collections
 collections:
   authors:

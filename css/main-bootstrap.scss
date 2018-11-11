@@ -1,0 +1,29 @@
+---
+---
+// variables for Bootstrap
+$light:       rgb(251, 238, 222);
+$primary:       #9e312a !default;
+$body-bg: $light;
+
+@import "bootstrap-4.0/bootstrap";
+
+html, body {
+  height: 100%;
+}
+
+.one-hundred-percent {
+  min-height: 100%;
+  padding-bottom: 150px;
+  position: relative;
+}
+
+.footer {
+  height: 150px;
+  width: 100%;
+  bottom: 0;
+  position: absolute;
+  margin-top: 0.5em;
+  padding-top: 0.5em;
+  border-top: 3px solid $primary;
+  background-color: $gray-400;
+}
