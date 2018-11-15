@@ -40,7 +40,7 @@ Currently the OpenDevStack works with Openshift 3.9.0.
 ### Cygwin / Linux
 
 You must have the possibility to run bash scripts to import the provided OpenShift templates. On Linux systems you can use these scripts out-of-the box, on Windows systems you will have to install either a bash port for Windows like [Cygwin](https://www.cygwin.com/ "Cygwin").
-For Windows, our recommendation is to use Cygwin for starting a minishift cluster and further configuration. Make sure to select the curl package under the "net" category when installing cygwin.
+For Windows, our recommendation is to use Cygwin for starting a minishift cluster and further configuration. Make sure to select the curl and the rsync package under the "net" category when installing cygwin.
 
 `minishift` will use the [.kube/config](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/#explore-the-home-kube-directory) mechanism to configure access to the kubernetes cluster. Minishift will place the config in the Windows home directory. To make this work under `cygwin`, we will point the cygwin home directory to the Windows Home directory.
 This can easily be achieved by changing the `db_home` entry in `/etc/nsswitch.conf` to
@@ -723,7 +723,7 @@ oc process -n cd templates/secrets -p PROJECT=cd | oc create -n cd -f-
 ```
 
 We will now build base images for jenkins and jenkins slave:
-
+* Encode the CD_USER_ID and CD_USER_PWD values in ods-configuration.env with Base64
 * Customize the configuration in the `ods-configuration` project at **ods-core > jenkins > ocp-config > bc.env**
 * Execute `tailor update` inside ods-core/jenkins/ocp-config:
 
