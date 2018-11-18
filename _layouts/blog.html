@@ -1,4 +1,15 @@
----
-layout: bootstrap-default
----
-{{content}}
+<!DOCTYPE html>
+<html>
+
+  {% include head-bootstrap.html %}
+
+  <body>
+    <div class="one-hundred-percent">
+      {% include navbar-bootstrap-blog.html %}
+
+      {{ content }}
+
+      {% include footer-bootstrap.html %}
+    <div/>
+  </body>
+</div>
