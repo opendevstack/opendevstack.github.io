@@ -1,0 +1,52 @@
+import com.github.jrubygradle.JRubyExec
+
+ext {
+    source = file(".").absolutePath
+    println source
+    destination = file("./_site").absolutePath
+
+    commonFlags = [ '--source', source, '--destination', destination ]
+}
+
+buildscript {
+  repositories {
+    jcenter()
+  }
+
+  dependencies {
+    classpath "com.github.jruby-gradle:jruby-gradle-plugin:+"
+  }
+}
+
+apply plugin: 'com.github.jruby-gradle.base'
+
+repositories {
+  jcenter()
+}
+
+dependencies {
+  jrubyExec 'rubygems:jekyll:3.7.4'
+}
+
+
+task jekyllBuild(type: JRubyExec, group: 'Jekyll', description: 'Build your site.') {
+    // Enable task to be UP-TO-DATE.
+    //inputs.file source
+   // outputs.file destination
+
+    script "jekyll"
+    scriptArgs "build"
+    scriptArgs commonFlags
+    workingDir projectDir
+
+    // Consider enabling this to help us determine when pages need to be pushed to Nexus.
+    // A copy of .jekyll-metadata could be stored in the repo and then compared to the local file.
+    // See https://jekyllrb.com/docs/configuration/#incremental-regeneration
+    // scriptArgs "--incremental"
+}
+
+task jekyllServe(type: JRubyExec, group: 'Jekyll', description: 'serve your site.') {
+    script "jekyll"
+    scriptArgs "serve"
+    scriptArgs commonFlags
+}

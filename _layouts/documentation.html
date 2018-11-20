@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+
+  {% include head.html %}
+
+    <body>
+        {% include navbar.html %}  
+
+        <div class="header-img index-img">
+            <div>
+                <h2><a href="/">OpenDevStack</a></h2>
+                <subheading >provision.build.run</subheading>
+                <div class="clearfix" id="header-btn"><div><a href="/doc/getting-started"> Getting started</a></div><div><a target="_blank" href="https://github.com/opendevstack">Visit our repository</a></div></div>
+            </div>
+        </div>
+        <div class="page-content">
+                <div>
+                   {% include documentation_navigation.html %} 
+                </div>
+            <div class="wrapper">
+                    {{content}}
+            </div>
+        </div>
+        {% include footer.html %}
+    </body>    
+</div>
