@@ -52,22 +52,23 @@ layout: bootstrap-default
 </div>
 <div class="container">
   <h2>Posts</h2>
-  <ul class="list-unstyled">
     {% assign post_available = false %}
+    <div class="card-columns">
     {% for post in site.posts %}
       {% if page.username contains post.author %}
       {% assign post_available = true %}
-      <li>
-        <span class="post-meta">{% include post_date_author.html author=post.author date=post.date %}</span>
-        <h2>
-          <a class="post-link" href="{{ post.url | prepend: site.baseurl }}">{{ post.title }}</a>
-        </h2>
+      <div class="card border p-2">
+        <h5 class="card-title">{{ post.title }}</h5>
+        <div class="card-subtitle mb-2 text-muted">{% include post_date_author.html author=post.author date=post.date %}</div>
+        <p class="card-text">
         {{ post.excerpt }}
-      </li>
+        </p>
+        <a href="{{ post.url | prepend: site.baseurl }}" class="card-link">Read more</a>
+      </div>
       {% endif %}
     {% endfor %}
+    </div>
     {% if post_available == false %}
-    <li>No posts available</li>
+    <p>No posts available</p>
     {% endif %}
-  </ul>
 </div>
