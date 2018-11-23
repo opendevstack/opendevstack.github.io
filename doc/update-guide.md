@@ -8,7 +8,7 @@ installation of it.
 Updating repositories means that new refs from repositories under
 `github.com/opendevstack` are pushed into the repositories in your BitBucket
 instance. Note that only updates to the `production` branch in BitBucket will
-have any effect on the OpenDevstack installation.
+have any effect on the OpenDevStack installation.
 
 First, you need a clone of each repository in BitBucket which should be updated
 on your local machine.
@@ -22,29 +22,28 @@ git remote add ods https://github.com/opendevstack/<REPO_NAME>.git
 
 Now you are ready to update the refs. It is recommended to update both the
 `master` branch and, unless you want to live off the bleeding edge, a release
-branch such as `1.0.x`. Both is shown below:
+branch such as `1.0.x`. Use the steps shown below:
 
 ```sh
 # Ensure you have the latest refs from ODS locally
 git fetch ods
 # Update master
 git checkout master
-git reset -hard ods/master
+git reset --hard ods/master
 git push origin master
 # Update 1.0.x
 git checkout 1.0.x
-git reset -hard ods/1.0.x
+git reset --hard ods/1.0.x
 git push origin 1.0.x
 ```
 
 So far, your OpenDevStack installation has not been affected yet because the
 `production` branch has not been updated yet. To do that, it is recommended to
-create a pull request on BitBucket from `master` into `production` This serves
+create a pull request on BitBucket from `1.0.x` into `production` This serves
 as a gate to control changes coming in, and spread knowledge about what has
 changed exactly.
 
-Now that changes are "live", you need update (parts of) the installation as
-described in the next section.
+Now that changes are "live", you need to update (parts of) the installation.
 
 
 ## How to update your OpenDevStack installation
@@ -69,18 +68,20 @@ Next, update Tailor to the version corresponding to your new OpenDevStack
 version.
 
 Then, update the configuration parameters (located in `ods-configuration`)
-according to what has changedd in the `ods-configuration-sample` repository.
+according to what has changed in the `ods-configuration-sample` repository.
 
 Once configuration is up-to-date, the OpenShift templates stored within
 OpenShift need to be updated:
 
 ```sh
-cd ods-project-quickstarters/ocp-templates/scripts
+# Within your local "ods-project-quickstarters" repository
+cd ocp-templates/scripts
 ./upload-templates.sh
 ```
 
 Finally, the provisioning app should be updated. To do that, run `tailor update`
-in each `ocp-config` folder, and then trigger a build in Jenkins.
+in each `ocp-config` folder, and then trigger a build in Jenkins to redeploy the
+service.
 
 Now that the general procedure has been completed, you need to apply all the
 update notes below which apply to your version change.
