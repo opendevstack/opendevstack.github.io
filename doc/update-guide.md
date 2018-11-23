@@ -3,11 +3,6 @@
 Learn all about how to update your OpenDevStack repositories and the running
 installation of it.
 
-For the rest of this guide, it is assumed that you have completed the
-[Getting Started](https://github.com/opendevstack) guide. In the examples, we
-will use "ACME" as the organisation name, which you will need to replace where
-required.
-
 ## How to update your OpenDevStack repositories
 
 Updating repositories means that new refs from repositories under

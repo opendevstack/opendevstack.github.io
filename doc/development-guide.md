@@ -3,10 +3,8 @@
 Learn all about how to make changes to OpenDevStack in your organisation and how
 to contribute those changes back upstream.
 
-For the rest of this guide, it is assumed that you have completed the
-[Getting Started](https://github.com/opendevstack) guide. In the examples, we
-will use "ACME" as the organisation name, which you will need to replace where
-required.
+For the rest of this guide, we will use "ACME" as the organisation name, which
+you will need to replace appropriately.
 
 ## How to make changes to OpenDevStack
 
