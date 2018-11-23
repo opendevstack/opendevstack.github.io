@@ -3,8 +3,13 @@
 
   {% include head-bootstrap.html %}
 
-    <body>
-        {% include navbar-bootstrap.html %}
-        {{content}}
-        {% include footer-bootstrap.html %}
-    </body>
+  <body>
+    <div class="one-hundred-percent">
+      {% include navbar-bootstrap-blog.html %}
+
+      {{ content }}
+
+      {% include footer-bootstrap.html %}
+    <div/>
+  </body>
+</div>

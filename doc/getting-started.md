@@ -129,6 +129,8 @@ Here choose the **New installation** option.
 The next step is the database configuration.
 Choose the **JDBC Connection** option and configure the database with the following settings
 
+{: .table-bordered }
+{: .table-sm }
 | Option            | Value                                                                                                                |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------- |
 | Database          | PostgreSQL                                                                                                           |
@@ -164,6 +166,8 @@ You will have to configure crowd to enable the Atlassian tools and Rundeck to lo
 ###### Add OpenDevStack groups
 You will have to add the following groups to crowd's internal directory
 
+{: .table-bordered }
+{: .table-sm }
 | Group                       | Description                                         |
 | --------------------------- | --------------------------------------------------- |
 | opendevstack-users          | Group for normal users without adminstration rights |
@@ -172,6 +176,8 @@ You will have to add the following groups to crowd's internal directory
 ###### Add Atlassian groups
 You also have to add the groups from the atlassian tools, even if you don't use them.
 
+{: .table-bordered }
+{: .table-sm }
 | Group                     | Description                    |
 | ------------------------- | ------------------------------ |
 | bitbucket-administrators  | Bitbucket administrator group  |
@@ -197,6 +203,8 @@ Access the Crowd console at http://192.168.56.31:8095/crowd/console/
 Choose the **Applications** menu point and click **Add application**
 In the following wizard enter the data for the application you want to add. See the data for the applications in the test environment in the table below.
 
+{: .table-bordered }
+{: .table-sm }
 | Application type    | Name       | Password   | URL                               | IP address    | Directories                                 | Authorisation | Additional Remote Adresses |
 | ------------------- | ---------- | ---------- | --------------------------------- | ------------- | ------------------------------------------- | ------------- | -------------------------- |
 | Jira                | jira       | jira       | http://192.168.56.31:8080         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
@@ -242,6 +250,8 @@ After configuring the crowd directory change to **Groups**
 Here you have to add the groups defined in crowd in the previous steps, if
 they are not available yet.
 
+{: .table-bordered }
+{: .table-sm }
 | Group                    | Description                   |
 | ------------------------ | ----------------------------- |
 | bitbucket-administrators | Bitbucket administrator group |
@@ -331,6 +341,8 @@ Here you have to choose **External Database** with the option *PostgrSQL*
 ###### Step 5: Configure Database
 Click the **Direct JDBC** button and configure the database with the following values:
 
+{: .table-bordered }
+{: .table-sm }
 | Option            | Value                                       |
 | ----------------- | ------------------------------------------- |
 | Driver Class Name | org.postgresql.Driver                       |
@@ -656,7 +668,7 @@ After this step you will have to create the following repositories in the **Repo
 | ---------------- | ------ | ------ | ------- | -------------- | ------------- | ---------- | ------------------------------ | ----------------- | ------------------------------------------------------------------ | ------------ |
 | candidates       | maven2 | hosted | checked | Release        | Strict        | candidates | checked                        | Disable-redeploy  | | none                                                                   |
 | releases         | maven2 | hosted | checked | Release        | Strict        | releases   | checked                        | Disable-redeploy  | | none                                                                   |
-| npmjs           | npm     | proxy  | checked |                |               | default    | checked                        |   |  https://registry.npmjs.org  | | 
+| npmjs           | npm     | proxy  | checked |                |               | default    | checked                        |   |  https://registry.npmjs.org  | |
 | atlassian_public | maven2 | proxy  | checked | Release        | Strict        | atlassian_public  | checked                 | Disable-redeploy  | https://maven.atlassian.com/content/repositories/atlassian-public/ |
 | jcenter | maven2 | proxy  | checked | Release        | Strict        | default  | checked                 | Disable-redeploy  | https://jcenter.bintray.com | maven-public
 | sbt-plugins | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | http://dl.bintray.com/sbt/sbt-plugin-releases/ | ivy-releases
@@ -828,7 +840,7 @@ For initial code commit the CD user's private key has to be stored in Rundeck, t
 #### Configure SCM plugins
 
 Within the ods-project-quickstarters create a new branch called `rundeck-changes` - and let it inherit from production
-<!-- 
+<!--
 TODO: verify the branch source is correct!
 END_TODO
 -->
@@ -871,10 +883,10 @@ project.globals.openshift_dockerregistry=https://docker-registry-default.192.168
 # os user and group rundeck is running with
 project.globals.rundeck_os_user=root:root
 ```
-### Add shared images 
+### Add shared images
 OpenDevStack provides shared images used accross the stack - like the authproxy based on NGINX and lua for crowd
 
-In order to install, create a new project called `shared-services` 
+In order to install, create a new project called `shared-services`
 
 Make the required customizations in the `ods-configuration` under **ods-core > shared-images > nginx-authproxy-crowd >  ocp-config > bc.env and secret.env**
 
@@ -922,7 +934,7 @@ tailor update
 
 Once jenkins deployed - you can trigger the build in prov-cd/test - it should automatically deploy - and you can start using the provision app.
 
-Depending on the performance of jira / confluence & Bitbucket - you may get a 504 timeout in the provision app. To fix this - and increase this timeout - run 
+Depending on the performance of jira / confluence & Bitbucket - you may get a 504 timeout in the provision app. To fix this - and increase this timeout - run
 
 `oc annotate route prov-app --overwrite haproxy.router.openshift.io/timeout=5m`
 
