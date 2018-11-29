@@ -1,3 +1,7 @@
+---
+layout: documentation
+---
+
 # Development Guide
 
 Learn all about how to make changes to OpenDevStack in your organisation and how

@@ -1,3 +1,7 @@
+---
+layout: documentation
+---
+
 # Update Guide
 
 Learn all about how to update your OpenDevStack repositories and the running
