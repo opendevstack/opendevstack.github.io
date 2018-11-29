@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html>
 
-  {% include head.html %}
+  {% include head-bootstrap.html %}
 
     <body>
-        {% include navbar.html %}  
+        {% include navbar-bootstrap-blog.html %}
 
         <div class="header-img index-img">
             <div>
@@ -13,14 +13,18 @@
                 <div class="clearfix" id="header-btn"><div><a href="/doc/getting-started"> Getting started</a></div><div><a target="_blank" href="https://github.com/opendevstack">Visit our repository</a></div></div>
             </div>
         </div>
-        <div class="page-content">
-                <div>
-                   {% include documentation_navigation.html %} 
-                </div>
-            <div class="wrapper">
-                    {{content}}
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-3">
+              <div>
+                {% include documentation_navigation.html %}
+              </div>
             </div>
+            <div class="col-6">
+                      {{content}}
+            </div>
+          </div>
         </div>
-        {% include footer.html %}
-    </body>    
+        {% include footer-relative.html %}
+    </body>
 </div>

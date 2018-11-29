@@ -1,0 +1,37 @@
+---
+layout: blog
+title: Blog Posts
+---
+<div class="container mt-2">
+  <div class="card-columns">
+    {% for post in paginator.posts %}
+    <div class="card border">
+      <div class="card-body">
+        <h5 class="card-title">{{ post.title }}</h5>
+        <div class="card-subtitle mb-2 text-muted">{% include post_date_author.html author=post.author date=post.date %}</div>
+        <p class="card-text">
+          {{ post.excerpt }}
+        </p>
+        <a href="{{ post.url | prepend: site.baseurl }}" class="card-link">Read more</a>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="container">
+<nav id="pagination">
+  <ul class="pagination clearfix">
+    {% if paginator.next_page %}
+      <li class="prev"><a href="/pages/{{ paginator.next_page }}" title="older posts">← older posts</a></li>
+    {% endif %}
+    {% if paginator.previous_page %}
+      {% if paginator.previous_page == 1 %}
+        <li class="next"><a href="/" title="newer posts">newer posts →</a></li>
+      {% else %}
+        <li class="next"><a href="/pages/{{ paginator.previous_page }}" title="newer posts">newer posts →</a></li>
+      {% endif %}
+    {% endif %}
+  </ul>
+</nav>
+</div>
