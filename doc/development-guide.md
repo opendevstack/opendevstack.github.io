@@ -11,8 +11,7 @@ you will need to replace appropriately.
 Say you have encountered a bug, or want to develop a new feature. The first
 step is to implement the changes, and then try them out in your OpenDevStack
 instance. Those changes can then be contributed back (as described in the next
-section), or, if they are specific to your organisation, live on only in your
-instance.
+section) unless they are specific to your organisation.
 
 To start, clone the repository where you want to make changes from your
 BitBucket instance. The resulting repository will have its remote `origin` set
