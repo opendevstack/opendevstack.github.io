@@ -38,6 +38,8 @@ $warning:#ffc107;
 $light:rgb(251, 238, 222);
 $dark:#343434;
 
+$carousel-control-color: $dark;
+
 $body-bg: $light;
 
 
@@ -218,6 +220,12 @@ $brand-color:      rgb(158, 49, 42);
 .index-img{
     background-image: url("../assets/Container_banner.jpg");
 }
+
+// carousel images should be centered
+.carousel-inner img {
+  margin: auto;
+}
+
 
 @import "syntax-highlighting-bootstrap"
 
