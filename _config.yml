@@ -2,7 +2,7 @@
 short_title: OpenDevStack
 title: OpenDevStack
 description: >
-  OpenDevStack is a framework to help in setting up project infrastructure and CD processes on OpenShift and Atlassian toolstack with one click.
+  OpenDevStack makes setting up development projects easy and consistent.
 
 # Pagination
 paginate: 5
