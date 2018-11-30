@@ -5,14 +5,8 @@
 
     <body>
         {% include navbar-bootstrap-blog.html %}
+        {% include opendevstack-header.html %}
 
-        <div class="header-img index-img">
-            <div>
-                <h2><a href="/">OpenDevStack</a></h2>
-                <subheading >provision.build.run</subheading>
-                <div class="clearfix" id="header-btn"><div><a href="/doc/getting-started"> Getting started</a></div><div><a target="_blank" href="https://github.com/opendevstack">Visit our repository</a></div></div>
-            </div>
-        </div>
         <div class="container-fluid">
           <div class="row">
             <div class="col-3">
@@ -20,11 +14,11 @@
                 {% include documentation_navigation.html %}
               </div>
             </div>
-            <div class="col-6">
+            <div class="col-9">
                       {{content}}
             </div>
           </div>
         </div>
-        {% include footer-relative.html %}
+        {% include footer-bootstrap.html %}
     </body>
 </div>
