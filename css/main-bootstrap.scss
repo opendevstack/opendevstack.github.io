@@ -46,17 +46,11 @@ $body-bg: $light;
 @import "bootstrap-4.1.3/bootstrap";
 
 html, body {
-  height: 100%;
+  margin-bottom: 150px;
 }
 
 table {
   @extend .table;
-}
-
-.one-hundred-percent {
-  min-height: 100%;
-  padding-bottom: 150px;
-  position: relative;
 }
 
 .footer-fixed {
@@ -161,9 +155,7 @@ $brand-color:      rgb(158, 49, 42);
     @media screen and(max-width:1300px){
         max-width: 86%;
     }
-
-
-}
+  }
 
 #header-btn{
     background-color:$brand-color;

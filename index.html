@@ -1,14 +1,6 @@
 ---
 layout: bootstrap-default
 ---
-<div class="container-fluid header-img index-img">
-  <div>
-    <h2><a href="/">OpenDevStack</a></h2>
-    <subheading >provision.build.run</subheading>
-    <div class="clearfix" id="header-btn"><div><a href="/doc/getting-started"> Getting started</a></div><div><a target="_blank" href="https://github.com/opendevstack">Visit our repository</a></div></div>
-  </div>
-</div>
-
 <div class="container">
   <div class="card-deck mb-3">
     <div class="card">
@@ -71,12 +63,14 @@ layout: bootstrap-default
         </ul>
       </div>
     </div>
-  </div>
-  <div class="container">
-    <h2>Supported Technologies</h2>
-    <div class="carousel slide w-100 bg-white pt-2" style="height: 150px; max-height: 150px; margin-bottom: 2em" data-ride="carousel">
+  <div class="container mt-3">
+    <h2 class="text-center">Technologies</h2>
+    <div id="techCarousel" class="carousel slide w-100 bg-white pt-2" style="height: 150px; max-height: 150px;" data-ride="carousel">
       <div class="carousel-inner">
         <div class="carousel-item active">
+          <a target="_blank" href="https://www.openshift.com/"><img class="d-block h-100 w-25" style="max-height: 150px" src="{{ site.baseurl }}/assets/logos/Logotype_RH_OpenShift_wLogo_RGB_Black.webp" alt="OpenShift"/></a>
+        </div>
+        <div class="carousel-item">
           <a target="_blank" href="https://de.atlassian.com/software/jira/core"><img class="d-block h-100 w-25" style="max-height: 150px" src="https://www.atlassian.com/dam/jcr:9cfdc538-fb05-4229-9ecd-cb4eef5cee00/Jira%20Core-blue.svg" alt="Jira Core"/></a>
         </div>
         <div class="carousel-item">
@@ -95,14 +89,15 @@ layout: bootstrap-default
           <a target="_blank" href="https://de.sonatype.com/nexus-repository-sonatype"><img class="d-block h-100 w-25" style="max-height: 150px; max-width:100px" src="https://user-images.githubusercontent.com/7955995/29498304-ee71d418-85c6-11e7-9f95-e87a4439ed3c.png" alt="Sonatype Nexus"/></a>
         </div>
       </div>
-      <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+      <a class="carousel-control-prev" href="#techCarousel" role="button" data-slide="prev">
         <span class="carousel-control-prev-icon" aria-hidden="true"></span>
         <span class="sr-only">Previous</span>
       </a>
-      <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+      <a class="carousel-control-next" href="#techCarousel" role="button" data-slide="next">
         <span class="carousel-control-next-icon" aria-hidden="true"></span>
         <span class="sr-only">Next</span>
       </a>
     </div>
+  </div>
   </div>
 </div>
