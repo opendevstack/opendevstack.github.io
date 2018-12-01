@@ -39,6 +39,8 @@ $light:rgb(251, 238, 222);
 $dark:#343434;
 
 $carousel-control-color: $dark;
+$code-color: $dark;
+
 
 $body-bg: $light;
 
@@ -218,6 +220,11 @@ $brand-color:      rgb(158, 49, 42);
   margin: auto;
 }
 
+// see https://stackoverflow.com/questions/34319981/pygments-bootstrap-highlight-shell-code-with-dark-background
+pre {
+    color: #a6e22e;
+    background: $dark;
+}
 
-@import "syntax-highlighting-bootstrap"
+@import "syntax-highlighting-monokai"
 
