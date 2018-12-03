@@ -61,14 +61,14 @@ The OpenDevStack uses [Ansible](https://www.ansible.com/ "Ansible") to install a
 
 From now on we assume, you work from a Bash (Cygwin / Linux).
 
-### Install tailor Utility
+### Tailor
 
-We use the [tailor](https://github.com/opendevstack/tailor) for handling our versioned OpenShift templates and keep our cluster in sync.
+We use [tailor](https://github.com/opendevstack/tailor) to handle our versioned OpenShift templates and keep our cluster in sync. Please see its [installation instructions](https://github.com/opendevstack/tailor#installation) for your platform. The following lists the version requirements:
 
-```shell
-curl -LO "https://github.com/opendevstack/tailor/releases/download/v0.8.0/tailor_windows_amd64.exe" && \
-mv tailor_windows_amd64.exe /usr/bin/tailor && chmod +x /usr/bin/tailor
-```
+| OpenDevStack version | Tailor version |
+|---|---|
+| 0.1.x | = 0.8 |
+| 1.0.x | >= 0.9.1 |
 
 ### Prepare infrastructure
 
