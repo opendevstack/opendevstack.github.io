@@ -595,7 +595,7 @@ find ods-configuration -name '*.sample' -type f | while read NAME ; do mv "${NAM
 
 Now you will have to check the `.env` configuration files in `ods-configuration`. Change all values with the suffix `_base64` to a Base64 encoded value.  
 
-If you want later changes to the repositories, update `ods-configuration-sample` and copy the configuration-sample-script located in opendevstack.github.io to the parent folder of `ods-configuration-sample` and `ods-configuration`.  
+If you want later changes to the repositories, update `ods-configuration-sample` and copy the configuration-sample.sh script located in ods-core/infrastructure-setup/scripts to the parent folder of `ods-configuration-sample` and `ods-configuration`.  
 
 ### Setup and Configure Nexus3
 Amend `ods-configuration/ods-core/nexus/ocp-config/route.env` and change the domain to match your openshift/minishift domain (for example `nexus-cd.192.168.99.100.nip.io`)
