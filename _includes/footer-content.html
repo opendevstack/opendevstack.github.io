@@ -1,0 +1,39 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm">
+      <h6>Participate</h6>
+      <ul class="list-unstyled">
+        <!-- <li><a href="{{site.baseurl}}/docs/participate"><i class="fa fa-info"></i> Participate</a></li> -->
+        {% if site.github.repository_url %}
+        <li><a href="{{ site.github.repository_url }}/issues"><i class="fa fa-ticket"></i>Issues</a></li>
+        <li><a href="{{ site.github.repository_url }}/fork"><i class="fa fa-code-fork"></i>Fork us!</a></li>
+        {% endif %}
+        <li><a href="{{ site.baseurl }}/imprint.html">Impressum / Imprint</a></li>
+        <li><a href="{{ site.baseurl }}/privacy-statement.html">Privacy Statement</a></li>
+      </ul>
+    </div>
+    <div class="col-sm">
+      <h6>Social Media</h6>
+      <ul class="list-unstyled">
+        {% if site.github.owner_name and site.github.repository_name and site.github.repository_url %}
+        <li>
+            <i class="icon fab fa-github"></i> <a href="{{ site.github.organization }}">OpenDevStack</a>
+        </li>
+        {% endif %}
+
+        {% if site.twitter.username %}
+        <li>
+          <i class="icon fab fa-twitter"></i> <a href="https://twitter.com/{{ site.twitter.username }}">{{ site.twitter.username }}</a>
+        </li>
+        {% endif %}
+        <li>
+          <i class="icon fab fa-gitter"></i> <a href="https://gitter.im/OpenDevStack/Lobby">gitter.im/opendevstack</a>
+        </li>
+      </ul>
+    </div>
+    <div class="col-sm">
+      <h6>About OpenDevStack</h6>
+      <p class="text">{{site.description}}</p>
+    </div>
+  </div>
+</div>

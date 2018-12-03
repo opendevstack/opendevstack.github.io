@@ -1,3 +1,7 @@
+---
+layout: index
+---
+
 # The terminal is empty when using vagrant ssh in cygwin
 
 By default cygwin uses the ssh client from it's msys environment
@@ -22,3 +26,8 @@ You have to execute the playbooks as vagrant
 # Timeouts during the execution of ansible-playbooks
 
 Just execute the playbook again. The network is sometimes too slow.
+
+# Minishift does not start
+
+If you install Minishift in an environment with an AD domain it is possible, that Minishift doesn't start up.
+Try to connect to your AD domain and then restart Minishift again.

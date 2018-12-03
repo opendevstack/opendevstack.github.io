@@ -1,0 +1,18 @@
+---
+layout: blog
+title: Autoren
+permalink: /authors/
+---
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h2>Authors:</h2>
+      <ul class="authors-list">
+        {% assign site_authors = site.authors | sort: 'title' %}
+        {% for author in site_authors %}
+          <li><a class="authors-link" href="{{ author.url | prepend: site.baseurl }}">{{ author.title }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
