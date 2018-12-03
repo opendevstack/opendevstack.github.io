@@ -718,10 +718,6 @@ Amend `ods-configuration/ods-project-quickstarters/ocp-templates/templates/templ
 ```shell
 ./upload-templates.sh
 ```
-If not running under a cygwin environment, but with win-bash and bash located on your PATH, simply run
-```shell
-bash ./upload-templates.sh
-```
 
 This script creates the basic templates used by the OpenDevStack quickstarters in the `cd` project.
 If you have to modify templates, there are also scripts to replace existing templates in OpenShift.
@@ -773,7 +769,7 @@ Open [Bitbucket](http://192.168.56.31:7990/), login with your crowd administrati
 Here open the User section. If you can't see the CD user, you have to synchronize the Crowd directory in the **User directories** section.
 Click on the CD user. In the user details you have the possiblity to add a SSH key. Click on the tab and enter the _public key_ from the generated key pair.
 
-### Setup and configure Sonarqube
+### Setup and configure SonarQube
 
 Amend `ods-configuration/ods-core/sonarqube/ocp-config/sonarqube.env`
 and type
@@ -784,7 +780,7 @@ tailor update
 ```
 confirm with `y` and installation should start.
 
-After the installation has taken place, you will have to build sonarqube: `oc start-build -n cd sonarqube`
+After the installation has taken place, you will have to build SonarQube: `oc start-build -n cd sonarqube`
 
 Go to http://sonarqube-cd.192.168.99.100.nip.io/ and log in with your crowd user. Click on your profile on the top right, my account / security - and create a new token (and save it in your notes). This token will be used throughout the codebase to trigger the code quality scan.
 
@@ -918,27 +914,25 @@ You can login in with the Crowd admin user you set up earlier.
 Create 3 openshift projects projects
 - `prov-cd` (for the jenkins builder)
 - `prov-test` (*production* branch will be built and deployed here)
-- `prov-dev` (*feature* branches will be built and deployed here)
+- `prov-dev` (other branches will be built and deployed here)
 
-Start with prov-cd and issue
+Start with `prov-cd` and issue:
 ```
+cd ocp-config/prov-cd
 tailor update
 ```
 
 Add `prov-cd/jenkins` and `prov-cd/default` service accounts with edit rights into -dev & -test projects, so jenkins can update the build config and trigger the corresponding `oc start build / oc update bc` from within the jenkins build.
 
-For the runtime projects (prov-test and prov-dev) run
+For the runtime projects (`prov-test` and `prov-dev`) run:
 ```shell
-tailor update
+cd ocp-config/prov-app
+tailor update -f Tailorfile.dev
+tailor update -f Tailorfile.test
 ```
 
-Once jenkins deployed - you can trigger the build in prov-cd/test - it should automatically deploy - and you can start using the provision app.
+Once Jenkins id deployed, you can trigger the build in the `prov-cd/ods-provisioning-app-production` pipeline. Deployment should happen automatically and you can start using the provision app.
 
-Depending on the performance of jira / confluence & Bitbucket - you may get a 504 timeout in the provision app. To fix this - and increase this timeout - run
-
-`oc annotate route prov-app --overwrite haproxy.router.openshift.io/timeout=5m`
-
-in `prov-dev` and `prov-test` projects
 
 ## Try out the OpenDevStack
 After you have set up your local environment it's time to test the OpenDevStack and see it working.
