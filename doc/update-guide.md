@@ -105,7 +105,7 @@ fly, allowing to have one pipeline per branch. To update:
 * Build the image.
 * Setup the  webhook proxy next to each Jenkins instance. E.g., go to
   `ods-project-quickstarters/ocp-templates/templates` and run
-  `oc process cd/cd-jenkins-webhook-proxy | oc create -f- -n xyz-cd`. Repeat for
+  `oc process cd//cd-jenkins-webhook-proxy | oc create -f- -n xyz-cd`. Repeat for
   each project.
 
 
