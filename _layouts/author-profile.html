@@ -10,40 +10,40 @@ layout: bootstrap-default
       {{ page.content }}
     </div>
   </div>
-  <div class="row">
+  <div class="row mt-3">
     <div class="col-sm-4">
       {% if page.website or page.email %}
-       <ul class="list-unstyled">
-         {% if page.email %}
-         <li><i class="fa fa-envelope"></i> <a href="mailto:{{ page.email }}">{{ page.email }}</a></li>
-         {% endif %}
-         {% if page.website %}
-         <li><i class="fa fa-user"></i> <a href="{{ page.website }}">{{ page.website | remove: "http://" }}</a></li>
-         {% endif %}
-       </ul>
-       {% endif %}
+      <ul class="list-unstyled">
+        {% if page.email %}
+        <li><i class="fa fa-envelope"></i> <a href="mailto:{{ page.email }}">{{ page.email }}</a></li>
+        {% endif %}
+        {% if page.website %}
+        <li><i class="fa fa-user"></i> <a href="{{ page.website }}">{{ page.website | remove: "http://" }}</a></li>
+        {% endif %}
+      </ul>
+      {% endif %}
     </div>
     <div class="col-sm-4">
       {% if page.social %}
       <ul class="list-unstyled">
         {% if page.social.twitter %}
-          <li><i class="fab fa-twitter"></i>&nbsp;<a href="https://twitter.com/{{ page.social.twitter }}">{{ page.social.twitter }}</a></li>
+        <li><i class="fab fa-twitter"></i>&nbsp;<a href="https://twitter.com/{{ page.social.twitter }}">{{ page.social.twitter }}</a></li>
         {% endif %}
         {% if page.social.github %}
-          <li><i class="fab fa-github"></i>&nbsp;<a href="https://github.com/{{ page.social.github }}">{{ page.social.github }}</a></li>
+        <li><i class="fab fa-github"></i>&nbsp;<a href="https://github.com/{{ page.social.github }}">{{ page.social.github }}</a></li>
         {% endif %}
         {% if page.social.stackoverflow %}
-          <li><i class="fab fa-stack-overflow"></i>&nbsp;<a href="https://stackoverflow.com/users/{{ page.social.stackoverflow }}">{{ page.social.stackoverflow }}</a></li>
+        <li><i class="fab fa-stack-overflow"></i>&nbsp;<a href="https://stackoverflow.com/users/{{ page.social.stackoverflow }}">{{ page.social.stackoverflow }}</a></li>
         {% endif %}
       </ul>
     </div>
     <div class="col-sm-4">
       <ul class="list-unstyled">
         {% if page.social.facebook %}
-          <li><i class="fab fa-facebook"></i>&nbsp;<a href="https://facebook.com/{{ page.social.facebook }}">{{ page.social.facebook }}</a></li>
+        <li><i class="fab fa-facebook"></i>&nbsp;<a href="https://facebook.com/{{ page.social.facebook }}">{{ page.social.facebook }}</a></li>
         {% endif %}
         {% if page.social.xing %}
-          <li><i class="fab fa-xing"></i>&nbsp;<a href="https://xing.com/profile/{{ page.social.xing }}">{{ page.social.xing }}</a></li>
+        <li><i class="fab fa-xing"></i>&nbsp;<a href="https://xing.com/profile/{{ page.social.xing }}">{{ page.social.xing }}</a></li>
         {% endif %}
       </ul>
       {% endif %}
@@ -52,23 +52,43 @@ layout: bootstrap-default
 </div>
 <div class="container">
   <h2>Posts</h2>
-    {% assign post_available = false %}
-    <div class="card-columns">
+  {% assign post_available = false %}
+  <div class="card-columns">
     {% for post in site.posts %}
-      {% if page.username contains post.author %}
-      {% assign post_available = true %}
-      <div class="card border p-2">
-        <h5 class="card-title">{{ post.title }}</h5>
-        <div class="card-subtitle mb-2 text-muted">{% include post_date_author.html author=post.author date=post.date %}</div>
-        <p class="card-text">
-        {{ post.excerpt }}
-        </p>
-        <a href="{{ post.url | prepend: site.baseurl }}" class="card-link">Read more</a>
-      </div>
-      {% endif %}
-    {% endfor %}
+    {% if page.username contains post.author %}
+    {% assign post_available = true %}
+    <div class="card border p-2">
+      <h5 class="card-title">{{ post.title }}</h5>
+      <div class="card-subtitle mb-2 text-muted">{% include post_date_author.html author=post.author date=post.date %}</div>
+      <p class="card-text">
+      {{ post.excerpt }}
+      </p>
+      <a href="{{ post.url | prepend: site.baseurl }}" class="card-link">Read more</a>
     </div>
-    {% if post_available == false %}
-    <p>No posts available</p>
     {% endif %}
+    {% endfor %}
+  </div>
+  {% if post_available == false %}
+  <p>No posts available</p>
+  {% endif %}
+</div>
+<div class="container">
+  <h2>Community Events and Presentations</h2>
+  <div class="card-columns mt-3">
+    {% assign sorted_events = site.events | sort:"details.date" | reverse %}
+    {% for event in sorted_events %}
+    {% if page.username contains event.speaker %}
+    <div class="card border">
+      <div class="card-body">
+        {% if event.details.logo_url %}
+        <img src="{{ event.details.logo_url }}" class="figure-img img-fluid" alt="Logo">
+        {% endif %}
+        <h5 class="card-title">{{ event.details.date | date: "%Y-%m-%d" }} / {{ event.location.city }}</h5>
+        <div class="card-subtitle mb-2 text-muted">{{ event.title }}</div>
+        <a class="card-link" href="{{ event.url | prepend: site.baseurl | prepend: site.url }}">Read more</a>
+      </div>
+    </div>
+    {% endif %}
+    {% endfor %}
+  </div>
 </div>

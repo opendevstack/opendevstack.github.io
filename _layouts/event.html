@@ -1,0 +1,56 @@
+---
+layout: bootstrap-default
+---
+
+<div class="container">
+  <div class="row">
+    <div class="col-md-2">
+      {% if page.details.logo_url %}
+      <img src="{{ page.details.logo_url }}" class="img-fluid" alt="Logo">
+      {% endif %}
+    </div>
+    <div class="col-md-8">
+      <h2>{{ page.name }}</h2>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-8 offset-md-2 border-top">
+      <h3>{{ page.title }}</h3>
+      {{ content }}
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-8 offset-md-2 border-top">
+      <h3>Speaker</h3>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-3 offset-md-2">
+      {% for author in site.authors %}
+        {% if author.username == page.speaker %}
+          {% assign current_author = author %}
+        {% endif %}
+      {% endfor %}
+      {% if current_author %}
+      <figure class="figure">
+        {% if current_author.picture %}
+        <img src="{{ site.baseurl}}/authors/{{ current_author.picture }}" class="figure-img img-fluid rounded">
+        <figcaption class="figure-caption"><span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><a href="{{ "/authors/" | prepend: site.baseurl | append: current_author.username }}">{{ current_author.title }}</a></span></span>
+        {% else %}
+        <img src="{{ site.baseurl}}/authors/anonymous-user-icon-17.jpg" class="figure-img img-fluid rounded">
+        <figcaption class="figure-caption"><span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.speaker }}</span></span>
+        {% endif %}
+        </figcaption>
+      </figure>
+      {% else %}
+      <figure class="figure">
+        <img src="{{ site.baseurl}}/authors/anonymous-user-icon-17.jpg" class="figure-img img-fluid rounded">
+        <figcaption class="figure-caption"><span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.speaker }}</span></span>
+        </figcaption>
+      </figure>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
