@@ -7,6 +7,9 @@ layout: documentation
 Learn all about how to make changes to OpenDevStack in your organisation and how
 to contribute those changes back upstream.
 
+This guides assumes you have followed the getting-started guide, and have cloned
+the ODS repositories to your local BitBucket instance.
+
 For the rest of this guide, we will use "ACME" as the organisation name, which
 you will need to replace appropriately.
 
@@ -32,17 +35,17 @@ branch like this:
 ```sh
 # Ensure you have the latest refs
 git fetch
-# Create a branch based on 1.0.x
-git checkout --no-track -b fix-typo origin/1.0.x
+# Create a branch based on 1.0.x - flag with bug / feature, e.g bug/fix-typo
+git checkout --no-track -b bug/fix-typo origin/1.0.x
 ```
 
 Once you have committed the desired changes, push your branch to BitBucket:
 ```sh
-git push origin fix-typo
+git push origin bug/fix-typo
 ```
 
 Afterwards, open a pull request. It is important that the target of the pull
-request is the `production` branch. That way, you do not pollute your base
+request is the `production` branch. That way, you do not pollute the ODS base
 branch (`1.0.x`) with changes. The `production` branch exists only in your
 BitBucket instance, and it is the branch that e.g. OpenShift points to, and
 consequently is the branch where all your changes should end up in.
@@ -73,7 +76,7 @@ git remote add acme https://github.com/acme/<REPO_NAME>.git
 
 After that, you can push your changes there:
 ```sh
-git push acme fix-typo
+git push acme bug/fix-typo
 ```
 
 Once pushed, GitHub suggests to open a pull request, and automatically sets the
@@ -91,6 +94,8 @@ ensure the following:
 
 * Before you make a bigger change, open a ticket first and discuss what you want
   to do before you actually do it.
+* Add the ticket to the [ODS project](https://github.com/orgs/opendevstack/projects), 
+  so we can track it.
 * Explain why this change is necessary / benefitial.
 * Ensure to follow the guide above - branches containing unrelated commits or
   features targeting release branches etc. will not be approved.
