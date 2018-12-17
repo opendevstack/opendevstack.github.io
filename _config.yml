@@ -2,7 +2,17 @@
 short_title: OpenDevStack
 title: OpenDevStack
 description: >
-  OpenDevStack is a framework to help in setting up project infrastructure and CD processes on OpenShift and Atlassian toolstack with one click.
+  OpenDevStack makes setting up development projects easy and consistent.
+
+# Pagination
+paginate: 5
+paginate_path: "/blog/page:num/"
+
+# Plugins
+plugins:
+- jekyll-sitemap
+- jekyll-feed
+- jekyll-paginate
 
 # Twitter
 twitter:
@@ -15,16 +25,46 @@ github:
   repository_url: https://github.com/opendevstack/opendevstack.github.io
   organization: https://github.com/opendevstack
 
+sitemap_url: https://www.opendevstack.org
+
 # Build settings
 baseurl:
-permalink: doc/:title
+permalink: /blog/:year/:month/:day/:title
 markdown: kramdown
 highlighter: rouge
 relative_permalinks: false
+
+defaults:
+  -
+    scope:
+      path: ""
+      type: "posts"
+    values:
+      layout: "post"
+  -
+    scope:
+      path: ""
+      type: "events"
+    values:
+      layout: "event"
+  -
+    scope:
+      path: ""
+      type: "authors"
+    values:
+      layout: "author-profile"
+# Collections
 collections:
+  authors:
+    output: true
+    permalink: /authors/:path/
+  events:
+    output: true
+    permalink: /events/:path/
   doc:
     output: true
- 
+
+
 # this must be excluded for the gradle build
 # otherwise jekyll tries to source this directory as well
 # ... and failes ..

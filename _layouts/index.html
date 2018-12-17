@@ -1,11 +1,10 @@
 <!DOCTYPE html>
 <html>
 
-  {% include head.html %}
+  {% include head-bootstrap.html %}
 
     <body>
-        {% include navbar.html %}  
-
+        {% include navbar-bootstrap-main.html %}
         <div class="header-img index-img">
             <div>
                 <h2><a href="/">OpenDevStack</a></h2>
@@ -14,17 +13,10 @@
             </div>
         </div>
         <div class="page-content">
-                {% if page.tags=='documentation' %}
-      
-                <div>
-                          {% include documentation_navigation.html %} 
-                </div>
-                {% endif %}
-
             <div class="wrapper">
                     {{content}}
             </div>
         </div>
-        {% include footer.html %}
-    </body>    
+        {% include footer-bootstrap.html %}
+    </body>
 </div>

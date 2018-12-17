@@ -1,0 +1,6 @@
+{% assign post_number_of_words = include.words | plus:0 %}
+{% if post_number_of_words < 360 %}
+  1 min
+{% else %}
+  {{ post_number_of_words | divided_by:180 }} mins
+{% endif %}

@@ -1,0 +1,44 @@
+---
+layout: blog
+---
+<div class="container mt-3">
+<article class="post" itemscope itemtype="http://schema.org/BlogPosting">
+  <header class="post-header">
+    <h1 class="post-title" itemprop="name headline">{{ page.title }}</h1>
+      <ul class="list-inline">
+        <li class="list-inline-item">
+        {% include post_date_author.html author=page.author date=page.date %}
+        {% if page.meta %} • {{ page.meta }}{% endif %}
+        </li>
+        {% if post.categories != empty %}
+        &nbsp;
+        <li class="list-inline-item">
+          <i class="fa fa-tags"></i>
+          {% for category in page.categories %}
+            <a href="/categories/#{{ category }}" title="Post for topic {{ category | capitalize }}" class="tag">{{ category | capitalize }}</a>{% unless category == page.categories.last %}, {% endunless %}
+          {% endfor %}
+        </li>
+        {% endif %}&nbsp;
+        <li class="list-inline-item"><i class="fa fa-clock"></i>&nbsp;{{ post_number_of_words }} words / {% include read_time.html words=post_number_of_words %}</li>&nbsp;
+        <li class="list-inline-item"><i class="fa fa-link"></i> <a href="{{ post.url }}">Permalink</a></li>
+      </ul>
+  </header>
+
+  <div itemprop="articleBody">
+    {{ content }}
+  </div>
+
+  <div class="shariff" data-services="[&quot;twitter&quot;,&quot;googleplus&quot;,&quot;xing&quot;,&quot;linkedin&quot;,&quot;info&quot;]" data-twitter-via="{{site.twitter_username}}" data-theme="standard"></div>
+
+  {% if site.disqus_username %}
+   <section>
+     <h3>Comments</h3>
+     <div id="comments">
+       {% include disqus_comments.html %}
+     </div>
+   </section>
+   {% endif %}
+
+
+</article>
+</div>
