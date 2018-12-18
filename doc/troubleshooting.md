@@ -31,3 +31,7 @@ Just execute the playbook again. The network is sometimes too slow.
 
 If you install Minishift in an environment with an AD domain it is possible, that Minishift doesn't start up.
 Try to connect to your AD domain and then restart Minishift again.
+
+# All other issues
+
+Just open a ticket against OpenDevStack - don't be shy there is no wrong or bad question. And we are there to help!

@@ -62,7 +62,13 @@ Before proceeding, it is advisable to make a backup of the existing OpenShift
 configuration. This can be done easily with Tailor:
 
 ```sh
-tailor export -n cd > backup.yml
+# backup CD project
+tailor export -n cd > backup_CD.yml
+
+# backup provision app projects
+tailor export -n prov-cd > backup_PROV_CD.yml
+tailor export -n prov-dev > backup_PROV_DEV.yml
+tailor export -n prov-test > backup_PROV_TEST.yml
 ```
 
 Note that the executing user needs to have permissions to access all resources
