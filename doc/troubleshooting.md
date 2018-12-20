@@ -32,6 +32,11 @@ Just execute the playbook again. The network is sometimes too slow.
 If you install Minishift in an environment with an AD domain it is possible, that Minishift doesn't start up.
 Try to connect to your AD domain and then restart Minishift again.
 
+# Jenkins slave - Image pull error (ErrImgPull / ImagePullback Exception
+Jenkins builds fails (or gets stuck at "continuing on node xyz"). Check pods in the project's CD project - and see if a slave pod is in error state with the above message in the events section.
+
+In this case - grant system:authenticated (group) -> image-puller rights.
+
 # All other issues
 
 Just open a ticket against OpenDevStack - don't be shy there is no wrong or bad question. And we are there to help!
