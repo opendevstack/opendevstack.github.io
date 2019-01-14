@@ -93,8 +93,7 @@ In general, to get your changes approved by core members of OpenDevStack, please
 ensure the following:
 
 * Before you make a bigger change, open a ticket first and discuss what you want
-  to do before you actually do it.
-* Explain why this change is necessary / benefitial.
+  to do before you actually do it. E.g. explain why this change is necessary / benefitial.
 * Ensure to follow the guide above - branches containing unrelated commits or
   features targeting release branches etc. will not be approved.
 * Adhere to the relevant coding standard as set out in each repository.
