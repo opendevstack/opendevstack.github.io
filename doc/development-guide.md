@@ -94,8 +94,6 @@ ensure the following:
 
 * Before you make a bigger change, open a ticket first and discuss what you want
   to do before you actually do it.
-* Add the ticket to the [ODS project](https://github.com/orgs/opendevstack/projects), 
-  so we can track it.
 * Explain why this change is necessary / benefitial.
 * Ensure to follow the guide above - branches containing unrelated commits or
   features targeting release branches etc. will not be approved.
