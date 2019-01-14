@@ -101,4 +101,6 @@ ensure the following:
       ensured by [google-java-format-1.6-all-deps.jar](https://github.com/google/google-java-format).
     * Go files must be gofmt'd.
     * Groovy files should follow the [Apache Groovy Style guide](http://groovy-lang.org/style-guide.html).
+* End all files with a newline character. See the POSIX definition of a
+  [line](http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap03.html#tag_03_205).
 * Add a changelog entry, linking to your pull request.
