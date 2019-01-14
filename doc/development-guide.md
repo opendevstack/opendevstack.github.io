@@ -96,5 +96,9 @@ ensure the following:
   to do before you actually do it. E.g. explain why this change is necessary / benefitial.
 * Ensure to follow the guide above - branches containing unrelated commits or
   features targeting release branches etc. will not be approved.
-* Adhere to the relevant coding standard as set out in each repository.
+* Adhere to the relevant coding standard:
+    * Java files must be in [Google Java Style](https://google.github.io/styleguide/javaguide.html),
+      ensured by [google-java-format-1.6-all-deps.jar](https://github.com/google/google-java-format).
+    * Go files must be gofmt'd.
+    * Groovy files should follow the [Apache Groovy Style guide](http://groovy-lang.org/style-guide.html).
 * Add a changelog entry, linking to your pull request.
