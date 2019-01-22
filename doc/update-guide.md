@@ -62,7 +62,13 @@ Before proceeding, it is advisable to make a backup of the existing OpenShift
 configuration. This can be done easily with Tailor:
 
 ```sh
-tailor export -n cd > backup.yml
+# backup CD project
+tailor export -n cd > backup_CD.yml
+
+# backup provision app projects
+tailor export -n prov-cd > backup_PROV_CD.yml
+tailor export -n prov-dev > backup_PROV_DEV.yml
+tailor export -n prov-test > backup_PROV_TEST.yml
 ```
 
 Note that the executing user needs to have permissions to access all resources
@@ -83,6 +89,9 @@ cd ocp-templates/scripts
 ./upload-templates.sh
 ```
 
+Next, start a build for all build configs in the `cd` namespace to create new
+images.
+
 Finally, the provisioning app should be updated. To do that, run `tailor update`
 in each `ocp-config` folder, and then trigger a build in Jenkins to redeploy the
 service.
@@ -93,6 +102,7 @@ update notes below which apply to your version change.
 ### 0.1.0 to 1.0.0
 
 #### Update `xyz-cd` projects
+
 There is a new webhook proxy now, which proxies webhooks sent from BitBucket to
 Jenkins. As well as proxying, this service creates and deletes pipelines on the
 fly, allowing to have one pipeline per branch. To update:
@@ -101,11 +111,14 @@ fly, allowing to have one pipeline per branch. To update:
 * Build the image.
 * Setup the  webhook proxy next to each Jenkins instance. E.g., go to
   `ods-project-quickstarters/ocp-templates/templates` and run
-  `oc process cd/cd-jenkins-webhook-proxy | oc create -f- -n xyz-cd`. Repeat for
+  `oc process cd//cd-jenkins-webhook-proxy | oc create -f- -n xyz-cd`. Repeat for
   each project.
 
+
 #### Update components
+
 For each component, follow the following steps:
+
 In `Jenkinsfile`:
 1. Set the shared library version to `1.0.x`.
 2. Replace `stageUpdateOpenshiftBuild` with `stageStartOpenshiftBuild`.
@@ -116,9 +129,17 @@ In `Jenkinsfile`:
    output).
 6. Configure `branchToEnvironmentMapping`, see README.md. If you used
    environment cloning, also apply the instructions for that.
+
 In `docker/Dockerfile`:
+
 Adapt the content to match the latest state of the quickstarter boilerplates.
 In BitBucket, remove the existing "Post Webhooks" and create a new "Webhook",
 pointing to the new webhook proxy. The URL has to be of the form
 `https://webhook-proxy-$PROJECT_ID-cd.$DOMAIN?trigger_secret=$SECRET`. As
 events, select "Repository Push" and "Pull request Merged + Declined".
+
+
+#### Update provisioning app
+
+If you want to build the provisioning app automatically when commits are pushed
+to BitBucket, add a webhook as described in the previous section.
