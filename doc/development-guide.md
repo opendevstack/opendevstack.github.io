@@ -104,3 +104,21 @@ ensure the following:
 * End all files with a newline character. See the POSIX definition of a
   [line](http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap03.html#tag_03_205).
 * Add a changelog entry, linking to your pull request.
+
+## OpenDevStack branching flow for contributions
+
+Next sequence diagram provides a graphical understanding on the steps to follow in order to add a new functionality to the OpenDevStack official repository from ACME's private fork:
+
+<div class="mermaid">
+sequenceDiagram
+    participant A as OpenDevStack <br />GitHub
+    participant B as ACME GitHub <br />OpenDevStack fork
+    participant C as ACME private repo <br />OpenDevStack fork
+    A->>C: master branch checkout
+    C->>C: new branch X from master branch
+    C->>C: validate branch X
+    C-->>C: PR: branch X to production branch
+    C->>C: validate production branch change
+    C->>B: push branch X
+    B-->>A: PR: branch X to master
+</div>
