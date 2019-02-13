@@ -107,18 +107,19 @@ ensure the following:
 
 ## OpenDevStack branching flow for contributions
 
-Next sequence diagram provides a graphical understanding on the steps to follow in order to add a new functionality to the OpenDevStack official repository from ACME's private fork:
+Next sequence diagram provides a graphical understanding on the steps to follow in order to add a new functionality to the OpenDevStack official repository from ACME's private fork.
+The example is based on the assumption you want to contribute with a new feature from branch *1.0.x* or tag *v1.0.x*
 
 <div class="mermaid">
 sequenceDiagram
     participant A as OpenDevStack <br />GitHub
     participant B as ACME GitHub <br />OpenDevStack fork
     participant C as ACME private repo <br />OpenDevStack fork
-    A->>C: master branch checkout
-    C->>C: new branch X from master branch
-    C->>C: validate branch X
+    A->>C: 1.0.x/v1.0.x checkout
+    C->>C: new branch X from 1.0.x/v1.0.x branch
+    C->>C: develop and test the new feature branch X
     C-->>C: PR: branch X to production branch
-    C->>C: validate production branch change
+    C->>C: test production branch changes
     C->>B: push branch X
-    B-->>A: PR: branch X to master
+    B-->>A: PR: branch X to 1.0.x/v1.0.x
 </div>
