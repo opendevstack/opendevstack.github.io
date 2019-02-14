@@ -115,11 +115,11 @@ sequenceDiagram
     participant A as OpenDevStack <br />GitHub
     participant B as ACME GitHub <br />OpenDevStack fork
     participant C as ACME private repo <br />OpenDevStack fork
-    A->>C: 1.0.x/v1.0.x checkout
-    C->>C: new branch X from 1.0.x/v1.0.x branch
-    C->>C: develop and test the new feature branch X
+    A->>C: 1.0.x/v1.0.1 checkout
+    C->>C: new feature branch X
+    Note right of C: develop and test
     C-->>C: PR: branch X to production branch
-    C->>C: test production branch changes
+    Note right of C: test production
     C->>B: push branch X
-    B-->>A: PR: branch X to 1.0.x/v1.0.x
+    B-->>A: PR: branch X to 1.0.x/v1.0.1
 </div>
