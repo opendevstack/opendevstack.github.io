@@ -3,3 +3,4 @@ _site
 build
 .gradle
 /.project
+.jekyll-metadata
