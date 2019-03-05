@@ -93,11 +93,33 @@ In general, to get your changes approved by core members of OpenDevStack, please
 ensure the following:
 
 * Before you make a bigger change, open a ticket first and discuss what you want
-  to do before you actually do it.
-* Add the ticket to the [ODS project](https://github.com/orgs/opendevstack/projects), 
-  so we can track it.
-* Explain why this change is necessary / benefitial.
+  to do before you actually do it. E.g. explain why this change is necessary / benefitial.
 * Ensure to follow the guide above - branches containing unrelated commits or
   features targeting release branches etc. will not be approved.
-* Adhere to the relevant coding standard as set out in each repository.
+* Adhere to the relevant coding standard:
+    * Java files must be in [Google Java Style](https://google.github.io/styleguide/javaguide.html),
+      ensured by [google-java-format-1.6-all-deps.jar](https://github.com/google/google-java-format).
+    * Go files must be gofmt'd.
+    * Groovy files should follow the [Apache Groovy Style guide](http://groovy-lang.org/style-guide.html).
+* End all files with a newline character. See the POSIX definition of a
+  [line](http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap03.html#tag_03_205).
 * Add a changelog entry, linking to your pull request.
+
+## OpenDevStack branching flow for contributions
+
+Next sequence diagram provides a graphical understanding on the steps to follow in order to add a new functionality to the OpenDevStack official repository from ACME's private fork.
+The example is based on the assumption you want to contribute with a new feature from branch *1.0.x* or tag *v1.0.x*
+
+<div class="mermaid">
+sequenceDiagram
+    participant A as OpenDevStack <br />GitHub
+    participant B as ACME GitHub <br />OpenDevStack fork
+    participant C as ACME private repo <br />OpenDevStack fork
+    A->>C: 1.0.x/v1.0.1 checkout
+    C->>C: new feature branch X
+    Note right of C: develop and test
+    C-->>C: PR: branch X to production branch
+    Note right of C: test production
+    C->>B: push branch X
+    B-->>A: PR: branch X to 1.0.x/v1.0.1
+</div>
