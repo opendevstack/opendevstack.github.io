@@ -79,7 +79,8 @@ in the `cd` namespaces for this to work properly.
 ### Tailor
 
 Next, update Tailor to the version corresponding to your new OpenDevStack
-version.
+version. At the moment, this version is noted at the start of each version specific
+update procedure.
 
 ### Configuration
 
@@ -128,13 +129,9 @@ make all `Jenkinsfile`s point to this tag.
 Now that the general procedure has been completed, you need to apply all the
 update notes below which apply to your version change.
 
-### 0.1.0 to 1.0.0
+### 0.1.0 to 1.0.x
 
-#### Known issues
-
-Tailor 0.9.2 has a bug (https://github.com/opendevstack/tailor/issues/100) which results in a missing
-required parameter `TAILOR_NAMESPACE`. If you encounter this, set the parameter via the CLI, e.g.
-`tailor update --param TAILOR_NAMESPACE=<namespace> --ignore-unknown-parameters`.
+1.0.x requires Tailor [0.9.3](https://github.com/opendevstack/tailor/releases/tag/v0.9.3).
 
 #### Update `xyz-cd` projects
 
