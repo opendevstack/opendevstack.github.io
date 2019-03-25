@@ -4,6 +4,18 @@ layout: documentation
 
 # Using OpenDevStack - a small quickstart
 
+## What is OpenDevStack
+When we started with [Redhat's OpenShift](https://www.openshift.com/) we were blown away by the 100s of possibilities to use it, while there was not anything along "This is how you make it work for your org".
+
+Its catalog provides items for almost everything - yet what we wanted is to enable people to quickly introduce
+Continous delivery and standardized technology archetypes. We call this lean, empowered governance.
+
+So what does OpenDevStack now provide?
+1. A set of images to get the CI infrastructure running, called [ods-core](https://github.com/opendevstack/ods-core). It also contains [ansible runbooks](https://github.com/opendevstack/ods-core/tree/master/infrastructure-setup) to get the atlassian suite going.
+1. A shared [jenkins library](https://github.com/opendevstack/ods-jenkins-shared-library) that harmonizes the way you build, test, govern and deploy.
+1. A set of [technology quickstarters](https://github.com/opendevstack/ods-project-quickstarters) that already provide the complete CI/CD integration, w/o anything to worry about for the engineer
+1. A small [provision application](https://github.com/opendevstack/ods-provisioning-app) that gives you one place to start, no matter if you want to start a new initiative, or enhance and existing one.
+
 ## Create an integrated OpenDevStack project
 Trigger project creation thru the [provisioning application](https://github.com/opendevstack/ods-provisioning-app/) to get a new project.
 
