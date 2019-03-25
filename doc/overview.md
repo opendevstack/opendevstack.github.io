@@ -1,4 +1,8 @@
-# Using OpenDevStack
+---
+layout: documentation
+---
+
+# Using OpenDevStack - a small quickstart
 
 ## Create an integrated OpenDevStack project
 Trigger project creation thru the [provisioning application](https://github.com/opendevstack/ods-provisioning-app/) to get a new project.
