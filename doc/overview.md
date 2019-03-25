@@ -17,10 +17,10 @@ So what does OpenDevStack now provide?
 1. A small [provision application](https://github.com/opendevstack/ods-provisioning-app) that gives you one place to start, no matter if you want to start a new initiative, or enhance and existing one.
 
 ## Create an integrated OpenDevStack project
-Trigger project creation thru the [provisioning application](https://github.com/opendevstack/ods-provisioning-app/) to get a new project.
+Trigger project creation thru the [provisioning application](https://github.com/opendevstack/ods-provisioning-app/) to get a new project. The web GUI of the provisioning app is located at `https://prov-app-test.<app-domain-of-your-openshift-cluster>`.
 
 When `openshiftproject == true`, this will also create OpenShift projects, namely `<project-KEY>-dev` and `<project-KEY>-test`.
-A [Jenkins deployment](https://github.com/opendevstack/ods-core) will be created in the `<project-KEY>-cd` project to allow each project full freedom of build management.
+A [Jenkins deployment](https://github.com/opendevstack/ods-core) will be created in the `<project-KEY>-cd` project to allow each project full freedom of build management. This deployment is based on [common jenkins images](https://github.com/opendevstack/ods-core) from the `CD` namespace.
 
 ## Pull a quickstarter into your project
 Open the web GUI of the provisioning app `https://prov-app-test.<app-domain-of-your-openshift-cluster>`.
@@ -30,10 +30,10 @@ This time, rather than `new initiative`, pick `modify` and select your project. 
 # Ready to develop?
 
 ## Result after quickstarted
-Now you got the [boilerplate](https://github.com/opendevstack/ods-project-quickstarters/tree/master/boilerplates) of the picked quickstarter in your BitBucket project in its own repository, which the [provisioning app](https://github.com/opendevstack/ods-provisioning-app/) created. Also, CI/CD is already working - you can verify this as the boilerplate application runs in the `<project-KEY>-test` project. This was deployed through a Jenkins pipeline which is triggered via webhooks from BitBucket.
+Now you got the [boilerplate](https://github.com/opendevstack/ods-project-quickstarters/tree/master/boilerplates) of the picked quickstarter in your BitBucket project in its own repository, which the [provisioning app](https://github.com/opendevstack/ods-provisioning-app/) created. Also, CI/CD is already working - you can verify this as the boilerplate application runs in the `<project-KEY>-test` project. This was deployed through a [Jenkins pipeline](https://github.com/opendevstack/ods-jenkins-shared-library), which is triggered via [webhooks](https://github.com/opendevstack/ods-core/tree/master/jenkins/webhook-proxy) from BitBucket.
 
 ## Checking in my app code
-Create a branch in the repository - once pushed this will deploy your application to the `<project-KEY>-dev` project. After merging your branch to `master`, the update is avilable in the `<project-KEY>-test` project.
+Create a branch in the newly created repository - once pushed this will deploy your application to the `<project-KEY>-dev` project. After merging your branch to `master`, the update is avilable in the `<project-KEY>-test` project.
  
 The branch-to-environment mapping is defined in the `Jenkinsfile`, used by the [jenkins shared library](https://github.com/opendevstack/ods-jenkins-shared-library), and can be tailored to your needs.
   
