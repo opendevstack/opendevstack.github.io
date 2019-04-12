@@ -1,0 +1,2 @@
+* xref:getting-started:index.adoc[Getting Started]
+

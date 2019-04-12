@@ -1,0 +1,2 @@
+* xref:ROOT:documentation.adoc[Contributing Documentation]
+
