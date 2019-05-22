@@ -181,3 +181,7 @@ to BitBucket, add a webhook as described in the previous section.
 1.0.x makes use of the `BUILD_URL` env variable automatically set by Jenkins. This
 env variable might be `null` in your Jenkins master. To fix this, copy
 https://github.com/opendevstack/ods-core/blob/1.0.x/jenkins/master/configuration/init.groovy.d/url.groovy into each Jenins master to `/var/lib/jenkins/init.groovy.d/url.groovy`.
+
+#### Fix JSON patch replace error in Jenkins build
+
+1.0.x sets image labels on the `BuildConfig` in Jenkins. It does this by issuing a JSON patch `replace` request to `/spec/output/imageLabels`. This path was not present in prior versions, which can lead to the following error: `Error from server: jsonpatch replace operation does not apply: doc is missing key: /spec/output/imageLabels`. For newly provisioned components, this has been fixed with https://github.com/opendevstack/ods-project-quickstarters/pull/188. For existing components, add the path to the `BuildConfig` manually by editing the YAML in OpenShift.
