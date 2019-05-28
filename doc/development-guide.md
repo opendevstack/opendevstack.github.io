@@ -57,9 +57,11 @@ well - continue with the next section if you want to do this.
 
 ## How to contribute changes upstream
 
-As your base branch is never polluted with local changes, every branch created
-from it is guaranteed to not contain any local changes, or changes to your
-OpenDevStack instance that you do not want to share publicly.
+Before you propose your code changes for merge, please open an issue describing
+what you are trying to do. Assign that issue to yourself and add labels as you see
+fit. However, leave the project field blank, as it is up to ODS maintainers to
+select in which project your issue will become available if your code changes are
+accepted.
 
 To contribute your work, first you need to have a space in GitHub where you have
 permissions to push your changes to. Typically, this is a fork of the repository
@@ -89,11 +91,14 @@ latest master originally, and your pull request shows a merge conflict, you
 need to cherry-pick (and adapt) your changes to a branch based on latest master
 in order to have it merged.
 
+Make sure that you link the pull request to the issue you opened earlier, either by
+pointing to it in your commit message(s) or by adding the link into the PR description.
+
 In general, to get your changes approved by core members of OpenDevStack, please
 ensure the following:
 
-* Before you make a bigger change, open a ticket first and discuss what you want
-  to do before you actually do it. E.g. explain why this change is necessary / benefitial.
+* You must open an issue first. The bigger the change, the better explain why this change
+  is necessary / benefitial.
 * Ensure to follow the guide above - branches containing unrelated commits or
   features targeting release branches etc. will not be approved.
 * Adhere to the relevant coding standard:
