@@ -129,6 +129,18 @@ make all `Jenkinsfile`s point to this tag.
 Now that the general procedure has been completed, you need to apply all the
 update notes below which apply to your version change.
 
+### 1.0.x to 1.1.x
+
+1.0.x requires Tailor [0.9.4](https://github.com/opendevstack/tailor/releases/tag/v0.9.4).
+
+There are no further mandatory changes apart from the general procedure
+described above when updating from 1.0.x.
+
+However, it is highly recommended to take a look at the updates done to the
+boilerplates, especially the `Jenkinsfile` and `Dockerfile`. E.g. the Python
+quickstarter is now building an image containing all dependencies instead of
+installing them during runtime.
+
 ### 0.1.0 to 1.0.x
 
 1.0.x requires Tailor [0.9.3](https://github.com/opendevstack/tailor/releases/tag/v0.9.3).
