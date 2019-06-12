@@ -10,7 +10,9 @@ Welcome to the OpenDevStack. The OpenDevStack is a framework to help in setting 
 **Important: The credentials provided in the guide are only meant to be used within the local test installation. For use in production you will have to customize paths, URLs and credentials!**
 
 ## Requirements
-The following requirements have to be met to setup a local environment
+The following requirements have to be met to setup a local environment.
+**Important: We assume, you will have a full functional internet connection**
+
 ### Git
 We use Git as code repository, so you have to be familiar to work with [Git](https://git-scm.com/ "Git").
 ### Vagrant
@@ -18,6 +20,7 @@ The OpenDevStack uses Vagrant to provide a sample infrastructure for the Atlassi
 
 ### Virtualbox
 Vagrant uses Virtualbox for running the provisioned VMs. Therefore you must have [Virtualbox](https://www.virtualbox.org/ "Virtualbox") installed.
+
 ### Atlassian tools licenses
 To use the Atlassian tools you need a license to run them. For testing and evaluation Atlassian provides evalutation licenses, which you can get on the [My Atlassian license page](https://my.atlassian.com/products/index "My Atlassian").
 Here you have to keep in mind, that you have to register, if you don't have an Atlassian account. The registration is for free.
@@ -31,27 +34,12 @@ You need licenses for the following products:
 The evaluation licenses are valid for 30 days from the date of purchase. If you need a server id, this will be provided by the tools within the installation, so you are able to inlcude the licenses within the
 installation wizards of the tools, after the base setup provided by the Ansible scripts.
 
-### Minishift
-
-The provided provision application and Rundeck jobs work with links, which are designed to connect to a installed and configured [Minishift](https://docs.openshift.org/latest/minishift/index.html "Minishift") instance. Minishift is a tool provided by Redhat to run OpenShift locally by providing a single-node OpenShift cluster inside a VM.
-Information, how to setup Minishift can be found at the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
-Currently the OpenDevStack works with Openshift 3.9.0.
 
 ### Cygwin / Linux
 
-You must have the possibility to run bash scripts to import the provided OpenShift templates. On Linux systems you can use these scripts out-of-the box, on Windows systems you will have to install either a bash port for Windows like [Cygwin](https://www.cygwin.com/ "Cygwin").
-For Windows, our recommendation is to use Cygwin for starting a minishift cluster and further configuration. Make sure to select the curl package under the "net" category when installing cygwin.
+You must have the possibility to run bash scripts to install the OpenDevStack. On Linux systems you can use these scripts out-of-the box, on Windows systems you will have to install either a bash port for Windows like [Cygwin](https://www.cygwin.com/ "Cygwin").
+For Windows, our recommendation is to use Cygwin for configuration. Make sure to select the curl package under the "net" category when installing cygwin.
 
-`minishift` will use the [.kube/config](https://kubernetes.io/docs/tasks/access-application-cluster/configure-access-multiple-clusters/#explore-the-home-kube-directory) mechanism to configure access to the kubernetes cluster. Minishift will place the config in the Windows home directory. To make this work under `cygwin`, we will point the cygwin home directory to the Windows Home directory.
-This can easily be achieved by changing the `db_home` entry in `/etc/nsswitch.conf` to
-
-    dbhome: windows
-
-or
-
-    dbhome: /%H
-
-This is described in the [cygwin user guide](https://cygwin.com/cygwin-ug-net/ntsec.html#ntsec-mapping-nsswitch-syntax).
 
 ### Ansible
 
@@ -69,51 +57,49 @@ We use [tailor](https://github.com/opendevstack/tailor) to handle our versioned 
 |---|---|
 | 0.1.x | = 0.8 |
 | 1.0.x | >= 0.9.1 |
+| 1.1.x | >= 0.9.3 |
 
 ### Prepare infrastructure
 
-First you have to clone the [ods-core](http://www.github.com/opendevstack/ods-core) repository.
+First create a base directory for the OpenDevStack repositories, e.g. **ods**. This will be your base directory for all following operations.
+This path will also be mounted to the VMs provisioned by Vagrant.
 
-Navigate to the folder **ods-core > infrastructure-setup**.
-There you will find a Vagrant file. You can start the infrastructure provisioning and setup by using
-```shell
-vagrant up
+Then you have to clone the [ods-core](http://www.github.com/opendevstack/ods-core) repository into the created directory.
 ```
-After Vagrant has provisioned the VMs you are able to connect to them. There are two VMs, `atlcon` and `atlassian1`.
-First connect to the Ansible controller `atlcon` from the directory you ran the Vagrantfile from via
-```shell
-vagrant ssh atlcon
+git clone https://github.com/opendevstack/ods-core.git
 ```
-After the connect change the directory to `/vagrant/ansible`.
-Here you have to execute the following command:
+![Clone repository](../assets/documentation/clone_repo.PNG)
+
+Navigate to the folder **ods > ods-core > infrastructure-setup**.
+
+![Directory listing](../assets/documentation/scripts.PNG)
+
+There you will find the setup and configuration shell scripts. You can start the infrastructure provisioning and setup by using
 ```shell
-ansible-playbook -i inventories/dev dev.yml --ask-vault-pass
+./setup-local-environment.sh
 ```
-This playbook prepares the ansible controller and basic installations on the `atlassian1` VM like a local database and the necessary schemas with their respective user.
-The password for the vault located under `ansible/inventories/dev/group_vars/all/vault.yml` is `opendevstack`.
-Depending on your network or proxy configuration it might happen that some online resources are not reachable. Please try to execute the playbook again in such a case.
+This script allows you to set the necessary installation pathes, clones the necessary OpenDevStack repositories and prepares the vagrant infrastructure, including the base installation of the Atlassian tools, Rundeck and datatbase preparing.
 
-**All ansible playbook commands in this guide have to be executed from the Ansible controller like described before!**
+For a local test environment it is recommended to keep the default values.
 
-### Install Atlassian Tools and Rundeck
+![Configuration values](../assets/documentation/script-execution-1.PNG)
 
-The following steps explain the Atlassian tools and the Rundeck installation.
+![Vagrant](../assets/documentation/script-execution-2.PNG)
 
-#### Crowd Setup
+During script execution you will have the possibility to choose, if you want to confirm the Atlassian and Rundeck installation for every tool or to run a complete setup.
 
-##### Setup Application
-Downloading and Configuring as service
-```shell
-ansible-playbook -v -i inventories/dev playbooks/crowd.yml --ask-vault
-```
+![Atlassian stack](../assets/documentation/stack-confirm.PNG)
 
-<!-- TODO
-This can be fixed in the vagrant file. But should we really notice this here, because the recommendation is to use cygwin?
+After the base installation, you will have to configure the Atlassian tools, before you are able to proceed.
 
-If you are using windows you might get a warning that the directory containing the ansible files is world writable.
-Therefore the ansible.cfg config-file will not be used, which will cause ansible to use the wrong directory to search for roles.
-To fix this you can modify the ansible.cfg file in /etc/ansible and change the role_path to /vagrant/ansible/roles.
--->
+![Vagrant](../assets/documentation/script-execution-3.PNG)
+
+### Configure Atlassian Tools
+
+The following steps explain the Atlassian tools configuration i the local test environment.
+If you have already installed the Atlassian tools, you can skip the Configuration Wizard chapter for the respective tool
+
+#### Atlassian Crowd 
 
 ##### Run Configuration Wizard
 
@@ -123,10 +109,19 @@ Be patient. First time accessing this page will take some time.
 
 ###### Step 1: License key
 Here you can see the server id you need for the license you can get from the [My Atlassian page](https://my.atlassian.com/products/index "My Atlassian"). Use the link to get an evaluation license (Crowd Server) or enter a valid license key into the textbox.
+
+![License key](../assets/documentation/crowd/crowd-config-1.PNG)
+
 ###### Step 2: Crowd installation
 Here choose the **New installation** option.
+
+![New installation](../assets/documentation/crowd/crowd-config-2.PNG)
+
 ###### Step 3: Database Configuration
 The next step is the database configuration.
+
+![Database configuration](../assets/documentation/crowd/crowd-config-3.PNG)
+
 Choose the **JDBC Connection** option and configure the database with the following settings
 
 {: .table-bordered }
@@ -135,36 +130,59 @@ Choose the **JDBC Connection** option and configure the database with the follow
 | ----------------- | -------------------------------------------------------------------------------------------------------------------- |
 | Database          | PostgreSQL                                                                                                           |
 | Driver class name | org.postgresql.Driver                                                                                                |
-| JDBC URL          | jdbc:postgresql://localhost:5432/atlassian?currentSchema=crowd&amp;reWriteBatchedInserts=true&amp;prepareThreshold=0 |
+| JDBC URL          | jdbc:postgresql://localhost:5432/crowd?reWriteBatchedInserts=true&amp;prepareThreshold=0 |
 | Username          | crowd                                                                                                                |
 | Password          | crowd                                                                                                                |
 | Hibernate dialect | org.hibernate.dialect.PostgreSQLDialect                                                                              |
 
-
-
 ###### Step 4: Options
 Choose a deployment title, e.g. *OpenDevStack* and set the **Base URL** to `http://192.168.56.31:8095/crowd`
 
-###### Step 5: Mail configuration
-For the local test environment a mail server is not necessary, so you can skip this step by choosing **Later**
+![Options](../assets/documentation/crowd/crowd-config-4.PNG)
 
-###### Step 6: Internal directory
+###### Step 5: Internal directory
 Enter the name for the internal crowd directory, e.g. *OpenDevStack*
 
-###### Step 7: Default administrator
-Enter the data for the default administrator, so you are able to login to crowd.
+![Internal directory](../assets/documentation/crowd/crowd-config-5.PNG)
 
-###### Step 8: Integrated applications
-Enable both integrated applications.
+###### Step 6: Default administrator
+Enter the data for the default administrator, so you are able to login to crowd. 
+For the test installation, we will choose the username `opendevstack.admin` with the password `admin`.
 
-###### Step 9: Log in to Crowd console
+![Default administrator](../assets/documentation/crowd/crowd-config-6.PNG)
+
+###### Step 7: Integrated applications
+Enable the OpenID Server.
+
+![Integrated applications](../assets/documentation/crowd/crowd-config-7.PNG)
+
+###### Step 8: Log in to Crowd console
 Now you can verify the installation and log in with the credentials defined in the previous step.
 
+![Login](../assets/documentation/crowd/crowd-config-8.PNG)
+
 ##### Configure Crowd
-You will have to configure crowd to enable the Atlassian tools and Rundeck to login with crowd credentials.
+You will have to configure crowd to enable the Atlassian tools and Rundeck to login with crowd credentials. 
+
+The following paragraphs assume, that you are logged in to the [Crowd console](http://192.168.56.31:8095/crowd/console). 
+
+###### Session configuration
+You will have to change the default session configuration.
+
+Open the **Administration** menu and choose the **Session configuration** entry.
+
+![Session configuration](../assets/documentation/crowd/crowd-session-configuration.PNG)
+
+Uncheck the **Require consistent client IP address** checkbox.
+
+![Session configuration](../assets/documentation/crowd/crowd-session-configuration-2.PNG)
+
+Click **save** and login again.
+
+![Session configuration success](../assets/documentation/crowd/crowd-session-configuration-3.PNG)
 
 ###### Add OpenDevStack groups
-You will have to add the following groups to crowd's internal directory
+You will have to add additional groups Crowd's internal directory. The groups are listed in the table below.
 
 {: .table-bordered }
 {: .table-sm }
@@ -173,35 +191,86 @@ You will have to add the following groups to crowd's internal directory
 | opendevstack-users          | Group for normal users without adminstration rights |
 | opendevstack-administrators | Group for administration users                      |
 
-###### Add Atlassian groups
-You also have to add the groups from the atlassian tools, even if you don't use them.
+To add a group, open the **Groups** tab and choose **Add group**
 
-{: .table-bordered }
-{: .table-sm }
-| Group                     | Description                    |
-| ------------------------- | ------------------------------ |
-| bitbucket-administrators  | Bitbucket administrator group  |
-| bitbucket-users           | Bitbucket user group           |
-| jira-administrators       | Jira administrator group       |
-| jira-developers           | Jira developers group          |
-| jira-users                | Jira user group                |
-| confluence-administrators | Confluence administrator group |
-| confluence-users          | Confluence user group          |
+![Add group](../assets/documentation/crowd/crowd-add-group.PNG)
 
-To do so, access the crowd console at http://192.168.56.31:8095/crowd/console/
-Choose the **Groups** menu point and click **Add group**
-Enter the group name like shown above and link it to the created internal directory.
+Enter the name and the description for the group, choose the **OpenDevStack** directory and click **Create**.
 
-###### Add groups to user
+![Enter group details](../assets/documentation/crowd/crowd-add-group-2.PNG)
+
+The group has been created. Repeat the steps of group creation for all necessary groups.
+
+###### Add CD user
+After creating the groups you have to create a user, that is used by continuous integration mechanisms of the OpenDevStack.
+
+Go to the **Users** section in Crowd and click **Add user**.
+
+![Add user](../assets/documentation/crowd/crowd-add-user-1.PNG)
+
+Enter the details for the CD user and click **Create**. For the provided scripts we assume, that the username `cd_user` with the password `cd_user` is used.
+
+![User details](../assets/documentation/crowd/crowd-add-user-2.PNG)
+
+In the following overview choose the user's **group** tab and click **Add groups**
+
+![User group tab](../assets/documentation/crowd/crowd-add-user-3.PNG)
+
+Now search for all groups by leaving the Search fields empty, check the **opendevstack-users** group and click **Add selected groups**.
+
+![Group modal view](../assets/documentation/crowd/crowd-add-user-4.PNG)
+
+The group has been added to the user.
+
+![Updated user groups](../assets/documentation/crowd/crowd-add-user-5.PNG)
+
+###### Add groups to administrator
 Now you have to add all groups to the administrator.
 Go to the **Users** section in Crowd, choose your administration user and open the **Groups** tab.
 Click **Add groups**, search for all by leaving the Search fields empty and add all groups.
 
+![Administrator groups](../assets/documentation/crowd/crowd-add-user-6.PNG)
+
 ###### Add applications to crowd
 You will have to add the applications you want to access with your Crowd credentials in the Crowd console.
+
 Access the Crowd console at http://192.168.56.31:8095/crowd/console/
+
+*The following example shows, how to add Jira to the application section. The steps for the other applications are equal.*
+
 Choose the **Applications** menu point and click **Add application**
-In the following wizard enter the data for the application you want to add. See the data for the applications in the test environment in the table below.
+
+![Add application](../assets/documentation/crowd/crowd-add-app-1.PNG)
+
+You enter the _Add application_-Wizard. Enter your application details and proceed with **Next**.
+
+![Add application - details](../assets/documentation/crowd/crowd-add-app-2.PNG) 
+
+Enter the _URL_ and _Remote IP address_ and click **Next**.
+ 
+![Add application - connection](../assets/documentation/crowd/crowd-add-app-3.PNG)   
+
+Check the OpenDevStack user directory checkbox. Then proceed with **Next**.
+
+![Add application - directory](../assets/documentation/crowd/crowd-add-app-4.PNG) 
+
+Check the _Allow all users to authenticate_ checkbox. Click **Next**.
+
+![Add application - authorisation](../assets/documentation/crowd/crowd-add-app-5.PNG) 
+
+Confirm the application information by clicking **Add application**
+
+![Add application - confirmation](../assets/documentation/crowd/crowd-add-app-6.PNG) 
+
+In the following overview choose the **Remote addresses** tab.
+
+![Add application - remote addresses](../assets/documentation/crowd/crowd-add-app-7.PNG)
+
+Now enter the CIDR `0.0.0.0/0` in the input field and click **Add**.
+
+![Add application remote addresses](../assets/documentation/crowd/crowd-add-app-8.PNG)
+
+You will have to add all applications listed in the table below. The provided data is meant to be used in the local test environment.
 
 {: .table-bordered }
 {: .table-sm }
@@ -210,16 +279,15 @@ In the following wizard enter the data for the application you want to add. See 
 | Jira                | jira       | jira       | http://192.168.56.31:8080         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
 | Confluence          | confluence | confluence | http://192.168.56.31:8090         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
 | Bitbucket Server    | bitbucket  | bitbucket  | http://192.168.56.31:7990         | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
-| Generic application | rundeck    | secret     | http://192.168.56.31:4440/rundeck | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
+| Generic application | rundeck    | rundeck     | http://192.168.56.31:4440 | 192.168.56.31 | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
 | Generic application | provision  | provision  | http://192.168.56.1:8088             | 192.168.56.1  | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
+| Generic application | sonarqube  | sonarqube  | https://sonarqube-cd.192.168.56.101.nip.io| 192.168.56.101  | Internal directory with OpenDevStack groups | all users     | 0.0.0.0/0 |
 
-#### Bitbucket Setup
+After adding all applications they should shown at the applications overview in Crowd.
 
-##### Setup Application
+![Applications overview](../assets/documentation/crowd/crowd-app-overview.PNG)
 
-```shell
-ansible-playbook -v -i inventories/dev playbooks/bitbucket.yml --ask-vault
-```
+#### Attlassian Bitbucket
 
 ##### Run Configuration Wizard
 
@@ -243,33 +311,35 @@ Now activate **nested groups** and deactivate the **incremental synchronization*
 The group membership should be proofed every time a user logs in.
 Test the settings and save them.
 Now change the order of the user directories. The Crowd directory has to be on first position.
-
-##### Configure user groups
-###### Add groups
-After configuring the crowd directory change to **Groups**
-Here you have to add the groups defined in crowd in the previous steps, if
-they are not available yet.
-
-{: .table-bordered }
-{: .table-sm }
-| Group                    | Description                   |
-| ------------------------ | ----------------------------- |
-| bitbucket-administrators | Bitbucket administrator group |
-| bitbucket-users          | Bitbucket user group          |
-
-
+Synchronize the directory, so all groups and users are available in Bitbucket.
 
 ###### Add permissions
-The last step is to configure the permissions for the created groups.
+Now you have to configure the permissions for the OpenDevStack groups.
 Go to the **Global permissions** menu.
-In the groups section add the `bitbucket-administrators` group with *System Admin* rights.
-Add the `bitbucket-users` group with *Project Creator* rights.
+In the groups section add the `opendevstack-administrators` group with *System Admin* rights.
+Add the `opendevstack-users` group with *Project Creator* rights.
 
-#### Jira Setup
-##### Setup Application
-```shell
-ansible-playbook -v -i inventories/dev playbooks/jira.yml --ask-vault
-```
+###### Create OpenDevStack project in Bitbucket
+The local checked out OpenDevStack repositories will be mirrored into the Bitbucket instance.
+Therefore, we need to create a new _project_.
+
+* Go to the Projects page in Bitbucket
+* Hit "Create" button
+* enter Project Name: OpenDevStack and key: OPENDEVSTACK
+* Hit `Create Project`
+* In the settings section, allow the `opendevstack-users` group write access.
+
+You will be directed to the projects dashboard.
+Using the '+' sign  you need to create a couple of repositories:
+
+* ods-core
+* ods-configuration
+* ods-configuration-sample
+* ods-jenkins-shared-library
+* ods-project-quickstarters
+* ods-provisioning-app
+
+#### Atlassian Jira
 
 ##### Run Configuration Wizard
 Access http://192.168.56.31:8080
@@ -308,21 +378,13 @@ Now activate **nested groups** and deactivate the **incremental synchronization*
 The group membership should be proofed every time a user logs in.
 Test the settings and save them.
 Now change the order of the user directories. The Crowd directory has to be on first position.
-###### Configure SSO with crowd
-To finish the SSO configuration, you will have to run the following playbook command:
-```shell
-ansible-playbook -v -i inventories/dev playbooks/jira_enable_sso.yml --ask-vault
-```
-This will configure the authenticator.
+Synchronize the directory, so all groups and users are available in Jira.
 
-**After Jira has been restarted, you are not able to login with the local administrator anymore, but with your crowd credentials.**
+###### Add permissions
+The last step is to configure the permissions for the OpenDevStack groups.
 
-#### Confluence Setup
+#### Atlassian Confluence
 
-##### Setup Application
-```shell
-ansible-playbook -v -i inventories/dev playbooks/confluence.yml --ask-vault
-```
 ##### Run Configuration Wizard
 Access http://192.168.56.31:8090
 
@@ -376,34 +438,7 @@ The group membership should be proofed every time a user logs in.
 Test the settings and save them.
 Now change the order of the user directories. The Crowd directory has to be on first position.
 
-###### Configure SSO with crowd
-To finish the SSO configuration, you will have to run the following playbook command:
 
-```shell
-ansible-playbook -v -i inventories/dev playbooks/confluence_enable_sso.yml --ask-vault
-```
-This will configure the authenticator.
-**After Confluence has been restarted, you are not able to login with the local administrator anymore, but with your crowd credentials.**
-
-#### Create opendevstack project in Bitbucket
-We will mirror the opendevstack project into this Bitbucket instance.
-Therefore, we need to create a new _project_.
-
-* Go to the Projects page in Bitbucket
-* Hit "Create" button
-* enter Project Name: OpenDevStack and key: OPENDEVSTACK
-* Hit `Create Project`
-* In the settings section, allow the `bitbucket-users` group write access.
-
-You will be directed to the projects dashboard.
-Using the '+' sign  you need to create a couple of repositories:
-
-* ods-core
-* ods-configuration
-* ods-configuration-sample
-* ods-jenkins-shared-library
-* ods-project-quickstarters
-* ods-provisioning-app
 
 On the Project Dashboard Navigate to the "Settings" menu and grant the group "opendevstack-users" admin access.
 
@@ -763,7 +798,6 @@ After creating the user you have to add the following groups:
 | Group              |
 | ------------------ |
 | opendevstack-users |
-| bitbucket-users    |
 
 After you have created the user in crowd, you must add the public cd_user SSH key to the Bitbucket account.
 
