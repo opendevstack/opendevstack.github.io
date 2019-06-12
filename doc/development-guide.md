@@ -7,6 +7,9 @@ layout: documentation
 Learn all about how to make changes to OpenDevStack in your organisation and how
 to contribute those changes back upstream.
 
+This guides assumes you have followed the getting-started guide, and have cloned
+the ODS repositories to your local BitBucket instance.
+
 For the rest of this guide, we will use "ACME" as the organisation name, which
 you will need to replace appropriately.
 
@@ -32,17 +35,17 @@ branch like this:
 ```sh
 # Ensure you have the latest refs
 git fetch
-# Create a branch based on 1.0.x
-git checkout --no-track -b fix-typo origin/1.0.x
+# Create a branch based on 1.0.x - flag with bug / feature, e.g bug/fix-typo
+git checkout --no-track -b bug/fix-typo origin/1.0.x
 ```
 
 Once you have committed the desired changes, push your branch to BitBucket:
 ```sh
-git push origin fix-typo
+git push origin bug/fix-typo
 ```
 
 Afterwards, open a pull request. It is important that the target of the pull
-request is the `production` branch. That way, you do not pollute your base
+request is the `production` branch. That way, you do not pollute the ODS base
 branch (`1.0.x`) with changes. The `production` branch exists only in your
 BitBucket instance, and it is the branch that e.g. OpenShift points to, and
 consequently is the branch where all your changes should end up in.
@@ -54,9 +57,11 @@ well - continue with the next section if you want to do this.
 
 ## How to contribute changes upstream
 
-As your base branch is never polluted with local changes, every branch created
-from it is guaranteed to not contain any local changes, or changes to your
-OpenDevStack instance that you do not want to share publicly.
+Before you propose your code changes for merge, please open an issue describing
+what you are trying to do. Assign that issue to yourself and add labels as you see
+fit. However, leave the project field blank, as it is up to ODS maintainers to
+select in which project your issue will become available if your code changes are
+accepted.
 
 To contribute your work, first you need to have a space in GitHub where you have
 permissions to push your changes to. Typically, this is a fork of the repository
@@ -73,7 +78,7 @@ git remote add acme https://github.com/acme/<REPO_NAME>.git
 
 After that, you can push your changes there:
 ```sh
-git push acme fix-typo
+git push acme bug/fix-typo
 ```
 
 Once pushed, GitHub suggests to open a pull request, and automatically sets the
@@ -86,13 +91,40 @@ latest master originally, and your pull request shows a merge conflict, you
 need to cherry-pick (and adapt) your changes to a branch based on latest master
 in order to have it merged.
 
+Make sure that you link the pull request to the issue you opened earlier, either by
+pointing to it in your commit message(s) or by adding the link into the PR description.
+
 In general, to get your changes approved by core members of OpenDevStack, please
 ensure the following:
 
-* Before you make a bigger change, open a ticket first and discuss what you want
-  to do before you actually do it.
-* Explain why this change is necessary / benefitial.
+* You must open an issue first. The bigger the change, the better explain why this change
+  is necessary / benefitial.
 * Ensure to follow the guide above - branches containing unrelated commits or
   features targeting release branches etc. will not be approved.
-* Adhere to the relevant coding standard as set out in each repository.
+* Adhere to the relevant coding standard:
+    * Java files must be in [Google Java Style](https://google.github.io/styleguide/javaguide.html),
+      ensured by [google-java-format-1.6-all-deps.jar](https://github.com/google/google-java-format).
+    * Go files must be gofmt'd.
+    * Groovy files should follow the [Apache Groovy Style guide](http://groovy-lang.org/style-guide.html).
+* End all files with a newline character. See the POSIX definition of a
+  [line](http://pubs.opengroup.org/onlinepubs/009695399/basedefs/xbd_chap03.html#tag_03_205).
 * Add a changelog entry, linking to your pull request.
+
+## OpenDevStack branching flow for contributions
+
+Next sequence diagram provides a graphical understanding on the steps to follow in order to add a new functionality to the OpenDevStack official repository from ACME's private fork.
+The example is based on the assumption you want to contribute with a new feature from branch *1.0.x* or tag *v1.0.x*
+
+<div class="mermaid">
+sequenceDiagram
+    participant A as OpenDevStack <br />GitHub
+    participant B as ACME GitHub <br />OpenDevStack fork
+    participant C as ACME private repo <br />OpenDevStack fork
+    A->>C: 1.0.x/v1.0.1 checkout
+    C->>C: new feature branch X
+    Note right of C: develop and test
+    C-->>C: PR: branch X to production branch
+    Note right of C: test production
+    C->>B: push branch X
+    B-->>A: PR: branch X to 1.0.x/v1.0.1
+</div>

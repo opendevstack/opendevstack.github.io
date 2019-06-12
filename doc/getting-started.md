@@ -675,6 +675,8 @@ After this step you will have to create the following repositories in the **Repo
 | sbt-releases | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases | ivy-releases
 | typesafe-ivy-releases | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | https://dl.bintray.com/typesafe/ivy-releases | ivy-releases
 | ivy-releases | maven2 | group  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | |
+| pypi-all | pypi | group  | checked |         |  | default  |                 | |  | pypi-proxy |  
+| pypi-proxy | pypi | proxy  | checked |         |  | default  |                |  | https://pypi.org/ | |
 
 
 ##### Configure user and roles
