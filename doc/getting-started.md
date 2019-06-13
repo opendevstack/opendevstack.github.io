@@ -68,11 +68,11 @@ Then you have to clone the [ods-core](http://www.github.com/opendevstack/ods-cor
 ```
 git clone https://github.com/opendevstack/ods-core.git
 ```
-![Clone repository](../assets/documentation/clone_repo.PNG)
+![Clone repository](../assets/documentation/setup-script/clone_repo.PNG)
 
 Navigate to the folder **ods > ods-core > infrastructure-setup**.
 
-![Directory listing](../assets/documentation/scripts.PNG)
+![Directory listing](../assets/documentation/setup-script/scripts.PNG)
 
 There you will find the setup and configuration shell scripts. You can start the infrastructure provisioning and setup by using
 ```shell
@@ -82,17 +82,17 @@ This script allows you to set the necessary installation pathes, clones the nece
 
 For a local test environment it is recommended to keep the default values.
 
-![Configuration values](../assets/documentation/script-execution-1.PNG)
+![Configuration values](../assets/documentation/setup-script/script-execution-1.PNG)
 
-![Vagrant](../assets/documentation/script-execution-2.PNG)
+![Vagrant](../assets/documentation/setup-script/script-execution-2.PNG)
 
 During script execution you will have the possibility to choose, if you want to confirm the Atlassian and Rundeck installation for every tool or to run a complete setup.
 
-![Atlassian stack](../assets/documentation/stack-confirm.PNG)
+![Atlassian stack](../assets/documentation/setup-script/stack-confirm.PNG)
 
 After the base installation, you will have to configure the Atlassian tools, before you are able to proceed.
 
-![Vagrant](../assets/documentation/script-execution-3.PNG)
+![Vagrant](../assets/documentation/setup-script/script-execution-3.PNG)
 
 ### Configure Atlassian Tools
 
