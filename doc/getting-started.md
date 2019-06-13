@@ -297,47 +297,102 @@ Be patient. First time accessing this page takes some time.
 
 On the configuration page you have the possibility to define the application name, the base URL and to get an evaluation license or enter a valid license.
 If you choose to get an evaluation license you can retrieve it from the my atlassian page. You will be redirected automatically.
+
+![Bitbucket setup - licensing](../assets/documentation/bitbucket/bitbucket-install-1.PNG)
+
 After adding the license you have to create a local Bitbucket administrator account.
-Don't integrate Bitbucket with Jira at this point, but proceed with going to Bitbucket.
+
+![Bitbucket setup - administrator](../assets/documentation/bitbucket/bitbucket-install-2.PNG)
+
+Don't integrate Bitbucket with Jira, but proceed with going to Bitbucket.
 
 ##### Configure Crowd access
 Go to the Bitbucket start page at http://192.168.56.31:7990/
 Open the administration settings and navigate to the **User directories** menu.
+
+![Add directory](../assets/documentation/bitbucket/bitbucket-add-directory-1.PNG)
+
 Here you have to add a directory of type *Atlassian Crowd*.
-Here you have to add the Crowd server URL `http://192.168.56.31:8095/crowd`
-You also have to add the application name and the password you have defined for Bitbucket in crowd.
+In the following form add the Crowd server URL `http://192.168.56.31:8095/crowd`, the application name and the password you have defined for Bitbucket in crowd.
 For the local test environment this is `bitbucket` `bitbucket`
 Now activate **nested groups** and deactivate the **incremental synchronization**
 The group membership should be proofed every time a user logs in.
 Test the settings and save them.
+
+![Add directory - form](../assets/documentation/bitbucket/bitbucket-add-directory-2.PNG)
+
 Now change the order of the user directories. The Crowd directory has to be on first position.
 Synchronize the directory, so all groups and users are available in Bitbucket.
+
+![User directory listing](../assets/documentation/bitbucket/bitbucket-add-directory-3.PNG)
 
 ###### Add permissions
 Now you have to configure the permissions for the OpenDevStack groups.
 Go to the **Global permissions** menu.
-In the groups section add the `opendevstack-administrators` group with *System Admin* rights.
+
+![Add permission](../assets/documentation/bitbucket/bitbucket-add-permission-1.PNG)
+
+In the _Group access_ section add the `opendevstack-administrators` group with *System Admin* rights.
+
+![Add permission - administrators](../assets/documentation/bitbucket/bitbucket-add-permission-2.PNG)
+
 Add the `opendevstack-users` group with *Project Creator* rights.
+
+![Add permission - users](../assets/documentation/bitbucket/bitbucket-add-permission-3.PNG)
 
 ###### Create OpenDevStack project in Bitbucket
 The local checked out OpenDevStack repositories will be mirrored into the Bitbucket instance.
-Therefore, we need to create a new _project_.
+Therefore, we need to create a new _project_ within Bitbucket.
 
-* Go to the Projects page in Bitbucket
-* Hit "Create" button
-* enter Project Name: OpenDevStack and key: OPENDEVSTACK
-* Hit `Create Project`
-* In the settings section, allow the `opendevstack-users` group write access.
+Go to the Projects page in Bitbucket and click the **Create project** button.
 
-You will be directed to the projects dashboard.
-Using the '+' sign  you need to create a couple of repositories:
+![project overview](../assets/documentation/bitbucket/bitbucket-add-project-1.PNG)
 
-* ods-core
-* ods-configuration
-* ods-configuration-sample
-* ods-jenkins-shared-library
-* ods-project-quickstarters
-* ods-provisioning-app
+Now enter the _Project name:_ `OpenDevStack` with the _Project key_ `OPENDEVSTACK` and hit 
+**Create Project**.
+
+![Create project form](../assets/documentation/bitbucket/bitbucket-add-project-2.PNG)
+
+Now open the project settings.
+
+![Project details](../assets/documentation/bitbucket/bitbucket-project-settings-1.PNG)
+
+In the **Project permissions** section, allow the `opendevstack-users` group write access.
+
+![Project permissions](../assets/documentation/bitbucket/bitbucket-project-settings-2.PNG)
+
+After you have adjusted the project permissions, you will have to create the repositories for the OpenDevStack.
+Go to the OpenDevStack project overview and choose the **Create repository** option, either with 
+the '+' sign on the left menu bar or with the **Create repository** button in the middle of the screen, 
+if you have an empty project.
+
+![Project overview](../assets/documentation/bitbucket/bitbucket-add-repo-1.PNG)
+
+Enter the name for the repository and click **Create repository**.
+
+![Project overview](../assets/documentation/bitbucket/bitbucket-add-repo-2.PNG)
+
+You will have to create the repositories listed in the table below.
+
+{: .table-bordered }
+{: .table-sm }
+| Repositories                |
+| --------------------------- |
+| ods-core                    |
+| ods-configuration           |
+| ods-configuration-sample    |
+| ods-jenkins-shared-library  |
+| ods-project-quickstarters   |
+| ods-provisioning-app        |
+
+
+###### Add SSH Key for CD user to Bitbucket
+![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-1.PNG)
+![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-2.PNG)
+![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-3.PNG)
+![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-4.PNG)
+![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-5.PNG)
+![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-6.PNG)
 
 #### Atlassian Jira
 
@@ -363,9 +418,7 @@ Unless you have configured a mail server, leave this for later.
 To finish this part of the Jira installation, you will have to provide some informations to your prefered language, your avatar and you will have to create an empty or a sample project.
 After these basic configurations, you have access to the Jira board.
 
-##### Configure Crowd access
-
-###### Configure user directory
+##### Configure user directory
 Open the **User management** in the Jira administration.
 To enter the administration, you have to verify you have admin rights with the password for your admin user.
 Click the **User Directories** entry at the left..
@@ -380,7 +433,7 @@ Test the settings and save them.
 Now change the order of the user directories. The Crowd directory has to be on first position.
 Synchronize the directory, so all groups and users are available in Jira.
 
-###### Add permissions
+##### Add permissions
 The last step is to configure the permissions for the OpenDevStack groups.
 
 #### Atlassian Confluence
@@ -398,7 +451,7 @@ Ensure the add-ons are unchecked and proceed.
 Here you are able to get an evaluation license from atlassian or to enter a valid license key.
 
 ###### Step 4: Choose a Database Configuration
-Here you have to choose **External Database** with the option *PostgrSQL*
+Here you have to choose **External Database** with the option *PostgreSQL*
 
 ###### Step 5: Configure Database
 Click the **Direct JDBC** button and configure the database with the following values:
@@ -423,8 +476,7 @@ Choose **Manage users and groups within Confluence**. Crowd will be configured l
 ###### Step 8: Configure System Administrator account
 Here you have to configure a local administrator account. After this step, you are able to work with Confluence. Just press Start and create a space.
 
-##### Configure Crowd access
-###### Configure user directory
+##### Configure user directory
 Open the **User management** in the Confluence administration.
 To enter the administration, you have to verify you have admin rights with the password for your admin user.
 Click the **User Directories** entry at the left in the **USERS & SECURITY** section.
@@ -438,10 +490,14 @@ The group membership should be proofed every time a user logs in.
 Test the settings and save them.
 Now change the order of the user directories. The Crowd directory has to be on first position.
 
+##### Add permissions
+The last step is to configure the permissions for the OpenDevStack groups.
 
 
-On the Project Dashboard Navigate to the "Settings" menu and grant the group "opendevstack-users" admin access.
 
+
+
+###Prepare local OpenDevStack environment
 Navigate to the **ods-core/infrastructure-setup/scripts** directory and execute
 `mirror-repos.sh`
 
@@ -449,6 +505,71 @@ Use your crowd login when asked for credentials.
 Verify that you have mirrored the github repos and that they have been populated in your Bitbucket instance. The ods-configuration repositpory will remain empty.
 
 Setup project branch permissions - `production` should be guarded against direct merges except through admins
+
+####Nexus3
+Nexus3 will be installed automatically, if you have confirmed the installation in the prepare script.
+
+After the installation Nexus3 will be accessible at http://nexus-cd.192.168.56.101.nip.io/
+
+You are able to login with the default credentials for Nexus3 `admin` `admin123`.
+
+During installation various resources will be created automatically. You will find their description in 
+the subsequent paragraphs.
+
+#####Blob stores
+In the automated installation the following blob stores will be created
+
+| Type | Name             | Path                               |
+| ---- | ---------------- | ---------------------------------- |
+| File | candidates       | /nexus-data/blobs/candidates       |
+| File | releases         | /nexus-data/blobs/releases         |
+| File | atlassian_public | /nexus-data/blobs/atlassian_public |
+
+#####Repositories
+This table lists the repositories created automatically.
+
+| Name             | Format | Type   | Online  | Version policy | Layout policy | Storage    | Strict Content Type Validation | Deployment policy | Remote Storage | belongs to group                                                    |
+| ---------------- | ------ | ------ | ------- | -------------- | ------------- | ---------- | ------------------------------ | ----------------- | ------------------------------------------------------------------ | ------------ |
+| candidates       | maven2 | hosted | checked | Release        | Strict        | candidates | checked                        | Disable-redeploy  | | none                                                                   |
+| releases         | maven2 | hosted | checked | Release        | Strict        | releases   | checked                        | Disable-redeploy  | | none                                                                   |
+| npmjs           | npm     | proxy  | checked |                |               | default    | checked                        |   |  https://registry.npmjs.org  | |
+| atlassian_public | maven2 | proxy  | checked | Release        | Strict        | atlassian_public  | checked                 | Disable-redeploy  | https://maven.atlassian.com/content/repositories/atlassian-public/ |
+| jcenter | maven2 | proxy  | checked | Release        | Strict        | default  | checked                 | Disable-redeploy  | https://jcenter.bintray.com | maven-public
+| sbt-plugins | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | http://dl.bintray.com/sbt/sbt-plugin-releases/ | ivy-releases
+| sbt-releases | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases | ivy-releases
+| typesafe-ivy-releases | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | https://dl.bintray.com/typesafe/ivy-releases | ivy-releases
+| ivy-releases | maven2 | group  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | |
+| pypi-all | pypi | group  | checked |         |  | default  |                 | |  | pypi-proxy |  
+| pypi-proxy | pypi | proxy  | checked |         |  | default  |                |  | https://pypi.org/ | |
+
+#####User and roles
+During installation the following user will be created.
+
+| Name      | Password  |
+| --------- | --------- |
+| developer | developer |
+
+The user will get the `opendevstack-developer` role listed below.
+
+| Role ID                | Role name              | Role description                  |
+| ---------------------- | ---------------------- | --------------------------------- |
+| opendevstack-developer | OpenDevStack-Developer | Role for access from OpenDevStack |
+
+This role has the following privileges:
+
+| Privilege                                    |
+| -------------------------------------------- |
+| nx-repository-admin-maven2-candidates-browse |
+| nx-repository-admin-maven2-candidates-edit   |
+| nx-repository-admin-maven2-candidates-read   |
+| nx-repository-view-maven2-\*-\*              |
+| nx-repository-view-maven2-candidates-\*      |
+| nx-repository-view-npm-\*-\* |
+
+The account created is used to authenticate against Nexus3, anonymous access is disabled.
+
+####Sonarqube
+####Rundeck configuration
 
 #### Rundeck Setup
 ##### Setup Application
@@ -500,264 +621,6 @@ This is superfluous if we mirror the repos first to our vagrant / local bitbucke
 After the playbook has been finished Rundeck is accessible via http://192.168.56.31:4440/rundeck
 
 
-### Configure Minishift
-#### Minishift startup
-First you have to install Minishift. You have to use a minishift version >= 1.14.0, so openshift v3.9.0 (see below) is supported.
-
-To do so, follow the installation instructions of the [Minishift Getting Started guide](https://docs.openshift.org/latest/minishift/getting-started/index.html "Getting Started with Minishift").
-
-Before you start up Minishift with the `minishift start` command you will have to create or modify a `config.json` file.
-This file is located in the `.minishift/config` folder in the user home directory.
-On a Windows system, you will find this file under `C:\Users\<username>\.minishift\config\config.json` or under cygwin `~/.minishift/config/config.json`.
-If the file doesn't exist, you will have to create it.
-The file has to have the following content:
-
-```javascript
-{
-    "cpus": 2,
-    "memory": "8192",
-    "openshift-version": "v3.9.0",
-    "disk-size": "40GB",
-    "vm-driver": "virtualbox"
-}
-```
-
-It is important to use *v3.9.0* as minimum version to ensure, that the templates provided by the OpenDevStack work properly. If you are on windows you have to run the "minishift start" command as administrator.
-
-After the start up you are able to open the webconsole with the `minishift console` command. This will open the webconsole in your standard browser.
-Please access the webconsole with the credentials `developer` `developer`.
-It is *important* not to use the `system` user, because Jenkins does not allow a user named `system`.
-<!-- TODO we are not doing anything on the console with jenkins, why is this hint important -->
-
-### Configure the path for the OC CLI
-The OC CLI is automatically downloaded after "minishift start".
-To add it to the path you can run
-```shell
-minishift oc-env
-```
-and execute the displayed command.
-
-#### Login with the CLI
-You have to login via the CLI with
-```shell
-oc login -u system:admin
-```
-
-#### Setup the base template project
-After you have logged in, you are able to create a project, that will contain the base templates and the Nexus Repository Manager. Please enter the following command to add the base project:
-```shell
-oc new-project cd --description="Base project holding the templates and the Repositoy Manager" --display-name="OpenDevStack Templates"
-```
-This command will create the base project.
-
-#### Adjust user rights for the developer user
-To be able to see all created projects, you will have to adjust the user rights for the developer use. Do so by using the provided command
-```shell
-oc adm policy --as system:admin add-cluster-role-to-user cluster-admin developer
-```
-
-#### Create service account for deployment
-Rundeck needs a technical account in Minishift to be able to create projects and provision resources. Therefore, we create a service account, which credentials are provided to Rundeck in a later step.
-```shell
-oc create sa deployment -n cd
-oc adm policy --as system:admin add-cluster-role-to-user cluster-admin system:serviceaccount:cd:deployment
-```
-After you have created the service account we need the token for this account.
-```shell
-oc sa get-token deployment -n cd
-```
-Save the token text. It will be used in the Rundeck configuration later.
-
-#### Install Minishift certificate on Atlassian server
-You have to add the Minishift certificate to the `atlassian1` JVM, so Bitbucket is able to execute REST Calls against Minishift, triggered by Webhooks.
-Go to the directory, where you have started Vagrant.
-Here open a SSH connection to the `atlassian1` server
-```shell
-vagrant ssh atlassian1
-```
-On the server change to the root account
-```shell
-sudo -i
-```
-Here execute the following command to get the certificate from the Minishift server:
-```shell
- openssl s_client -connect 192.168.99.100:8443 -showcerts < /dev/null 2>/dev/null| sed -ne '/-BEGIN CERTIFICATE-/,/-END CERTIFICATE-/p' > /tmp/minishift.crt
-```
-You should now have two PEM encoded certificate in /tmp/minishift.crt.
-Remove the first one (this is the server certificate) and keep the CA Cert.
-
-Check that you got the CA certificate:
-```shell
-openssl x509 -in /tmp/minishift.crt -text
-```
-
-You should see a section:
-```
-    X509v3 extensions:
-            X509v3 Key Usage: critical
-                Digital Signature, Key Encipherment, Certificate Sign
-            X509v3 Basic Constraints: critical
-                CA:TRUE
-```
-
-Now import the certificate in the default JVM keystore.
-```shell
-sudo /usr/java/latest/jre/bin/keytool -import -alias minishift -keystore /usr/java/latest/jre/lib/security/cacerts -file /tmp/minishift.crt
-```
-
-The default password is `changeit`.
-Confirm with yes when ask to trust the certificates.
-Restart the bitbucket service
-```shell
-sudo service atlbitbucket restart
-```
-
-We need this certificate for the Rundeck part later as well.
-On the atlassian1 server clone the `ods-project-quickstarters` from your Bitbucket server.
-```shell
-sudo su - rundeck
-git clone http://192.168.56.31:7990/scm/opendevstack/ods-project-quickstarters.git
-git config --global user.email "cd_user@opendevstack.local"
-git config --global user.name "cd_user"
-cat /tmp/minishift.crt >> ods-project-quickstarters/ocp-templates/root.ca/ca-bundle.crt
-cd ods-project-quickstarters
-git commit -am "added local root ca"
-git push origin master
-```
-
-Use your crowd login when asked for credentials.
-we do this as the rundeck user, so we can accept the ssh host key.
-
-### Prepare environment settings
-Switch to your local machine and clone the repositories: `ods-configuration-sample` and `ods-configuration` from your bitbucket server.
-Copy the entire directory structure from `ods-configuration-sample` into `ods-configuration`and remove the .sample postfixes.
-
-```shell
-git clone http://192.168.56.31:7990/scm/opendevstack/ods-configuration-sample.git
-git clone http://192.168.56.31:7990/scm/opendevstack/ods-configuration.git
-cp -r ./ods-configuration-sample/. ./ods-configuration
-find ods-configuration -name '*.sample' -type f | while read NAME ; do mv "${NAME}" "${NAME%.sample}" ; done
-```
-(Assuming your host/ip for bitbucket is: 192.168.56.31:7990)
-
-Now you will have to check the `.env` configuration files in `ods-configuration`. Change all values with the suffix `_base64` to a Base64 encoded value.  
-
-### Setup and Configure Nexus3
-Amend `ods-configuration/ods-core/nexus/ocp-config/route.env` and change the domain to match your openshift/minishift domain (for example `nexus-cd.192.168.99.100.nip.io`)
-
-Go to `ods-core/nexus/ocp-config` - and type
-```shell
-tailor update
-```
-You should see a proposed list of new objects that are created - and confirm with `y`
-
-```shell
-Comparing templates in C:\code_bix\opendevstack_at_BIX\ods-core\nexus\ocp-config with OCP namespace cd.
-Limiting resources to dc,is,pvc,route,svc with selector app=nexus3.
-Found 0 resources in OCP cluster (current state) and 5 resources in processed templates (desired state).
-
-[32m+ dc/nexus3 to be created
-[0m--- Current State (OpenShift cluster)
-+++ Desired State (Processed template)
-@@ -1 +1,63 @@
-+apiVersion: v1
-+kind: DeploymentConfig
-+metadata:
-+  annotations:
-+    original-values.tailor.io/spec.template.spec.containers.0.image: sonatype/nexus3:latest
-+  creationTimestamp: null
-+  labels:
-+    app: nexus3
-+  name: nexus3
-+spec:
-+  replicas: 1
-+  selector:
-+    app: nexus3
-+    deploymentconfig: nexus3
-+  strategy:
-+    activeDeadlineSeconds: 21600
-+    recreateParams:
-
-.......
-
-```
-
-#### Configure Repository Manager
-Access Nexus3 http://nexus-cd.192.168.99.100.nip.io/
-Login with the default credentials for Nexus3 `admin` `admin123`
-
-##### Configure repositories
-Open the **Server administration and configuration** menu
-by clicking the gear icon in the top bar.
-Now create three Blob Stores.
-
-| Type | Name             | Path                               |
-| ---- | ---------------- | ---------------------------------- |
-| File | candidates       | /nexus-data/blobs/candidates       |
-| File | releases         | /nexus-data/blobs/releases         |
-| File | atlassian_public | /nexus-data/blobs/atlassian_public |
-
-After this step you will have to create the following repositories in the **Repositories** Subsection.
-
-| Name             | Format | Type   | Online  | Version policy | Layout policy | Storage    | Strict Content Type Validation | Deployment policy | Remote Storage | belongs to group                                                    |
-| ---------------- | ------ | ------ | ------- | -------------- | ------------- | ---------- | ------------------------------ | ----------------- | ------------------------------------------------------------------ | ------------ |
-| candidates       | maven2 | hosted | checked | Release        | Strict        | candidates | checked                        | Disable-redeploy  | | none                                                                   |
-| releases         | maven2 | hosted | checked | Release        | Strict        | releases   | checked                        | Disable-redeploy  | | none                                                                   |
-| npmjs           | npm     | proxy  | checked |                |               | default    | checked                        |   |  https://registry.npmjs.org  | |
-| atlassian_public | maven2 | proxy  | checked | Release        | Strict        | atlassian_public  | checked                 | Disable-redeploy  | https://maven.atlassian.com/content/repositories/atlassian-public/ |
-| jcenter | maven2 | proxy  | checked | Release        | Strict        | default  | checked                 | Disable-redeploy  | https://jcenter.bintray.com | maven-public
-| sbt-plugins | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | http://dl.bintray.com/sbt/sbt-plugin-releases/ | ivy-releases
-| sbt-releases | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | https://repo.scala-sbt.org/scalasbt/sbt-plugin-releases | ivy-releases
-| typesafe-ivy-releases | maven2 | proxy  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | https://dl.bintray.com/typesafe/ivy-releases | ivy-releases
-| ivy-releases | maven2 | group  | checked | Release        | permissive | default  | unchecked                 | Disable-redeploy  | |
-| pypi-all | pypi | group  | checked |         |  | default  |                 | |  | pypi-proxy |  
-| pypi-proxy | pypi | proxy  | checked |         |  | default  |                |  | https://pypi.org/ | |
-
-
-##### Configure user and roles
-First disable the anonymous access in the **Security > Anonymous** section.
-Under **Security > Roles** create a nexus-role *OpenDevStack-Developer*.
-
-| Role ID                | Role name              | Role description                  |
-| ---------------------- | ---------------------- | --------------------------------- |
-| opendevstack-developer | OpenDevStack-Developer | Role for access from OpenDevStack |
-
-This role has to have the following privileges:
-
-| Privilege                                    |
-| -------------------------------------------- |
-| nx-repository-admin-maven2-candidates-browse |
-| nx-repository-admin-maven2-candidates-edit   |
-| nx-repository-admin-maven2-candidates-read   |
-| nx-repository-view-maven2-\*-\*              |
-| nx-repository-view-maven2-candidates-\*      |
-| nx-repository-view-npm-\*-\* |
-
-Now create a user under **Security > Users**.
-
-| Name      | Password  |
-| --------- | --------- |
-| developer | developer |
-
-You can choose any First name, Last name and Email.
-Make this account active and assign role `OpenDevStack-Developer` to this account.
-
-This account is later used for authentication against nexus to pull artifacts during build phase
-
-### Import base templates
-After you have configured Nexus3, import the base templates for OpenShift.
-Clone the [ods-project-quickstarters](https://www.github.com/opendevstack/ods-project-quickstarters).
-Navigate to the folder, where the cloned repository is located and navigate to the `ocp-templates/scripts` subfolder.
-From with this folder, check if you are still logged in to the OpenShift CLI and login, if necessary.
-
-Amend `ods-configuration/ods-project-quickstarters/ocp-templates/templates/templates.env` and run
-
-```shell
-./upload-templates.sh
-```
-
-This script creates the basic templates used by the OpenDevStack quickstarters in the `cd` project.
-If you have to modify templates, there are also scripts to replace existing templates in OpenShift.
 
 ### Prepare CD project for Jenkins
 
@@ -789,59 +652,9 @@ and start the build: `oc start-build -n cd jenkins-slave-maven`.
 
 Repeat for every project type you require.
 
-### Configure CD user
-The continuous delivery process requires a dedicated system user in crowd for accessing bitbucket.
-Access the [crowd console](http://192.168.56.31:8095/crowd/console/) and choose **Add user** in the **Users** menu.
-Enter valid credentials. The only restriction here is, that the user has the username `cd_user` and that the user belongs to the internal crowd directory.
-After creating the user you have to add the following groups:
 
-| Group              |
-| ------------------ |
-| opendevstack-users |
 
-After you have created the user in crowd, you must add the public cd_user SSH key to the Bitbucket account.
 
-Open [Bitbucket](http://192.168.56.31:7990/), login with your crowd administration user and go to the administration.
-Here open the User section. If you can't see the CD user, you have to synchronize the Crowd directory in the **User directories** section.
-Click on the CD user. In the user details you have the possiblity to add a SSH key. Click on the tab and enter the _public key_ from the generated key pair.
-
-### Setup and configure SonarQube
-
-Amend `ods-configuration/ods-core/sonarqube/ocp-config/sonarqube.env`
-and type
-
-```shell
-tailor update
-
-```
-confirm with `y` and installation should start.
-
-After the installation has taken place, you will have to build SonarQube: `oc start-build -n cd sonarqube`
-
-Go to http://sonarqube-cd.192.168.99.100.nip.io/ and log in with your crowd user. Click on your profile on the top right, my account / security - and create a new token (and save it in your notes). This token will be used throughout the codebase to trigger the code quality scan.
-
-TODO: Explain all variables
-END_TODO
-
-Check out the cd project
-
-### Prepare Docker Registry
-<!-- TODO
-This is required for later for the quickstarters, see, e.g. be_spring_boot.yaml
--->
- The Docker registry preparation is needed for several quickstarters, e.g. be_spring_boot. To do so, make sure you have the Docker client binary installed on your machine.
-
-* `minishift addons apply registry-route`
-* Run `minishift docker-env` to display the commend you need to execute in order to configure your Docker client.
-* Execute the displayed command, e.g. on Windows CMD `@FOR /f "tokens=*" %i IN ('minishift docker-env') DO @call %i`
-* `oc login -u developer -n default`
-* `oc whoami -t` should show the token for you user
-* `docker login -u developer -p `<Token from oc whoami -t>` docker-registry-default.192.168.99.100.nip.io:443`
-* `docker pull busybox`
-* `docker tag busybox docker-registry-default.192.168.99.100.nip.io:443/openshift/busybox`
-* `docker push docker-registry-default.192.168.99.100.nip.io:443/openshift/busybox`
-
-<!-- END TODO -->
 
 ### Prepare Rundeck and required Dockerfiles
 
