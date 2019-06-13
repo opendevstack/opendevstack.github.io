@@ -34,6 +34,16 @@ You need licenses for the following products:
 The evaluation licenses are valid for 30 days from the date of purchase. If you need a server id, this will be provided by the tools within the installation, so you are able to inlcude the licenses within the
 installation wizards of the tools, after the base setup provided by the Ansible scripts.
 
+The base setup uses the following versions: 
+
+{: .table-bordered }
+{: .table-sm }
+| Software            | Version                                       |
+| ----------------- | ------------------------------------------- |
+| Bitbucket      | 5.16.3                                  |
+| Jira           | 7.13.3 |
+| Confluence     | 6.14.3                                  |
+| Crowd          | 3.4.4      
 
 ### Cygwin / Linux
 
