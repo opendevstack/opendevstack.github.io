@@ -462,7 +462,28 @@ Synchronize the directory, so all groups and users are available in Jira.
 ![Directory listing](../assets/documentation/jira/jira-user-directory-4.PNG)
 
 ##### Add permissions
-The last step is to configure the permissions for the OpenDevStack groups.
+The last step is to configure the permissions for the OpenDevStack user groups.
+Go to the _Global Permissions_ menu beneath the _System_ tab.
+
+![Global permissions](../assets/documentation/jira/jira-permissions-1.PNG)
+
+There you will have to add the OpenDevStack groups according to the Jira user groups. 
+For this choose the permission and the user group in the _Add Permission_ section of the page and click **Add**. 
+
+![Global permissions with added OpenDevStack groups](../assets/documentation/jira/jira-permissions-2.PNG)
+
+See the table below for the permission mapping.
+
+{: .table-bordered }
+{: .table-sm }
+| Permission                  | User group                  |
+| --------------------------- | --------------------------- |
+| Jira System Administrators  | opendevstack-administrators |
+| Jira Administrators         | opendevstack-administrators |
+| Browse Users                | opendevstack-(administrators|users) |
+| Create Shared Objects       | opendevstack-(administrators|users) |
+| Manage Group Filter Subscriptions | opendevstack-(administrators|users) |
+| Bulk Change                 | opendevstack-(administrators|users) |
 
 #### Atlassian Confluence
 
