@@ -493,67 +493,136 @@ Access http://192.168.56.31:8090
 ###### Step 1: Set up Confluence
 Here you have to choose **Production Installation**, because we want to configure an external database.
 
+![Set up Confluence](../assets/documentation/confluence/confluence-install-1.PNG)
+
 ###### Step 2: Get add-ons
 Ensure the add-ons are unchecked and proceed.
+
+![Add-Ons](../assets/documentation/confluence/confluence-install-2.PNG)
 
 ###### Step 3: License key
 Here you are able to get an evaluation license from atlassian or to enter a valid license key.
 
+![License key](../assets/documentation/confluence/confluence-install-3.PNG)
+
 ###### Step 4: Choose a Database Configuration
-Here you have to choose **External Database** with the option *PostgreSQL*
+Here you have to choose **My own database**.
+
+![Database selection](../assets/documentation/confluence/confluence-install-4.PNG)
 
 ###### Step 5: Configure Database
-Click the **Direct JDBC** button and configure the database with the following values:
+Choose **By connection string** as _Setup type_ and configure the database with the following values:
 
 {: .table-bordered }
 {: .table-sm }
 | Option            | Value                                       |
 | ----------------- | ------------------------------------------- |
-| Driver Class Name | org.postgresql.Driver                       |
+| Database Type     | PostgreSQL                                  |
 | Database URL      | jdbc:postgresql://localhost:5432/confluence |
 | User Name         | confluence                                  |
 | Password          | confluence                                  |
+
+![Database configuration](../assets/documentation/confluence/confluence-install-5.PNG)
+
+Click **Next** to proceed.
 
 Be patient. This step takes some time until next page appears.
 
 ###### Step 6: Load Content
 Here you have to choose **Empty Site** or **Example Site**
 
+![Load content](../assets/documentation/confluence/confluence-install-6.PNG)
+
 ###### Step 7: Configure User Management
 Choose **Manage users and groups within Confluence**. Crowd will be configured later.
+
+![Configure user management](../assets/documentation/confluence/confluence-install-7.PNG)
 
 ###### Step 8: Configure System Administrator account
 Here you have to configure a local administrator account. After this step, you are able to work with Confluence. Just press Start and create a space.
 
+![Configure administrator account](../assets/documentation/confluence/confluence-install-8.PNG)
+
 ##### Configure user directory
 Open the **User management** in the Confluence administration.
+
 To enter the administration, you have to verify you have admin rights with the password for your admin user.
+
 Click the **User Directories** entry at the left in the **USERS & SECURITY** section.
+
 Now choose **Add Directory**.
+
+![Add user directory](../assets/documentation/confluence/confluence-user-directory-1.PNG)
+
 Here you have to add a directory of type *Atlassian Crowd*.
-Here you have to add the Crowd server URL `http://192.168.56.31:8095/crowd`
-You also have to add the application name and the password you have defined for Confluence in crowd.
+
+Now enter the Crowd server URL `http://192.168.56.31:8095/crowd`
+
+You also have to fill in the application name and the password you have defined for Confluence in crowd.
+
 For the local test environment this is `confluence` `confluence`
-Now activate **nested groups** and deactivate the **incremental synchronization**
+
+Activate **nested groups** and deactivate the **incremental synchronization**
+
 The group membership should be proofed every time a user logs in.
+
 Test the settings and save them.
-Now change the order of the user directories. The Crowd directory has to be on first position.
+
+![User directory form](../assets/documentation/confluence/confluence-user-directory-2.PNG)
+
+Now change the order of the user directories. The Crowd directory has to be on first position and synchronize the directory.
+
+![User directory listing](../assets/documentation/confluence/confluence-user-directory-3.PNG)
 
 ##### Add permissions
 The last step is to configure the permissions for the OpenDevStack groups.
 
+Open the **User management** in the Confluence administration.
 
+To enter the administration, you have to verify you have admin rights with the password for your admin user.
 
+![Administration login](../assets/documentation/confluence/confluence-permission-1.PNG)
 
+Click the **Global Permissions** entry at the left in the **USERS & SECURITY** section.
+
+![Permission listing](../assets/documentation/confluence/confluence-permission-2.PNG)
+
+Now choose **Edit Permissions** and add the OpenDevStack groups with the Input field in the groups section.
+
+![Add group to permissions](../assets/documentation/confluence/confluence-permission-3.PNG)
+
+Check the checkboxes, so the OpenDevStack groups have the same permissions the local confluence groups have.
+
+![Set permissions](../assets/documentation/confluence/confluence-permission-4.PNG)
+
+Click **Save all** to persist the permissions.
 
 ###Prepare local OpenDevStack environment
-Navigate to the **ods-core/infrastructure-setup/scripts** directory and execute
-`mirror-repos.sh`
+After the configuration of the Atlassian tools has been done, it's time to continue with the preparation oft the OpenDevStack environment.
+In this step the basic configuration for the OpenShift cluster takes place, as well as the installation of Sonarqube, Nexus3 and the Provisioning application.
+In addition Rundeck will be prepared automatically as far as possible.
 
-Use your crowd login when asked for credentials.
-Verify that you have mirrored the github repos and that they have been populated in your Bitbucket instance. The ods-configuration repositpory will remain empty.
+Navigate to the **ods-core/infrastructure-setup/scripts** directory on your local machine and execute the script
+ 
+`prepare-local-environment.sh`
 
-Setup project branch permissions - `production` should be guarded against direct merges except through admins
+![Directory listing](../assets/documentation/prepare-script/directory-listing.PNG)
+
+Now you will have to decide, which configuration should be done. In a first time installation you will have to keep the defaults.
+For further customization there will be an additional guide.
+
+**Important; The preparation script also activates SSO in Confluence and Jira. After the activation has been done a login with the local administrator credentials is no longer possible!**
+
+![SSO activation](../assets/documentation/prepare-script/activate-sso.PNG)
+
+During the mirroring of the local repositories to your Bitbucket instance, it is possible, that you will be asked for credentials.
+Here you have to enter the credentials for your loacl Crowd administrator or the `cd_user` credentials.
+
+![Git credentials](../assets/documentation/prepare-script/git-credentials.PNG)
+
+After the repository mirroring you may setup project branch permissions in Bitbucket, if the `production` branch should be guarded against direct merges except through admins.
+
+The subsequent paragraphs explain the installation and configuration content for Nexus3, Sonarqube, Rundeck and the Provisioning application.
 
 ####Nexus3
 Nexus3 will be installed automatically, if you have confirmed the installation in the prepare script.
@@ -618,165 +687,104 @@ This role has the following privileges:
 The account created is used to authenticate against Nexus3, anonymous access is disabled.
 
 ####Sonarqube
-####Rundeck configuration
+By default Sonarqube will be installed with the preparation script.
 
-#### Rundeck Setup
-##### Setup Application
-Rundeck needs an account to access Bitbucket later. We will create an ssh keypair for this and add this later to the Bitbucket `cd_user` account.
+You will have to pass a valid authentication token for Sonarqube to the OpenShift templates, so the script will pause as soon as Sonarqube is available.
 
-Open the shell and generate a ssh key. On cygwin enter the following command:
-```shell
-ssh-keygen -f /home/vagrant/cd_user -t rsa -C "CD User"
-```
-This saves the public and private key in a file `cd_user.pub` and `cd_user`.
+![Paused preparation script](../assets/documentation/sonarqube/pause-script.PNG)
 
+Go to https://sonarqube-cd.192.168.56.101.nip.io .
 
-Create a file called `/home/vagrant/rundeck_vars.yml` that customizes some of the rundeck configuration, e.g. the ssh key.
+![Sonarqube Screen](../assets/documentation/sonarqube/sonarqube_login.PNG)
 
-This is a yaml file, looking structurally like this Example
+Login with your Crowd credentials.
 
-```yaml
-rundeck_bitbucket_host_external: 192.168.56.31
-rundeck_bitbucket_host_internal: localhost
-rundeck_bitbucket_port: 7999
-rundeck_cduser_name: cd_user
-rundeck_cduser_private_key: |
-  -----BEGIN RSA PRIVATE KEY-----
-  MIIJKgIBAAKCAgEA9byVUZKe0dB0gkFL5g4Zcxb3AUNPvtD2tpkejyaLoF/XnQj+
-  qn+UX9WZSn0YyTQH+cmNF1SFuMmq/eSZpdAL7JSRY2bAw9RLo3dPpabO2N3Teib1
-  HSvCnPncNQZa/tPUaWSddX0BTWEpS1fAl4NFfUmN02k+cEHIErv2OcbhMnq675aO
-  p4rU3NHN01kymhUCLz5cUCAj4CyEhxv3Fe7zSeKGuSceaD2Yq1vEnp8WmYnqdiFf
-  ....
-  0rMrGoSgTuttxQ+oU2a+2pRQD+vFXg6BpXMJNXeXyPuSIVfqfSFTqUdshZC8d76Q
-  8IwfUR/GtEjTO4l9nDr0eqb4LixvpREVVvMOH+Ea/a8yATejH9xR7xNHAA0AQqZ+
-  t1pNCqijBNTk2oUYNu9t9m16zF3Ly+ZIikBm0D67ke5yC5ziSPa1Xs6E70ens04H
-  RwP9We5Y453L2st43FlQXVAyXd4OacJcUqvYqQpd7c7u1syhpRzG5ALYcfoNJA==
-  -----END RSA PRIVATE KEY-----
-```
+![Login](../assets/documentation/sonarqube/sonar_qube_user.PNG)
 
-You have to replace the private key with the key you created earlier and change
-other variables according to your environment. Be careful about the 2 spaces at the beginning of every line of the private key.
+Now open your personal account settings.
 
-Now execute the playbook:
+![My account](../assets/documentation/sonarqube/sonarqube_my_account.PNG)
 
-```shell
-ansible-playbook -v -i inventories/dev playbooks/rundeck.yml -e "@/home/vagrant/rundeck_vars.yml" --ask-vault
-```
-
-You can change `host` and `cduser` according to your environment.
-<!-- TODO
-This is superfluous if we mirror the repos first to our vagrant / local bitbucket server.
--->
-After the playbook has been finished Rundeck is accessible via http://192.168.56.31:4440/rundeck
-
-
-
-### Prepare CD project for Jenkins
-
-Now create secrets inside the CD project.
-
-```shell
-oc process -n cd templates/secrets -p PROJECT=cd | oc create -n cd -f-
-```
-
-We will now build base images for jenkins and jenkins slave:
-
-* Customize the configuration in the `ods-configuration` project at **ods-core > jenkins > ocp-config > bc.env**
-* Execute `tailor update` inside ods-core/jenkins/ocp-config:
-
-* Start jenkins slave base build: `oc start-build -n cd jenkins-slave-base`
-* check that builds for `jenkins-master` and `jenkins-slave-base` are running and successful.
-* You can optionally start the `jenkins-master` build using `oc start-build -n cd jenkins-master`
+Generate a token in the _Security_ section.
+ 
+![Generate token](../assets/documentation/sonarqube/sonarqube_my_account.PNG)
+ 
+Copy the token value to the input of the preparation script and follow the instructions.
+The token will be processed and integrated in the templates for future builds.
 
 #### Prepare Jenkins slave docker images
-To support different kinds of projects, we need different kinds of Jenkins slave images.
-These slave images are located in the project [jenkins-slave-dockerimages](https://github.com/opendevstack/jenkins-slaves-dockerimages).
+In additon to the base Jenkins images you have the option to build additional Jenkins slave images.
+To do so, just type `y` instead of typing `n` or pressing `Enter`, if you are asked, if you want to install the additional slave images. 
 
-So as a first step clone this repository.
-Make the required customizations in the `ods-configuration` under **jenkins-slaves-dockerimages > maven > ocp-config > bc.env**
+![Jenkins slaves](../assets/documentation/prepare-script/jenkins-slaves.PNG)
 
-and run `tailor update` inside `ods-project-quickstarters\jenkins-slaves\maven\ocp-config`:
+####Rundeck configuration
+After the preparation script execution, you will have to configure some values in Rundeck.
 
-and start the build: `oc start-build -n cd jenkins-slave-maven`.
+Access Rundeck at http://192.168.56.31:4440/
 
-Repeat for every project type you require.
+Login with your Crowd credentials.
 
+![Rundeck login](../assets/documentation/rundeck/rundeck-login.PNG)
 
+Now choose the _Quickstarters_ project.
 
+![Project selection](../assets/documentation/rundeck/project.PNG)
 
+Open the **Job Actions** button on the right and **Import Remote Changes**
 
-### Prepare Rundeck and required Dockerfiles
+![Job actions](../assets/documentation/rundeck/remote-changes.PNG)
 
-After configuring the Atlassian tools and Minishift, Rundeck has to be configured as well.
-Access [Rundeck](http://192.168.56.31:4440/rundeck), login and open the configuration.
+Click **Import**
 
-#### Create Quickstarters project
-Create a project named `Quickstarters`. The project doesn't need any additional information, so leave all other options blank.
+![Import changes](../assets/documentation/rundeck/import-remote-changes.PNG)
 
-#### Openshift API token
-You have to store the API token for the service account in Rundeck, so Rundeck is able to communicate with Openshift.
+Now you should see the imported jobs.
 
-* In the **Key Storage** section click on **Add or Upload a Key**, choose the Key Type *Password*.
-* Copy the token text you saved earlier to the textfield.
-* Leave Storage path blank.
-* The key has to have the name `openshift-api-token`
-* Save the key.
+![Import changes](../assets/documentation/rundeck/jobs.PNG)
 
-#### CD user private key
-For initial code commit the CD user's private key has to be stored in Rundeck, to enable an SSH communication between Rundeck and Bitbucket.
+Choose the **verify global rundeck settings** job and execute it to verify that Rundeck has all necessary data.
 
-* In the **Key Storage** section click on **Add or Upload a Key**, choose the Key Type *Private key*.
-* Enter / Upload the private key generated for the CD user.
-* Leave Storage path blank.
-* The key has to have the name `id_rsa_bitbucket`
-* Save the key.
+![Import changes](../assets/documentation/rundeck/verify-connections.PNG)
 
-#### Configure SCM plugins
-
-Within the ods-project-quickstarters create a new branch called `rundeck-changes` - and let it inherit from production
-<!--
-TODO: verify the branch source is correct!
-END_TODO
--->
-
-Open the configuration and go to the **SCM** section. This section is available as soon as you are in the project configuration for the `Quickstarters` project.
-
-##### Setup Import plugin
-
-* Change the **File Path Template** to `${job.group}${job.name}.${config.format}`
-* Change the format for the **Job Source Files** to `yaml`
-* Enter the SSH Git URL for the `ods-project-quickstarters` repository.
-You have to enter valid authorization credentials, stored in Rundeck's key storage. This will be the ` id_rsa_bitbucket` key specified in the previous step.
-* Branch: Choose "rundeck-changes"
-* In the next step ensure that the regular expression points to yaml files. Change the regexp to `rundeck-jobs/.*\.yaml`
-* Change the file path template to `rundeck-jobs${job.group}${job.name}-${job.id}.${config.format}`
-* Import the job definitions under job actions.
-
-
-##### Setup Export plugin
+##### Configure SCM Export plugin
 If you use the Github repository, and use as is this step isn't necessary!
+
 If you use your own repository, configure the export plugin in same way as the import plugin, except the file path template - set to `rundeck-jobs/${job.group}${job.name}.${config.format}`
 
-##### Update the job properties
+### Provisioning application
+####Run from OpenShift
+The Provisioning application has been installed with the environment preparation script and is accessible via
 
-Go to the project page and then configure. Edit the configuration file (using the button) and add the following lines - based on your environment
+https://prov-app-test.192.168.56.101.nip.io
+
+There is no further configuration needed.
+
+####Run from IDE
+Open the cloned provision application in your favorite IDE
+
+If you run the application from your IDE, you will have to provide some addional informations.
+
+In case you want to use your local Nexus, you will have to create a `gradle.properties` file in the ods-provisioning-app project to provide the Nexus credentials, because we disabled anonymous access.
 
 ```INI
-# bitbucket https host including url schema
-project.globals.bitbucket_host=https\://192.168.56.31
-# bitbucket ssh host including url schema
-project.globals.bitbucket_sshhost=ssh://git@192.168.56.31:7999
-# openshift host including url scheme
-project.globals.openshift_apihost=https://192.168.99.100:8443
-# openshift host without url scheme - used to grab CA etc
-project.globals.openshift_apihost_lookup=192.168.99.100:8443
-# openshift nexus host including url scheme
-project.globals.nexus_host=http://nexus-cd.192.168.99.100.nip.io/
-# public route of docker registry including url scheme
-project.globals.openshift_dockerregistry=https://docker-registry-default.192.168.99.100.nip.io:443
-# os user and group rundeck is running with
-project.globals.rundeck_os_user=root:root
+nexus_url=http://nexus-cd.192.168.99.100.nip.io
+nexus_user=developer
+nexus_pw=developer
 ```
+
+You also have to ensure the Nexus certificate is integrated in the keystore of the JDK the IDE uses.
+
+If you don't want to use the internal Nexus and run the application from your IDE, you will have to provide a `gradle.properties` file with the following content:
+
+```INI
+no_nexus=true
+```
+
+After startup via the IDE the application is available at http://localhost:8088/
+
+You can login in with the Crowd admin user you set up earlier.
+
 ### Add shared images
 OpenDevStack provides shared images used accross the stack - like the authproxy based on NGINX and lua for crowd
 
@@ -788,52 +796,10 @@ and run `tailor update` inside `ods-core\shared-images\nginx-authproxy-crowd`:
 
 and start the build: `oc start-build -n shared-services nginx-authproxy`.
 
-### Configure provisioning application
-Clone the provisioning application repository.
-
-Because we disabled anonymous access for nexus, we need to provide some data.
-
-What you need to provide are gradle guild variables. You do this by creating a `gradle.properties` file in the ods-provisioning-app project:
-
-```INI
-nexus_url=http://nexus-cd.192.168.99.100.nip.io
-nexus_user=developer
-nexus_pw=developer
-```
-
-If you run the application from your IDE, there is no further configuration needed.
-
-After startup via the IDE the application is available at http://localhost:8088/
-
-You can login in with the Crowd admin user you set up earlier.
-
-### Setup within Openshift
-
-Create 3 openshift projects projects
-- `prov-cd` (for the jenkins builder)
-- `prov-test` (*production* branch will be built and deployed here)
-- `prov-dev` (other branches will be built and deployed here)
-
-Start with `prov-cd` and issue:
-```
-cd ocp-config/prov-cd
-tailor update
-```
-
-Add `prov-cd/jenkins` and `prov-cd/default` service accounts with edit rights into -dev & -test projects, so jenkins can update the build config and trigger the corresponding `oc start build / oc update bc` from within the jenkins build.
-
-For the runtime projects (`prov-test` and `prov-dev`) run:
-```shell
-cd ocp-config/prov-app
-tailor update -f Tailorfile.dev
-tailor update -f Tailorfile.test
-```
-
-Once Jenkins id deployed, you can trigger the build in the `prov-cd/ods-provisioning-app-production` pipeline. Deployment should happen automatically and you can start using the provision app.
 
 
 ## Try out the OpenDevStack
 After you have set up your local environment it's time to test the OpenDevStack and see it working.
 Open the Provisioning application in your web browser and login with your crowd credentials.
 
-Provision your first project and have a look at OpenShift.
+Provision your first project and have a look at your project in the Atlassian tools and OpenShift. 
