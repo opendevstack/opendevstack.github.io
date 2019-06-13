@@ -770,7 +770,7 @@ If you run the application from your IDE, you will have to provide some addional
 In case you want to use your local Nexus, you will have to create a `gradle.properties` file in the ods-provisioning-app project to provide the Nexus credentials, because we disabled anonymous access.
 
 ```INI
-nexus_url=http://nexus-cd.192.168.99.100.nip.io
+nexus_url=http://nexus-cd.192.168.56.101.nip.io
 nexus_user=developer
 nexus_pw=developer
 ```
