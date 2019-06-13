@@ -405,33 +405,61 @@ Be patient. First time accessing this page takes time.
 Here you have to choose the application title and the base URL.
 You can leave the data as is for the test environment.
 
+![Setup application properties](../assets/documentation/jira/jira-install-1.PNG)
+
 ###### Step 2: Specify your license key
 Here you have to enter the license key for the Jira instance (Jira Software (Server)). With the provided link in the dialogue you are able to generate an evaluation license at Atlassian.
+
+![License key](../assets/documentation/jira/jira-install-2.PNG)
 
 ###### Step 3: Set up administrator account
 Now you have to set up a Jira administrator account.
 
+![Local Jira administrator](../assets/documentation/jira/jira-install-3.PNG)
+
 ###### Step 4: Set up email notifications
 Unless you have configured a mail server, leave this for later.
 
+![email notifications](../assets/documentation/jira/jira-install-4.PNG)
+
 ###### Step 5: Basic configuration
 To finish this part of the Jira installation, you will have to provide some informations to your prefered language, your avatar and you will have to create an empty or a sample project.
+
+![Language selection](../assets/documentation/jira/jira-install-5.PNG)
+
+![Avatar selection](../assets/documentation/jira/jira-install-6.PNG)
+
+![Example project](../assets/documentation/jira/jira-install-7.PNG)
+
 After these basic configurations, you have access to the Jira board.
 
 ##### Configure user directory
 Open the **User management** in the Jira administration.
 To enter the administration, you have to verify you have admin rights with the password for your admin user.
-Click the **User Directories** entry at the left..
+
+![Administration access](../assets/documentation/jira/jira-user-directory-1.PNG)
+
+Click the **User Directories** entry at the left.
+
+![User directories](../assets/documentation/jira/jira-user-directory-2.PNG)
+
 Now choose **Add Directory**.
 Here you have to add a directory of type *Atlassian Crowd*.
-Here you have to add the Crowd server URL `http://192.168.56.31:8095/crowd`
-You also have to add the application name and the password you have defined for Jira in crowd.
-For the local test environment this is `jira` `jira`
+Enter the Crowd server URL `http://192.168.56.31:8095/crowd`
+You also have to fill in the application name and the password you have defined for Jira in crowd.
+
+For the local test environment this is `jira` `jira`.
+
 Now activate **nested groups** and deactivate the **incremental synchronization**
 The group membership should be proofed every time a user logs in.
 Test the settings and save them.
+
+![User directory form](../assets/documentation/jira/jira-user-directory-3.PNG)
+
 Now change the order of the user directories. The Crowd directory has to be on first position.
 Synchronize the directory, so all groups and users are available in Jira.
+
+![Directory listing](../assets/documentation/jira/jira-user-directory-4.PNG)
 
 ##### Add permissions
 The last step is to configure the permissions for the OpenDevStack groups.
