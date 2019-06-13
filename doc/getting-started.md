@@ -758,7 +758,9 @@ The Provisioning application has been installed with the environment preparation
 
 https://prov-app-test.192.168.56.101.nip.io
 
-There is no further configuration needed.
+There is no further configuration needed. 
+
+If the application is not available, you will have to proof in OpenShift, if there have been any errors during the installation.
 
 ####Run from IDE
 Open the cloned provision application in your favorite IDE
