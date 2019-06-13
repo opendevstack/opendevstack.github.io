@@ -397,12 +397,30 @@ You will have to create the repositories listed in the table below.
 
 
 ###### Add SSH Key for CD user to Bitbucket
+You will have to add a SSH key to the `cd_user` in Bitbucket, so Rundeck will be able to communicate with Bitbucket.
+
+First got to the **Users** section in the Bitbucket administration.
+
 ![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-1.PNG)
+
+Choose the `cd_user` and select the _SSH keys_ tab.
+
 ![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-2.PNG)
+
+Click **Add key**
+
 ![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-3.PNG)
-![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-4.PNG)
+
+The key has been auto generated during the setup script execution. Navigate to the base directory you created at the beginning of the setup process.
+
+There you will find a file named `id_rsa_bitbucket.pub`
 ![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-5.PNG)
+
+Copy the content of the file
 ![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-6.PNG)
+
+ Paste the key to the input field in Bitbucket and click **Add key**
+![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-4.PNG)
 
 #### Atlassian Jira
 
