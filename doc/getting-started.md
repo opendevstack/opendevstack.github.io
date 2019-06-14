@@ -10,7 +10,9 @@ Welcome to the OpenDevStack. The OpenDevStack is a framework to help in setting 
 **Important: The credentials provided in the guide are only meant to be used within the local test installation. For use in production you will have to customize paths, URLs and credentials!**
 
 ## Requirements
-The following requirements have to be met to setup a local environment.
+The following requirements have to be met to setup a local environment. You should have a computer with at least 32 GB of RAM, because we are going to install
+several Atlassian tools and a local OpenShift environment.
+
 **Important: We assume, you will have a full functional internet connection**
 
 ### Git
@@ -31,8 +33,8 @@ You need licenses for the following products:
 - Confluence
 - Crowd
 
-The evaluation licenses are valid for 30 days from the date of purchase. If you need a server id, this will be provided by the tools within the installation, so you are able to inlcude the licenses within the
-installation wizards of the tools, after the base setup provided by the Ansible scripts.
+The evaluation licenses are valid for 30 days from the date of purchase. If you need a server id, this will be provided by the tools within the installation, 
+so you are able to inlcude the licenses within theinstallation wizards of the tools, after the base setup provided by the Ansible scripts.
 
 The base setup uses the following versions: 
 
@@ -53,7 +55,7 @@ For Windows, our recommendation is to use Cygwin for configuration. Make sure to
 
 ### Ansible
 
-The OpenDevStack uses [Ansible](https://www.ansible.com/ "Ansible") to install and configure the necessary software for the enabling stack, so it's recommended to get familiar with its core concepts and usage. Also credentials are stored within an Ansible vault, so even if you commit them in a public repository they are not available unless you know the vault password.
+The OpenDevStack uses [Ansible](https://www.ansible.com/ "Ansible") to install and configure the necessary software for the enabling stack, so it's recommended to get familiar with its core concepts and usage. Credentials are stored within an Ansible vault, so even if you commit them in a public repository they are not available unless you know the vault password. Nevertheless, it is recommended to take care with handling credentials, even if they are encrypted. 
 
 ## Setup your local environment
 
@@ -414,12 +416,15 @@ Click **Add key**
 The key has been auto generated during the setup script execution. Navigate to the base directory you created at the beginning of the setup process.
 
 There you will find a file named `id_rsa_bitbucket.pub`
+
 ![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-5.PNG)
 
 Copy the content of the file
+
 ![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-6.PNG)
 
  Paste the key to the input field in Bitbucket and click **Add key**
+
 ![Add SSH key](../assets/documentation/bitbucket/bitbucket-add-ssh-key-4.PNG)
 
 #### Atlassian Jira
@@ -625,7 +630,7 @@ Check the checkboxes, so the OpenDevStack groups have the same permissions the l
 
 Click **Save all** to persist the permissions.
 
-###Prepare local OpenDevStack environment
+### Prepare local OpenDevStack environment
 After the configuration of the Atlassian tools has been done, it's time to continue with the preparation oft the OpenDevStack environment.
 In this step the basic configuration for the OpenShift cluster takes place, as well as the installation of Sonarqube, Nexus3 and the Provisioning application.
 In addition Rundeck will be prepared automatically as far as possible.
@@ -652,7 +657,7 @@ After the repository mirroring you may setup project branch permissions in Bitbu
 
 The subsequent paragraphs explain the installation and configuration content for Nexus3, Sonarqube, Rundeck and the Provisioning application.
 
-####Nexus3
+#### Nexus3
 Nexus3 will be installed automatically, if you have confirmed the installation in the prepare script.
 
 After the installation Nexus3 will be accessible at http://nexus-cd.192.168.56.101.nip.io/
@@ -662,7 +667,7 @@ You are able to login with the default credentials for Nexus3 `admin` `admin123`
 During installation various resources will be created automatically. You will find their description in 
 the subsequent paragraphs.
 
-#####Blob stores
+##### Blob stores
 In the automated installation the following blob stores will be created
 
 | Type | Name             | Path                               |
@@ -671,7 +676,7 @@ In the automated installation the following blob stores will be created
 | File | releases         | /nexus-data/blobs/releases         |
 | File | atlassian_public | /nexus-data/blobs/atlassian_public |
 
-#####Repositories
+##### Repositories
 This table lists the repositories created automatically.
 
 | Name             | Format | Type   | Online  | Version policy | Layout policy | Storage    | Strict Content Type Validation | Deployment policy | Remote Storage | belongs to group                                                    |
@@ -688,7 +693,7 @@ This table lists the repositories created automatically.
 | pypi-all | pypi | group  | checked |         |  | default  |                 | |  | pypi-proxy |  
 | pypi-proxy | pypi | proxy  | checked |         |  | default  |                |  | https://pypi.org/ | |
 
-#####User and roles
+##### User and roles
 During installation the following user will be created.
 
 | Name      | Password  |
@@ -714,7 +719,7 @@ This role has the following privileges:
 
 The account created is used to authenticate against Nexus3, anonymous access is disabled.
 
-####Sonarqube
+#### Sonarqube
 By default Sonarqube will be installed with the preparation script.
 
 You will have to pass a valid authentication token for Sonarqube to the OpenShift templates, so the script will pause as soon as Sonarqube is available.
@@ -746,7 +751,7 @@ To do so, just type `y` instead of typing `n` or pressing `Enter`, if you are as
 
 ![Jenkins slaves](../assets/documentation/prepare-script/jenkins-slaves.PNG)
 
-####Rundeck configuration
+#### Rundeck configuration
 After the preparation script execution, you will have to configure some values in Rundeck.
 
 Access Rundeck at http://192.168.56.31:4440/
@@ -790,7 +795,7 @@ There is no further configuration needed.
 
 If the application is not available, you will have to proof in OpenShift, if there have been any errors during the installation.
 
-####Run from IDE
+#### Run from IDE
 Open the cloned provision application in your favorite IDE
 
 If you run the application from your IDE, you will have to provide some addional informations.
