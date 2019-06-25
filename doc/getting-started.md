@@ -495,7 +495,7 @@ Synchronize the directory, so all groups and users are available in Jira.
 ![Directory listing](../assets/documentation/jira/jira-user-directory-4.PNG)
 
 ##### Add permissions
-The last step is to configure the permissions for the OpenDevStack user groups.
+The next step is to configure the permissions for the OpenDevStack user groups.
 Go to the _Global Permissions_ menu beneath the _System_ tab.
 
 ![Global permissions](../assets/documentation/jira/jira-permissions-1.PNG)
@@ -513,10 +513,24 @@ See the table below for the permission mapping.
 | --------------------------- | --------------------------- |
 | Jira System Administrators  | opendevstack-administrators |
 | Jira Administrators         | opendevstack-administrators |
-| Browse Users                | opendevstack-(administrators|users) |
-| Create Shared Objects       | opendevstack-(administrators|users) |
-| Manage Group Filter Subscriptions | opendevstack-(administrators|users) |
-| Bulk Change                 | opendevstack-(administrators|users) |
+| Browse Users                | opendevstack-(administrators&#124;users) |
+| Create Shared Objects       | opendevstack-(administrators&#124;users) |
+| Manage Group Filter Subscriptions | opendevstack-(administrators&#124;users) |
+| Bulk Change                 | opendevstack-(administrators&#124;users) |
+
+##### Add application access
+The last step is to grant the created OpenDevStack groups application access.
+Go to the _Application access_ menu beneath the _Applications_ tab.
+
+![Application access menu](../assets/documentation/jira/jira-application-access-1.PNG)
+
+There you will have to add the OpenDevStack groups according to the Jira user groups.
+
+![Application access selection](../assets/documentation/jira/jira-application-access-2.PNG)
+
+Click on the group selection and choose the group you want to add to Jira.
+
+![Application access with added groups](../assets/documentation/jira/jira-application-access-3.PNG)
 
 #### Atlassian Confluence
 
@@ -816,7 +830,7 @@ If you don't want to use the internal Nexus and run the application from your ID
 no_nexus=true
 ```
 
-After startup via the IDE the application is available at http://localhost:8088/
+After startup via the IDE the application is available at http://localhost:8080/
 
 You can login in with the Crowd admin user you set up earlier.
 
