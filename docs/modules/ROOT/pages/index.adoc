@@ -1,4 +1,4 @@
-# OpenDevStack
+= OpenDevStack
 
 Welcome to the OpenDevStack documentation. Here you can find information and guides to help you learn about OpenDevStack and start exploring its features.
 
