@@ -23,6 +23,27 @@ We have additional projects containing the _playbook_ and the UI customization.
 
 We also maintain a third repository `ods-guides` that provide more complete Guides that refer to multiple OpenDevStack components, like the xref:common:getting-started.adoc[*Getting Started*] guide.
 
+.Antora components and relevant repositories
+|===
+|github-repo | antora component | modules
+
+| ods-core 
+| https://github.com/opendevstack/ods-core/tree/master/docs[ods-core]
+| infrastructure-setup, jenkins, nexus, ROOT, shared-images, sonarqube
+
+| ods-jenkins-shared-library
+| https://github.com/opendevstack/ods-jenkins-shared-library/tree/master/docs[ods-jenkins-shared-library]
+| ROOT
+
+| ods-provisioning-app
+| https://github.com/opendevstack/ods-provisioning-app/tree/master/docs[ods-provisioning-app]
+| ROOT
+
+| opendevstack.github.io
+| https://github.com/opendevstack/opendevstack.github.io/tree/master/docs[commons]
+| getting-started, ROOT
+|===
+
 == How to build the site locally.
 
 After installing Antora according to the https://docs.antora.org/antora/2.0/install/install-antora/[Install Antora] guide, you need to check out the `ods-documentation` project and run the playbook.
@@ -49,10 +70,15 @@ At least you should
 * Make your changes and push them to your github account
 * Issue a Pull Request against the original repository
 
-== How is the documentation build on Github?
+== How is the documentation built on Github?
 
-The documentation will be build on travis and pushed to the ods-documentation repository.
-The travis file is located in the ods-documentation project.
+The documentation will be build on travis and pushed back to the ods-documentation repository.
+The https://github.com/opendevstack/ods-documentation/blob/master/.travis.yml[travis] file is located in the ods-documentation project.
+
+WARNING: This means, if a "documentation" Pull Request is merged, the documentation is not automatically built and deployed. You should add an
+entry to the https://github.com/opendevstack/ods-documentation/blob/master/CHANGELOG.adoc[documentation changelog] and issue a PR.
+Only when this is merged, the new documentation is generated.
+
 
 
 

@@ -1,2 +1,2 @@
-* xref:getting-started:index.adoc[Getting Started]
+* xref:getting-started:local-install.adoc[Local Installation]
 
