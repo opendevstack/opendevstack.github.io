@@ -1,4 +1,5 @@
 * xref:ROOT:development-guide.adoc[Development Guide]
 * xref:ROOT:update-guide.adoc[Update Guide]
+* xref:ROOT:troubleshooting.adoc[Troubleshooting]
 * xref:ROOT:documentation.adoc[Contributing Documentation]
 

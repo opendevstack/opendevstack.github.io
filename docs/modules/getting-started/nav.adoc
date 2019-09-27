@@ -1,2 +1,3 @@
 * xref:getting-started:local-install.adoc[Local Installation]
+* xref:getting-started:quickstart.adoc[Quickstart]
 

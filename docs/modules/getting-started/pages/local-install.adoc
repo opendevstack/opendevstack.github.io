@@ -1,4 +1,4 @@
-= Getting started
+= Local Installation Guide
 :experimental:
 :page-layout: documentation
 
