@@ -44,23 +44,9 @@ We also maintain a third repository `ods-guides` that provide more complete Guid
 | getting-started, ROOT
 |===
 
-== How to build the site locally.
+== How to build the site locally?
+A guide for building the documentation localy is provided in the https://github.com/opendevstack/ods-documentation/blob/master/README.adoc[ods-documentation project].
 
-After installing Antora according to the https://docs.antora.org/antora/2.0/install/install-antora/[Install Antora] guide, you need to check out the `ods-documentation` project and run the playbook.
-
-    antora generate site.yml
-
-This fetches the different referenced repositories from github and caches them locally.
-If you want to preview your local changes, you can use
-
-   antora generate site-workspace.yml
-
-or
-
-   antora generate site-workspace-full.yml
-
-The difference is that the latter will take into account all branches, the first option will only build the last branch.
-Both assume that all ods projects are located side-by-side.
 
 == How to contribute documentation
 
