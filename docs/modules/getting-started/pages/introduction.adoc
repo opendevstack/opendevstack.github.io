@@ -1,9 +1,9 @@
-= Using OpenDevStack - a small quickstart
+= Introduction to OpenDevStack
 :experimental:
 :page-layout: documentation
 
 
-== What is OpenDevStack
+== What is OpenDevStack?
 
 When we started with https://www.openshift.com/[Redhat's OpenShift] we were blown away by the 100s of possibilities to use it, while there was not anything along "This is how you make it work for your org".
 
@@ -17,20 +17,25 @@ So what does OpenDevStack now provide?
 - A set of https://github.com/opendevstack/ods-project-quickstarters[technology quickstarters] that already provide the complete CI/CD integration, w/o anything to worry about for the engineer
 - A small https://github.com/opendevstack/ods-provisioning-app[provision application] that gives you one place to start, no matter if you want to start a new initiative, or enhance and existing one.
 
-== Create an integrated OpenDevStack project
+=== Parts of OpenDevStack
+image::documentation/opendevstack/opendevstack_parts.png[OpenDevStackParts]
+
+=== Journey: From Commit To Deployment
+image::documentation/opendevstack/from_commit_to_deployment.png[OpenDevStack Journey From Commit to Deployment]
+
+== Using OpenDevStack
+=== Create an integrated OpenDevStack project
 
 Trigger project creation thru the https://github.com/opendevstack/ods-provisioning-app/[provisioning application] to get a new project. The web GUI of the provisioning app is located at `https://prov-app-test.&lt;app-domain-of-your-openshift-cluster&gt;`.
 
 When `openshiftproject == true`, this will also create OpenShift projects, namely `&lt;project-KEY&gt;-dev` and `&lt;project-KEY&gt;-test`.
 A https://github.com/opendevstack/ods-core[Jenkins deployment] will be created in the `&lt;project-KEY&gt;-cd` project to allow each project full freedom of build management. This deployment is based on https://github.com/opendevstack/ods-core[common jenkins images] from the `CD` namespace.
 
-== Pull a quickstarter into your project
+=== Pull a quickstarter into your project
 
 Open the web GUI of the provisioning app `https://prov-app-test.&lt;app-domain-of-your-openshift-cluster&gt;`.
 This time, rather than `new initiative`, pick `modify` and select your project. Pick a matching https://github.com/opendevstack/ods-project-quickstarters[quickstarter]. If no framework fits to your needs, choose the
  https://github.com/opendevstack/ods-project-quickstarters/blob/master/boilerplates/be-docker-plain/README.md[be-plain-docker quickstarter].
-
-== Ready to develop?
 
 === Result after quickstarted
 

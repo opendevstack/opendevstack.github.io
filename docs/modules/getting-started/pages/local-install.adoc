@@ -1,6 +1,7 @@
 = Local Installation Guide
 :experimental:
 :page-layout: documentation
+:toc:
 
 == Introduction
 
