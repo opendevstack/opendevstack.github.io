@@ -4,3 +4,10 @@ build
 .gradle
 /.project
 .jekyll-metadata
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+/out/
