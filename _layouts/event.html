@@ -18,6 +18,11 @@ layout: bootstrap-default
     <div class="col-md-8 offset-md-2 border-top">
       <h3>{{ page.title }}</h3>
       {{ content }}
+      <div class="col-md-2">
+        {% if page.details.url %}
+        <a class="nav-link active" href="{{ page.details.url }}">{{ page.details.url_caption }}</a>
+        {% endif %}
+      </div>
     </div>
   </div>
   <div class="row">
