@@ -1091,7 +1091,8 @@ If you use your own repository, configure the export plugin in same way as the i
 
 === Provisioning application
 
-####Run from OpenShift
+==== Run from OpenShift
+
 The Provisioning application has been installed with the environment preparation script and is accessible via
 
 https://prov-app-test.192.168.56.101.nip.io
