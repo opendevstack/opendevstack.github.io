@@ -32,29 +32,48 @@ layout: bootstrap-default
   </div>
   <div class="row">
     <div class="col-md-3 offset-md-2">
+      {% assign speakers = page.speakers | split:"," %}
+      {% for speaker in speakers %}
+      <!-- search for author -->
       {% for author in site.authors %}
-        {% if author.username == page.speaker %}
-          {% assign current_author = author %}
-        {% endif %}
+      {% if author.username == speaker %}
+      {% assign current_author = author %}
+      {% endif %}
       {% endfor %}
+      <!-- generate entry for speaker -->
       {% if current_author %}
+      <h4>{{ current_author.title }}</h4>
       <figure class="figure">
         {% if current_author.picture %}
-        <img src="{{ site.baseurl}}/authors/{{ current_author.picture }}" class="figure-img img-fluid rounded">
-        <figcaption class="figure-caption"><span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name"><a href="{{ "/authors/" | prepend: site.baseurl | append: current_author.username }}">{{ current_author.title }}</a></span></span>
-        {% else %}
-        <img src="{{ site.baseurl}}/authors/anonymous-user-icon-17.jpg" class="figure-img img-fluid rounded">
-        <figcaption class="figure-caption"><span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.speaker }}</span></span>
-        {% endif %}
-        </figcaption>
+        <img src="{{ site.baseurl}}/authors/{{ current_author.picture }}"
+             class="figure-img img-fluid rounded">
+        <figcaption class="figure-caption"><span itemprop="author" itemscope
+                                                 itemtype="http://schema.org/Person"><span
+            itemprop="name"><a href="{{ "/authors/" | prepend: site.baseurl | append: current_author.username }}">{{ current_author.title }}</a></span></span>
+          {% else %}
+          <img src="{{ site.baseurl}}/authors/anonymous-user-icon-17.jpg"
+               class="figure-img img-fluid rounded">
+          <figcaption class="figure-caption"><span itemprop="author" itemscope
+                                                   itemtype="http://schema.org/Person"><span
+              itemprop="name">{{ page.speaker }}</span></span>
+            {% endif %}
+          </figcaption>
       </figure>
       {% else %}
       <figure class="figure">
-        <img src="{{ site.baseurl}}/authors/anonymous-user-icon-17.jpg" class="figure-img img-fluid rounded">
-        <figcaption class="figure-caption"><span itemprop="author" itemscope itemtype="http://schema.org/Person"><span itemprop="name">{{ page.speaker }}</span></span>
+        <img src="{{ site.baseurl}}/authors/anonymous-user-icon-17.jpg"
+             class="figure-img img-fluid rounded">
+        <figcaption class="figure-caption"><span itemprop="author" itemscope
+                                                 itemtype="http://schema.org/Person"><span
+            itemprop="name">{{ page.speaker }}</span></span>
         </figcaption>
       </figure>
       {% endif %}
+
+      {% assign current_author = null %}
+      {% endfor %}
+
+
     </div>
   </div>
 </div>

@@ -8,7 +8,7 @@ name: DevOpsCon
 title: "Openshift and Jenkins / Stories of BI X"
 type: Presentation
 language: EN
-speaker: clemens.utschig-utschig
+speakers: clemens.utschig-utschig
 location: 
   city: Berlin
   country: Germany

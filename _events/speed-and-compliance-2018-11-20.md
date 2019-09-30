@@ -8,7 +8,7 @@ name: DOAG2018
 title: "Speed und Compliance: Freunde oder Gegner?"
 type: Vortrag
 language: DE
-speaker: richard.attermeyer
+speakers: richard.attermeyer
 location: 
   city: Nürnberg
   country: Germany

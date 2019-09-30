@@ -8,7 +8,7 @@ name: Continuous Lifecycle
 title: "Speed und Compliance: Freunde oder Gegner?"
 type: Vortrag
 language: DE
-speaker: richard.attermeyer
+speakers: richard.attermeyer
 location: 
   city: Mannheim
   country: Germany
