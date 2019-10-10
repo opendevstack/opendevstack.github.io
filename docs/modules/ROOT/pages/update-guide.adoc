@@ -127,6 +127,99 @@ update notes below which apply to your version change.
 === 1.1.x to 1.2.x
 1.2.x requires Tailor https://github.com/opendevstack/tailor/releases/tag/v0.10.2[0.10.2].
 
+==== Prepare installation for MRO/DocGen quickstarter
+The new functionality to create documents via Jenkins requires the presence of an image for the DocGen service. In an upcoming release, this will be integrated nicely. For 1.2.x, the image needs to be built once during the update procedure. The recommended way to do this is to build the image in the `prov` namespaces and then move the image tag into the `cd` namespace. The first step is to create a pipeline `oc -n prov-cd process -f pipeline.yml --param REPO_BASE=<YOUR-REPO-BASE-HERE> --param TRIGGER_SECRET=<YOUR-SECERET-HERE> | oc -n prov-cd create -f -`, where `pipeline.yml` looks like this:
+
+[source,yml]
+----
+apiVersion: v1
+kind: Template
+objects:
+- apiVersion: build.openshift.io/v1
+  kind: BuildConfig
+  metadata:
+    name: docgen-production
+  spec:
+    nodeSelector: {}
+    output: {}
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      git:
+        ref: production
+        uri: ${REPO_BASE}/opendevstack/ods-document-generation-svc.git
+      sourceSecret:
+        name: cd-user-with-password
+        type: Git
+    strategy:
+      jenkinsPipelineStrategy:
+        jenkinsfilePath: Jenkinsfile
+        type: JenkinsPipeline
+    triggers:
+    - generic:
+        secret: ${TRIGGER_SECRET}
+        type: Generic
+parameters:
+- name: TRIGGER_SECRET
+  required: true
+- name: REPO_BASE
+  required: true
+  description: Path to repository, e.g. https://cd_user@bitbucket.domain.com/scm
+----
+
+Then, create the `BuildConfig` and `ImageStream` in `prov-dev` using `oc -n prov-dev process -f bc-is.yml | oc -n prov-dev create -f -`, where `bc-is.yml` looks like this:
+[source,yml]
+----
+apiVersion: v1
+kind: Template
+objects:
+- apiVersion: v1
+  kind: BuildConfig
+  metadata:
+    creationTimestamp: null
+    labels:
+      app: prov-docgen
+    name: docgen
+  spec:
+    failedBuildsHistoryLimit: 5
+    successfulBuildsHistoryLimit: 5
+    nodeSelector: null
+    output:
+      to:
+        kind: ImageStreamTag
+        name: docgen:latest
+    postCommit: {}
+    resources: {}
+    runPolicy: Serial
+    source:
+      binary: {}
+      type: Binary
+    strategy:
+      dockerStrategy: {}
+      type: Docker
+    triggers: []
+- apiVersion: v1
+  kind: ImageStream
+  metadata:
+    labels:
+      app: prov-docgen
+    name: docgen
+  spec:
+    dockerImageRepository: docgen
+    lookupPolicy:
+      local: false
+----
+
+Note that this points to the `production` branch of `ods-document-generation-svc` - ensure this branch is present.
+
+After all is setup, start a build in Jenkins, and then move the built image to the cd namespace:
+
+[source,sh]
+----
+oc tag prov-dev/docgen:latest cd/docgen:latest
+----
+
 
 === 1.0.x to 1.1.x
 
