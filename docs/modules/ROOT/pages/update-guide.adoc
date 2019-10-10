@@ -55,6 +55,8 @@ Updating consists of two parts: following the general update procedure
 
 === General update procedure
 
+==== Backup
+
 Before proceeding, it is advisable to make a backup of the existing OpenShift
 configuration. This can be done easily with Tailor:
 
@@ -72,12 +74,17 @@ tailor export -n prov-test > backup_PROV_TEST.yml
 Note that the executing user needs to have permissions to access all resources
 in the `cd` namespaces for this to work properly.
 
-Next, update Tailor to the version corresponding to your new OpenDevStack
-version.
+==== Tailor
 
+Next, update Tailor to the version corresponding to your new OpenDevStack
+version. At the moment, this version is noted at the start of each version specific
+update procedure.
+
+==== Configuration
 Then, update the configuration parameters (located in `ods-configuration`)
 according to what has changed in the `ods-configuration-sample` repository.
 
+==== Templates
 Once configuration is up-to-date, the OpenShift templates stored within
 OpenShift need to be updated:
 
@@ -88,17 +95,54 @@ cd ocp-templates/scripts
 ./upload-templates.sh
 ----
 
-Next, start a build for all build configs in the `cd` namespace to create new
-images.
+==== OCP resources
+Next, run `tailor update` in all `ocp-config` folders to bring OCP resources (such
+as DC or BC) into sync. Review the diff produced by Tailor carefully, especially around
+changes to PVCs. To find each `ocp-config` folder, you can use e.g.
+`find . -name ocp-config -not -path "./ods-configuration*"` on Unix.
 
-Finally, the provisioning app should be updated. To do that, run `tailor update`
+==== Shared images
+After all OCP resources have been updated, you need to start a build for all build configs
+in the `cd` namespace to create new images.
+
+==== Provisioning App
+Also, the provisioning app should be updated. To do that, run `tailor update`
 in each `ocp-config` folder, and then trigger a build in Jenkins to redeploy the
 service.
+
+==== Shared library
+
+Finally, push the vanilla branch or tag of the shared library to your
+BitBucket instance. E.g. if your `production` branch is based on `1.0.x`, push
+`ods-jenkins-shared-library@1.0.x`. All quickstarters in the `1.0.x` branch point to this Git
+reference in the `Jenkinsfile`. It is not recommended to point to `production` in your quickstarters,
+otherwise consumers will encounter failing builds when breaking changes are introduced in the
+`production` branch. You may also choose to create a custom tag from your `production` branch and
+make all `Jenkinsfile`s point to this tag.
 
 Now that the general procedure has been completed, you need to apply all the
 update notes below which apply to your version change.
 
-=== 0.1.0 to 1.0.0
+
+=== 1.1.x to 1.2.x
+1.2.x requires Tailor https://github.com/opendevstack/tailor/releases/tag/v0.10.2[0.10.2].
+
+
+=== 1.0.x to 1.1.x
+
+1.1.x requires Tailor https://github.com/opendevstack/tailor/releases/tag/v0.9.4[0.9.4].
+
+There are no further mandatory changes apart from the general procedure
+described above when updating from 1.0.x.
+
+However, it is highly recommended to take a look at the updates done to the
+boilerplates, especially the `Jenkinsfile` and `Dockerfile`. E.g. the Python
+quickstarter is now building an image containing all dependencies instead of
+installing them during runtime.
+
+=== 0.1.0 to 1.0.x
+
+1.0.x requires Tailor https://github.com/opendevstack/tailor/releases/tag/v0.9.3[0.9.3].
 
 ==== Update `xyz-cd` projects
 
@@ -142,3 +186,13 @@ events, select "Repository Push" and "Pull request Merged + Declined".
 
 If you want to build the provisioning app automatically when commits are pushed
 to BitBucket, add a webhook as described in the previous section.
+
+==== Fix Jenkins master BUILD_URL
+
+1.0.x makes use of the `BUILD_URL` env variable automatically set by Jenkins. This
+env variable might be `null` in your Jenkins master. To fix this, copy
+https://github.com/opendevstack/ods-core/blob/1.0.x/jenkins/master/configuration/init.groovy.d/url.groovy into each Jenins master to `/var/lib/jenkins/init.groovy.d/url.groovy`.
+
+==== Fix JSON patch replace error in Jenkins build
+
+1.0.x sets image labels on the `BuildConfig` in Jenkins. It does this by issuing a JSON patch `replace` request to `/spec/output/imageLabels`. This path was not present in prior versions, which can lead to the following error: `Error from server: jsonpatch replace operation does not apply: doc is missing key: /spec/output/imageLabels`. For newly provisioned components, this has been fixed with https://github.com/opendevstack/ods-project-quickstarters/pull/188. For existing components, add the path to the `BuildConfig` manually by editing the YAML in OpenShift.
