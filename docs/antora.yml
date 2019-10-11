@@ -1,6 +1,6 @@
 name: common
 title: Guides and Tutorials
-version: 1.2
+version: latest
 nav: 
 - modules/getting-started/nav.adoc
 - modules/ROOT/nav.adoc
