@@ -10,6 +10,7 @@ From now on we assume, you work from a Bash (Cygwin / Linux).
 
 == Prepare infrastructure
 
+=== Clone ods-core repository
 First create a base directory for the OpenDevStack repositories, e.g. *ods*. This will be your base directory for all following operations.
 This path will also be mounted to the VMs provisioned by Vagrant.
 
@@ -21,6 +22,7 @@ git clone https://github.com/opendevstack/ods-core.git
 
 image::documentation/setup-script/clone_repo.PNG[Clone repository]
 
+=== Run setup-local-environment script
 Navigate to the folder menu:ods[ods-core > infrastructure-setup].
 
 image::documentation/setup-script/scripts.PNG[Directory listing]
@@ -44,9 +46,14 @@ During script execution you will have the possibility to choose, if you want to 
 
 image::documentation/setup-script/stack-confirm.PNG[Atlassian stack]
 
-After the base installation, you will have to configure the Atlassian tools, before you are able to proceed.
+=== Verify Setup
+At the end of set setup script, the following information is displayed. Please verify, if the
+software can be loaded by using the provided urls:
 
+TODO replace screenshot
 image::documentation/setup-script/script-execution-3.PNG[Vagrant]
+
+After the base installation, you will have to configure the Atlassian tools, before you are able to proceed.
 
 == Configure Atlassian Tools
 
