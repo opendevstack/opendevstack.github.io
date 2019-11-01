@@ -81,10 +81,14 @@ version. At the moment, this version is noted at the start of each version speci
 update procedure.
 
 ==== Configuration
-Then, update the configuration parameters (located in `ods-configuration`)
+
+Then, update/add/remove the configuration parameters (located in `ods-configuration`)
 according to what has changed in the `ods-configuration-sample` repository.
 
 ==== Templates
+
+NOTE: Since `1.2.x` release, this sub-chapter only applies for versions below `1.2.x`.
+
 Once configuration is up-to-date, the OpenShift templates stored within
 OpenShift need to be updated:
 
@@ -96,23 +100,26 @@ cd ocp-templates/scripts
 ----
 
 ==== OCP resources
-Next, run `tailor update` in all `ocp-config` folders to bring OCP resources (such
-as DC or BC) into sync. Review the diff produced by Tailor carefully, especially around
-changes to PVCs. To find each `ocp-config` folder, you can use e.g.
-`find . -name ocp-config -not -path "./ods-configuration*"` on Unix.
+
+Next, run `tailor update` in all `ocp-config` folders from all the repositories
+to bring OCP resources (such as DC or BC) into sync. Review the diff produced by
+Tailor carefully, especially around changes to PVCs. To find each `ocp-config` folder,
+you can use e.g. `find . -name ocp-config -not -path "./ods-configuration*"` on Unix.
 
 ==== Shared images
+
 After all OCP resources have been updated, you need to start a build for all build configs
-in the `cd` namespace to create new images.
+in the `cd` and `shared-services` namespaces to create new images.
 
 ==== Provisioning App
+
 Also, the provisioning app should be updated. To do that, run `tailor update`
 in each `ocp-config` folder, and then trigger a build in Jenkins to redeploy the
 service.
 
 ==== Shared library
 
-Finally, push the vanilla branch or tag of the shared library to your
+Then, push the vanilla branch or tag of the shared library to your
 BitBucket instance. E.g. if your `production` branch is based on `1.0.x`, push
 `ods-jenkins-shared-library@1.0.x`. All quickstarters in the `1.0.x` branch point to this Git
 reference in the `Jenkinsfile`. It is not recommended to point to `production` in your quickstarters,
@@ -120,15 +127,23 @@ otherwise consumers will encounter failing builds when breaking changes are intr
 `production` branch. You may also choose to create a custom tag from your `production` branch and
 make all `Jenkinsfile`s point to this tag.
 
+==== Rundeck
+
+Finally, in your Rundeck instance:
+* Update/Sync all jobs from this release
+* Update `quickstarts/airflow_cluster` job to get proper values for `-h`, `-r` and `-oc` flags.
+* Run `verify global rundeck settings` job
+
+
+
 Now that the general procedure has been completed, you need to apply all the
 update notes below which apply to your version change.
-
 
 === 1.1.x to 1.2.x
 1.2.x requires Tailor https://github.com/opendevstack/tailor/releases/tag/v0.10.2[0.10.2].
 
 ==== Prepare installation for MRO/DocGen quickstarter
-The new functionality to create documents via Jenkins requires the presence of an image for the DocGen service. In an upcoming release, this will be integrated nicely. For 1.2.x, the image needs to be built once during the update procedure. The recommended way to do this is to build the image in the `prov` namespaces and then move the image tag into the `cd` namespace. The first step is to create a pipeline `oc -n prov-cd process -f pipeline.yml --param REPO_BASE=<YOUR-REPO-BASE-HERE> --param TRIGGER_SECRET=<YOUR-SECERET-HERE> | oc -n prov-cd create -f -`, where `pipeline.yml` looks like this:
+The new functionality to create documents via Jenkins requires the presence of an image for the DocGen service. In an upcoming release, this will be integrated nicely. For `1.2.x`, the image needs to be built once during the update procedure. The recommended way to do this is to build the image in the `prov` namespaces and then move the image tag into the `cd` namespace. The first step is to create a pipeline `oc -n prov-cd process -f pipeline.yml --param REPO_BASE=<YOUR-REPO-BASE-HERE> --param TRIGGER_SECRET=<YOUR-SECERET-HERE> | oc -n prov-cd create -f -`, where `pipeline.yml` looks like this:
 
 [source,yml]
 ----
@@ -244,7 +259,7 @@ Jenkins. As well as proxying, this service creates and deletes pipelines on the
 fly, allowing to have one pipeline per branch. To update:
 
 * Setup the image in the `cd` project by running `tailor update` in
-`ods-core/jenkins/webhook-proxy/ocp-config`.
+`ods-core/jenkins/ocp-config`.
 * Build the image.
 * Setup the  webhook proxy next to each Jenkins instance. E.g., go to
 `ods-project-quickstarters/ocp-templates/templates` and run
@@ -269,8 +284,10 @@ environment cloning, also apply the instructions for that.
 
 In `docker/Dockerfile`:
 
-Adapt the content to match the latest state of the quickstarter boilerplates.
-In BitBucket, remove the existing "Post Webhooks" and create a new "Webhook",
+* Adapt the content to match the latest state of the quickstarter boilerplates.
+* No Nexus upload build artifact is required anymore, use a copy in Jenkins shell
+command to docker folder (see in any boilerplate how it is done now).
+* In BitBucket, remove the existing "Post Webhooks" and create a new "Webhook",
 pointing to the new webhook proxy. The URL has to be of the form
 `+https://webhook-proxy-$PROJECT_ID-cd.$DOMAIN?trigger_secret=$SECRET+`. As
 events, select "Repository Push" and "Pull request Merged + Declined".
