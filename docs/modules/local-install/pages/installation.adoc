@@ -50,7 +50,6 @@ image::documentation/setup-script/stack-confirm.PNG[Atlassian stack]
 At the end of set setup script, the following information is displayed. Please verify, if the
 software can be loaded by using the provided urls:
 
-TODO replace screenshot
 image::documentation/setup-script/script-execution-3.PNG[Vagrant]
 
 After the base installation, you will have to configure the Atlassian tools, before you are able to proceed.
