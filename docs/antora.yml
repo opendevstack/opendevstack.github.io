@@ -3,6 +3,7 @@ title: Guides and Tutorials
 version: latest
 nav: 
 - modules/getting-started/nav.adoc
+- modules/local-install/nav.adoc
 - modules/ROOT/nav.adoc
 
 

@@ -1,0 +1,10 @@
+= Local Installation Guide: Try out the OpenDevStack
+:experimental:
+:page-layout: documentation
+:toc:
+
+
+After you have set up your local environment it's time to test the OpenDevStack and see it working.
+Open the Provisioning application in your web browser and login with your crowd credentials.
+
+Provision your first project and have a look at your project in the Atlassian tools and OpenShift.
