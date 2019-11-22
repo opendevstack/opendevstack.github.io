@@ -13,7 +13,7 @@
           {% capture nowunix %}{{'now' | date: '%s' | plus: 0 }}{% endcapture %}
           {% assign sorted_events = site.events | sort:"details.date" | reverse %}
           {% for event in sorted_events limit:{{ include.limit }}  %}
-            {% capture eventtime %}{{event.details.date | date: '%s' | plus: 0 }}{% endcapture %}
+            {% capture eventtime %}{{event.details.date | date: '%s' | plus: 86399 }}{% endcapture %}
             {% if eventtime >= nowunix %}
           <div class="card border">
             <div class="card-body">
@@ -34,7 +34,7 @@
           {% capture nowunix %}{{'now' | date: '%s' | plus: 0}}{% endcapture %}
           {% assign sorted_events = site.events | sort:"details.date" | reverse %}
           {% for event in sorted_events limit:{{ include.limit }}  %}
-            {% capture eventtime %}{{event.details.date | date: '%s' | plus: 0 }}{% endcapture %}
+            {% capture eventtime %}{{event.details.date | date: '%s' | plus: 86399 }}{% endcapture %}
           {% if eventtime < nowunix %}
           <div class="card border">
             <div class="card-body">

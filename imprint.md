@@ -9,7 +9,7 @@ Therefore, the imprint is presented in German
 ## Angaben gemäß §5 TMG:
 
 Richard Attermeyer\\
-Debbingstraße 9\\
+Pater-Dietrich-Ring 49\\
 46286 Dorsten\\
 
 ## Kontakt

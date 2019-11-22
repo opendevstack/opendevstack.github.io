@@ -8,7 +8,7 @@ name: DevOpsCon
 title: "OpenDevStack – An introduction to rapid, CI driven Openshift development"
 type: Presentation
 language: EN
-speaker: clemens.utschig-utschig
+speakers: clemens.utschig-utschig
 location: 
   city: Munich
   country: Germany
