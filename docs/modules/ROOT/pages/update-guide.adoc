@@ -1,4 +1,4 @@
-= Update Guide
+= Update Guide for OpenDevStack administrators
 :page-layout: documentation
 
 Learn all about how to update your OpenDevStack repositories and the running
@@ -24,7 +24,7 @@ git remote add ods https://github.com/opendevstack/<REPO_NAME>.git
 
 Now you are ready to update the refs. It is recommended to update both the
 `master` branch and, unless you want to live off the bleeding edge, a release
-branch such as `1.0.x`. Use the steps shown below:
+branch such as `2.x`. Use the steps shown below:
 
 [source,sh]
 ----
@@ -34,19 +34,17 @@ git fetch ods
 git checkout master
 git reset --hard ods/master
 git push origin master
-# Update 1.0.x
-git checkout 1.0.x
-git reset --hard ods/1.0.x
-git push origin 1.0.x
+# Update 2.x
+git checkout 2.x
+git reset --hard ods/2.x
+git push origin 2.x
 ----
 
-So far, your OpenDevStack installation has not been affected yet because the
-`production` branch has not been updated yet. To do that, it is recommended to
-create a pull request on BitBucket from `1.0.x` into `production` This serves
-as a gate to control changes coming in, and spread knowledge about what has
-changed exactly.
+If your OpenDevStack installation is based on the `production` branch, then you
+need to create a pull request on BitBucket from `2.x` into `production` now.
 
-Now that changes are "live", you need to update (parts of) the installation.
+Now that the repositories are updated, you also need to modify the images and the
+running instances in OpenShift.
 
 == How to update your OpenDevStack installation
 
@@ -62,10 +60,10 @@ configuration. This can be done easily with Tailor:
 
 [source,sh]
 ----
-# backup CD project
+# Backup CD project
 tailor export -n cd > backup_CD.yml
 
-# backup provision app projects
+# Backup provision app namespaces
 tailor export -n prov-cd > backup_PROV_CD.yml
 tailor export -n prov-dev > backup_PROV_DEV.yml
 tailor export -n prov-test > backup_PROV_TEST.yml
@@ -77,17 +75,14 @@ in the `cd` namespaces for this to work properly.
 ==== Tailor
 
 Next, update Tailor to the version corresponding to your new OpenDevStack
-version. At the moment, this version is noted at the start of each version specific
-update procedure.
+version, which is noted at the start of each version specific update procedure.
 
 ==== Configuration
 
-Then, update/add/remove the configuration parameters (located in `ods-configuration`)
-according to what has changed in the `ods-configuration-sample` repository.
+Then, update/add/remove the configuration parameters (located in `ods-configuration`).
+To do this, use the `./update` script located in `ods-core/configuration-sample`.
 
-==== Templates
-
-NOTE: Since `1.2.x` release, this sub-chapter only applies for versions below `1.2.x`.
+==== Templates (only required prior to 1.2.0)
 
 Once configuration is up-to-date, the OpenShift templates stored within
 OpenShift need to be updated:
@@ -101,15 +96,12 @@ cd ocp-templates/scripts
 
 ==== OCP resources
 
-Next, run `tailor update` in all `ocp-config` folders from all the repositories
-to bring OCP resources (such as DC or BC) into sync. Review the diff produced by
-Tailor carefully, especially around changes to PVCs. To find each `ocp-config` folder,
-you can use e.g. `find . -name ocp-config -not -path "./ods-configuration*"` on Unix.
+Next, run `tailor update` in `ods-core` and `ods-quickstarters` to bring all OCP resources (such as DC or BC) into sync. Review the diff produced by Tailor carefully, especially around changes to PVCs.
 
-==== Shared images
+==== Images
 
 After all OCP resources have been updated, you need to start a build for all build configs
-in the `cd` and `shared-services` namespaces to create new images.
+in the `cd` namespace to create new images. Prior to 2.x, you should also start all builds in the `shared-services` namespace.
 
 ==== Provisioning App
 
@@ -117,19 +109,10 @@ Also, the provisioning app should be updated. To do that, run `tailor update`
 in each `ocp-config` folder, and then trigger a build in Jenkins to redeploy the
 service.
 
-==== Shared library
-
-Then, push the vanilla branch or tag of the shared library to your
-BitBucket instance. E.g. if your `production` branch is based on `1.0.x`, push
-`ods-jenkins-shared-library@1.0.x`. All quickstarters in the `1.0.x` branch point to this Git
-reference in the `Jenkinsfile`. It is not recommended to point to `production` in your quickstarters,
-otherwise consumers will encounter failing builds when breaking changes are introduced in the
-`production` branch. You may also choose to create a custom tag from your `production` branch and
-make all `Jenkinsfile`s point to this tag.
-
-==== Rundeck
+==== Rundeck (only required prior to 2.0)
 
 Finally, in your Rundeck instance:
+
 * Update/Sync all jobs from this release
 * Update `quickstarts/airflow_cluster` job to get proper values for `-h`, `-r` and `-oc` flags.
 * Run `verify global rundeck settings` job
@@ -138,6 +121,11 @@ Finally, in your Rundeck instance:
 
 Now that the general procedure has been completed, you need to apply all the
 update notes below which apply to your version change.
+
+=== 1.2.x to 2.x
+2.x requires Tailor https://github.com/opendevstack/tailor/releases/tag/v0.11.0[0.11.0].
+
+The guide is still under construction, please see https://github.com/opendevstack/ods-documentation/issues/22 for details.
 
 === 1.1.x to 1.2.x
 1.2.x requires Tailor https://github.com/opendevstack/tailor/releases/tag/v0.10.2[0.10.2].
