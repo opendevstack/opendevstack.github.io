@@ -231,7 +231,7 @@ oc tag prov-dev/docgen:latest cd/docgen:latest
 There are no further mandatory changes apart from the general procedure
 described above when updating from 1.0.x.
 
-However, it is highly recommended to take a look at the updates done to the
+Users are highly recommended to take a look at the updates done to the
 boilerplates, especially the `Jenkinsfile` and `Dockerfile`. E.g. the Python
 quickstarter is now building an image containing all dependencies instead of
 installing them during runtime.
@@ -254,7 +254,7 @@ fly, allowing to have one pipeline per branch. To update:
 `oc process cd//cd-jenkins-webhook-proxy | oc create -f- -n xyz-cd`. Repeat for
 each project.
 
-==== Update components
+==== Update components (information for ODS users)
 
 For each component, follow the following steps:
 
