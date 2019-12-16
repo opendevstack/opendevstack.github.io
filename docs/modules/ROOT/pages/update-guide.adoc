@@ -127,6 +127,44 @@ update notes below which apply to your version change.
 
 The guide is still under construction, please see https://github.com/opendevstack/ods-documentation/issues/22 for details.
 
+==== Setup secure route checking
+
+Go to `ods-core/check-ocp-secure-routes/ocp-config` and run `tailor update` to setup a cron job that will check exposed routes once a day (see https://github.com/opendevstack/ods-core/pull/280).
+
+==== Project specific CD users
+
+As each project may use a specific CD user now, you have to configure the username of the global CD user. To do so, add `username: Y2RfdXNlcg==` to secret `cd/cd-user-token`.
+
+==== Deprecation of `shared-images` namespace
+
+The `shared-images` namespace is no longer part of OpenDevStack. If you do not have any users that use images from that namespace, you may simply delete it via `oc delete project shared-images`. Otherwise, you can leave it in place and remote it when you see fit.
+
+==== Rundeck removal
+
+Rundeck is longer part of OpenDevStack and can simply be removed.
+
+==== Image puller rights
+
+Images in the `cd` namespaces should be pullable from all authenticated users. This permission is required for the new project provisioning approach to work:
+
+[source,sh]
+----
+oc adm policy add-cluster-role-to-group system:image-puller system:authenticated -n cd
+oc adm policy add-role-to-group view system:authenticated -n cd
+----
+
+Further, `*-dev` and `*-test` namespaces should be able to pull images from the corresponding `*-cd` namespaces to make it easy to shared base images within a project (see https://github.com/opendevstack/ods-core/issues/293). It is recommended to grant these rights for every project in your cluster. If you don't do this, users will have to add the permissions manually if they want to use this flow.
+
+==== Rollout new webhook proxy instances
+
+2.x allows the webhook proxy to build repositories in external projects if configured (see https://github.com/opendevstack/ods-core/issues/229). This feature is required for the new quickstarter provisioning approach to work. Therefore, it is recommended to tag a webhook proxy images built from the `2.x` branch or `v.2.0` tag with `latest` so that all webhook proxies in the cluster get updated.
+
+==== Configure the provisioning app
+
+Review the `ConfigMap` of the provisioning app in `prov-dev` and `prov-test`. Depending on your requirements, you might want to configure additional quickstarters (`jenkinspipeline.quickstarter...`) and/or change the readable repositories of the project specific users (`scm.global.readablerepos.opendevstack[x]`)
+
+
+
 === 1.1.x to 1.2.x
 1.2.x requires Tailor https://github.com/opendevstack/tailor/releases/tag/v0.10.2[0.10.2].
 
