@@ -125,8 +125,6 @@ update notes below which apply to your version change.
 === 1.2.x to 2.x
 2.x requires Tailor https://github.com/opendevstack/tailor/releases/tag/v0.11.0[0.11.0].
 
-The guide is still under construction, please see https://github.com/opendevstack/ods-documentation/issues/22 for details.
-
 ==== Setup secure route checking
 
 Go to `ods-core/check-ocp-secure-routes/ocp-config` and run `tailor update` to setup a cron job that will check exposed routes once a day (see https://github.com/opendevstack/ods-core/pull/280).
