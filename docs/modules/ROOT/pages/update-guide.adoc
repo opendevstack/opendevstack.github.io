@@ -82,18 +82,6 @@ version, which is noted at the start of each version specific update procedure.
 Then, update/add/remove the configuration parameters (located in `ods-configuration`).
 To do this, use the `./update` script located in `ods-core/configuration-sample`.
 
-==== Templates (only required prior to 1.2.0)
-
-Once configuration is up-to-date, the OpenShift templates stored within
-OpenShift need to be updated:
-
-[source,sh]
-----
-# Within your local "ods-project-quickstarters" repository
-cd ocp-templates/scripts
-./upload-templates.sh
-----
-
 ==== OCP resources
 
 Next, run `tailor update` in `ods-core` and `ods-quickstarters` to bring all OCP resources (such as DC or BC) into sync. Review the diff produced by Tailor carefully, especially around changes to PVCs.
@@ -101,22 +89,13 @@ Next, run `tailor update` in `ods-core` and `ods-quickstarters` to bring all OCP
 ==== Images
 
 After all OCP resources have been updated, you need to start a build for all build configs
-in the `cd` namespace to create new images. Prior to 2.x, you should also start all builds in the `shared-services` namespace.
+in the `cd` namespace to create new images.
 
 ==== Provisioning App
 
 Also, the provisioning app should be updated. To do that, run `tailor update`
 in each `ocp-config` folder, and then trigger a build in Jenkins to redeploy the
 service.
-
-==== Rundeck (only required prior to 2.0)
-
-Finally, in your Rundeck instance:
-
-* Update/Sync all jobs from this release
-* Update `quickstarts/airflow_cluster` job to get proper values for `-h`, `-r` and `-oc` flags.
-* Run `verify global rundeck settings` job
-
 
 
 Now that the general procedure has been completed, you need to apply all the
