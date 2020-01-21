@@ -1,4 +1,0 @@
-* xref:ROOT:update-guide.adoc[Update Guide]
-* xref:ROOT:development-guide.adoc[Development Guide]
-* xref:ROOT:documentation.adoc[Contributing Documentation]
-

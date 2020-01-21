@@ -4,9 +4,9 @@
 :toc:
 
 
-From now on we assume, you work from a Bash (Cygwin / Linux).
+IMPORTANT: From now on we assume, you work from a Bash (Cygwin / Linux).
 
-
+IMPORTANT: The credentials provided in the guide are only meant to be used within the local test installation. For use in production you will have to customize paths, URLs and credentials!*
 
 == Prepare infrastructure
 
@@ -1053,14 +1053,9 @@ After startup via the IDE the application is available at http://localhost:8080/
 
 You can login in with the Crowd admin user you set up earlier.
 
-== Add shared images
+== Try out OpenDevStack
 
-OpenDevStack provides shared images used accross the stack - like the authproxy based on NGINX and lua for crowd
+After you have set up your local environment it's time to test the OpenDevStack installation and see it working.
+Open the provisioning application in your web browser and login with your crowd credentials.
 
-In order to install, create a new project called `shared-services`
-
-Make the required customizations in the `ods-configuration` under menu:ods-core[shared-images > nginx-authproxy-crowd >  ocp-config > bc.env and secret.env]
-
-and run `tailor update` inside `ods-core\shared-images\nginx-authproxy-crowd`:
-
-and start the build: `oc start-build -n shared-services nginx-authproxy`.
+Provision your first project and have a look at your project in the Atlassian tools and OpenShift.

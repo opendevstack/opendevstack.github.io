@@ -1,7 +1,0 @@
-* Local Install Guide
-** xref:local-install:overview.adoc[Overview]
-** xref:local-install:requirements.adoc[Requirements]
-** xref:local-install:installation.adoc[Installation]
-** xref:local-install:try_out.adoc[Try out OpenDevStack]
-
-
