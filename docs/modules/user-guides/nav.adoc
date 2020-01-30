@@ -1,4 +1,4 @@
 * User Guides
-** xref:user-guides:update-2x.adoc[Update to 2.x]
+** xref:user-guides:update-2x.adoc[Migrate from 1.2.x to 2.x]
 
 

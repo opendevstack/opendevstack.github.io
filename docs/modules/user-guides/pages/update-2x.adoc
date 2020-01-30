@@ -9,12 +9,14 @@ NOTE: It is assumed that you are updating from ODS 1.2.x.
 
 == Required steps
 
-=== Update version references
+=== Update image tags of Jenkins deployments
 
-First, go into your `*-cd` namespace and edit the deployments (`jenkins` and
-`webhook-proxy`) to point to the new tags (via "Actions" > "Edit").
+Go into your `*-cd` namespace and edit the deployments (`jenkins` and
+`webhook-proxy`) to point to the new tags (via "Actions" > "Edit"), and trigger a deployment.
 
-Then, edit every `Jenkinsfile`. The shared library should point to `2.x`, e.g.:
+=== Update Jenkinsfiles in Git repositories
+
+Edit every `Jenkinsfile`. The shared library should point to `2.x`, e.g.:
 
 [source,groovy]
 ----
@@ -47,7 +49,7 @@ oc policy add-role-to-group system:image-puller system:serviceaccounts:$PROJECT_
 oc policy add-role-to-group system:image-puller system:serviceaccounts:$PROJECT_ID-dev -n $PROJECT_ID-cd
 ----
 
-For more information, see https://github.com/opendevstack/ods-core/issues/293[ods-core#293].
+Note that you need to be an admin on your project in order to run those commands. For more information, see https://github.com/opendevstack/ods-core/issues/293[ods-core#293].
 
 === Component resource constraints
 
@@ -105,4 +107,7 @@ When working with images, you may make use of Skopeo, which is now part of the J
 
 == Common / Known Issues
 
-None at this point.
+When provisioning new components, you must use a name that differs from the
+component type, otherwise some quickstarters fail. E.g. when creating a new
+component of type `fe-react`, you cannot name it `fe-react` but must choose
+another name like `my-app`. For more information, see https://github.com/opendevstack/ods-provisioning-app/issues/336.

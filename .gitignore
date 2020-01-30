@@ -4,6 +4,7 @@ build
 .gradle
 /.project
 .jekyll-metadata
+.settings
 
 ### IntelliJ IDEA ###
 .idea
