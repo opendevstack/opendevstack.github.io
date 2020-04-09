@@ -943,7 +943,7 @@ WARNING: Under "General Settings > Security", you must enable "Force user authen
 
 WARNING: Under "My Account", you must change the default password for the admin user.
 
-=== Prepare Jenkins slave docker images
+=== Prepare Jenkins slave images
 
 In additon to the base Jenkins images you have the option to build additional Jenkins slave images.
 To do so, just type `y` instead of typing `n` or pressing `Enter`, if you are asked, if you want to install the additional slave images.
@@ -951,7 +951,7 @@ To do so, just type `y` instead of typing `n` or pressing `Enter`, if you are as
 image::documentation/prepare-script/jenkins-slaves.PNG[Jenkins slaves]
 
 
-== Provisioning application
+=== Provisioning application
 
 The Provisioning application has been installed with the environment preparation script and is accessible via
 
