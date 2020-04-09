@@ -34,7 +34,7 @@ There you will find the setup and configuration shell scripts. You can start the
 ./setup-local-environment.sh
 ----
 
-This script allows you to set the necessary installation pathes, clones the necessary OpenDevStack repositories and prepares the vagrant infrastructure, including the base installation of the Atlassian tools, Rundeck and datatbase preparing.
+This script allows you to set the necessary installation pathes, clones the necessary OpenDevStack repositories and prepares the vagrant infrastructure, including the base installation of the Atlassian tools.
 
 For a local test environment it is recommended to keep the default values.
 
@@ -42,7 +42,7 @@ image::documentation/setup-script/script-execution-1.PNG[Configuration values]
 
 image::documentation/setup-script/script-execution-2.PNG[Vagrant]
 
-During script execution you will have the possibility to choose, if you want to confirm the Atlassian and Rundeck installation for every tool or to run a complete setup.
+During script execution you will have the possibility to choose, if you want to confirm the Atlassian installation for every tool or to run a complete setup.
 
 image::documentation/setup-script/stack-confirm.PNG[Atlassian stack]
 
@@ -142,7 +142,7 @@ image::documentation/crowd/crowd-config-8.PNG[Login]
 
 ==== Configure Crowd
 
-You will have to configure crowd to enable the Atlassian tools and Rundeck to login with crowd credentials.
+You will have to configure crowd to enable the Atlassian tools to login with crowd credentials.
 
 The following paragraphs assume, that you are logged in to the http://192.168.56.31:8095/crowd/console[Crowd console].
 
@@ -423,36 +423,6 @@ You will have to create the repositories listed in the table below.
 | ods-provisioning-app
 |===
 
-===== Add SSH Key for CD user to Bitbucket
-
-You will have to add a SSH key to the `cd_user` in Bitbucket, so Rundeck will be able to communicate with Bitbucket.
-
-First got to the *Users* section in the Bitbucket administration.
-
-image::documentation/bitbucket/bitbucket-add-ssh-key-1.PNG[Add SSH key]
-
-Choose the `cd_user` and select the _SSH keys_ tab.
-
-image::documentation/bitbucket/bitbucket-add-ssh-key-2.PNG[Add SSH key]
-
-Click *Add key*
-
-image::documentation/bitbucket/bitbucket-add-ssh-key-3.PNG[Add SSH key]
-
-The key has been auto generated during the setup script execution. Navigate to the base directory you created at the beginning of the setup process.
-
-There you will find a file named `id_rsa_bitbucket.pub`
-
-image::documentation/bitbucket/bitbucket-add-ssh-key-5.PNG[Add SSH key]
-
-Copy the content of the file
-
-image::documentation/bitbucket/bitbucket-add-ssh-key-6.PNG[Add SSH key]
-
-Paste the key to the input field in Bitbucket and click *Add key*
-
-image::documentation/bitbucket/bitbucket-add-ssh-key-4.PNG[Add SSH key]
-
 === Atlassian Jira
 
 ==== Run Configuration Wizard
@@ -712,7 +682,6 @@ Click *Save all* to persist the permissions.
 
 After the configuration of the Atlassian tools has been done, it's time to continue with the preparation oft the OpenDevStack environment.
 In this step the basic configuration for the OpenShift cluster takes place, as well as the installation of Sonarqube, Nexus3 and the Provisioning application.
-In addition Rundeck will be prepared automatically as far as possible.
 
 Navigate to the *ods-core/infrastructure-setup/* directory on your local machine and execute the script
 
@@ -734,7 +703,7 @@ image::documentation/prepare-script/git-credentials.PNG[Git credentials]
 
 After the repository mirroring you may setup project branch permissions in Bitbucket, if the `production` branch should be guarded against direct merges except through admins.
 
-The subsequent paragraphs explain the installation and configuration content for Nexus3, Sonarqube, Rundeck and the Provisioning application.
+The subsequent paragraphs explain the installation and configuration content for Nexus3, Sonarqube and the Provisioning application.
 
 === Nexus3
 
@@ -981,45 +950,8 @@ To do so, just type `y` instead of typing `n` or pressing `Enter`, if you are as
 
 image::documentation/prepare-script/jenkins-slaves.PNG[Jenkins slaves]
 
-=== Rundeck configuration
-
-After the preparation script execution, you will have to configure some values in Rundeck.
-
-Access Rundeck at http://192.168.56.31:4440/
-
-Login with your Crowd credentials.
-
-image::documentation/rundeck/rundeck-login.PNG[Rundeck login]
-
-Now choose the _Quickstarters_ project.
-
-image::documentation/rundeck/project.PNG[Project selection]
-
-Open the *Job Actions* button on the right and *Import Remote Changes*
-
-image::documentation/rundeck/remote-changes.PNG[Job actions]
-
-Click *Import*
-
-image::documentation/rundeck/import-remote-changes.PNG[Import changes]
-
-Now you should see the imported jobs.
-
-image::documentation/rundeck/jobs.PNG[Import changes]
-
-Choose the *verify global rundeck settings* job and execute it to verify that Rundeck has all necessary data.
-
-image::documentation/rundeck/verify-connections.PNG[Import changes]
-
-==== Configure SCM Export plugin
-
-If you use the Github repository, and use as is this step isn't necessary!
-
-If you use your own repository, configure the export plugin in same way as the import plugin, except the file path template - set to `rundeck-jobs/${job.group}${job.name}.${config.format}`
 
 == Provisioning application
-
-=== Run from OpenShift
 
 The Provisioning application has been installed with the environment preparation script and is accessible via
 
