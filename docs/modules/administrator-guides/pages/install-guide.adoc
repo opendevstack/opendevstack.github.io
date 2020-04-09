@@ -678,9 +678,9 @@ image::documentation/confluence/confluence-permission-4.PNG[Set permissions]
 
 Click *Save all* to persist the permissions.
 
-== Prepare local OpenDevStack environment
+== Prepare OpenDevStack environment in OpenShift
 
-After the configuration of the Atlassian tools has been done, it's time to continue with the preparation oft the OpenDevStack environment.
+After the configuration of the Atlassian tools has been done, it's time to continue with the preparation of the OpenDevStack environment.
 In this step the basic configuration for the OpenShift cluster takes place, as well as the installation of Sonarqube, Nexus3 and the Provisioning application.
 
 Navigate to the *ods-core/infrastructure-setup/* directory on your local machine and execute the script
