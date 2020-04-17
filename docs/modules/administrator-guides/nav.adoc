@@ -1,6 +1,0 @@
-* Administrator Guides
-** xref:administrator-guides:update.adoc[Migrate between versions]
-** Local Install
-*** xref:administrator-guides:install-requirements.adoc[Requirements]
-*** xref:administrator-guides:install-guide.adoc[Installation]
-
