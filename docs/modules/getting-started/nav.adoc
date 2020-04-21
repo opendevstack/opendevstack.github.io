@@ -1,4 +1,0 @@
-* xref:getting-started:introduction.adoc[Introduction]
-
-
-

@@ -1,5 +1,0 @@
-* Contributor Guides
-** xref:contributor-guides:development.adoc[Development]
-** xref:contributor-guides:documentation.adoc[Documentation]
-
-
