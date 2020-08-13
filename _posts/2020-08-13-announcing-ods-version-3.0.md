@@ -13,7 +13,7 @@ With great pride we are announcing version [3](https://github.com/orgs/opendevst
 1. Configurable `Bitbucket` and `Openshift namespace` for ODS - to allow multiple ODS installations on the same cluster, side by side
 1. Full end2end support for HTTP PROXY across all components
 1. `make` based installation for the entire OpenDevStack
-1. Add [automated testing](1. Add [automated tests](https://github.com/opendevstack/ods-quickstarters/tree/3.x/tests) to support the verification of an installation in /tests
+1. Add [automated testing](https://github.com/opendevstack/ods-quickstarters/tree/3.x/tests) to support the verification of an installation
 1. [ods-devenv](https://github.com/opendevstack/ods-core/tree/3.x/ods-devenv), allowing to setup a fully self contained developer installation (which is the basis for the AMI generation)
 1. A fully self contained Amazon AMI (`ODS in a Box 3.x`, `ami-0d9426211d748fc65`) - that you can just start inside your amazon account
 
