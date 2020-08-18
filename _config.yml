@@ -2,7 +2,7 @@
 short_title: OpenDevStack
 title: OpenDevStack
 description: >
-  OpenDevStack makes setting up development projects easy and consistent.
+  OpenDevStack makes setting up #openshift development projects easy and consistent.
 
 # Pagination
 paginate: 5
